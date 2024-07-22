@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 const MailIcon = "/assets/icons/mail-icon.svg";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
-const Logo = "/assets/logo/logo.svg";
+const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/bg1.png";
 
 const validationSchema = Yup.object().shape({
@@ -87,6 +87,12 @@ export default function LoginForm() {
         </div>
         <h2>Signup</h2>
         <form>
+        <select>
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
           <select>
             <option value="">Country</option>
             <option value="usa">USA</option>
