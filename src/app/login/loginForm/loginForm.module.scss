@@ -74,6 +74,9 @@
             align-items: baseline;
             gap: 1rem;
             margin-bottom: 1rem;
+            @include breakpoint("sm-max") {
+              display: block;
+            }
     
             label {
               margin-right: 1rem;
