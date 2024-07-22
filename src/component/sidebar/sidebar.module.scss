@@ -1,0 +1,160 @@
+@import "../../scss/index.scss";
+
+.sidebarSection {
+    width: 100%;
+    height: 100vh;
+    background: $login-side-bg;
+    padding: 35px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    position: relative;
+
+    .sidebarTop {
+        position: relative;
+        z-index: 9;
+
+        .sidebarFlexAlignment {
+            @include flex-between;
+        }
+        .sidebarLogo {
+            cursor: pointer;
+            width: 180px;
+            @include breakpoint("md-max") {
+                width: 140px;
+            }
+            img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+
+        .closeIcon {
+            display: none;
+            @include breakpoint("md-max") {
+                display: block;
+                img {
+                    width: 24px;
+                    height: 24px;
+                    display: block;
+                }
+            }
+        }
+        .sidebarMenu {
+            padding: 40px 0 0 0;
+
+            .menuList {
+                margin: 0 0 8px 0;
+                transition: 0.4s ease-in-out;
+
+                a {
+                    padding: 12px 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    border-radius: 32px;
+
+                    p {
+                        @include text16-bold;
+                        color: $white-color;
+                    }
+
+                    img {
+                        width: 24px;
+                        height: 24px;
+                        display: block;
+                    }
+                }
+
+                &:hover {
+                    a {
+                        background: $white-opcity-bg1;
+                    }
+                }
+
+                &.activeMenu {
+                    a {
+                        background: $white-opcity-bg1;
+                    }
+                }
+            }
+        }
+    }
+
+    .sidebarBottom {
+        max-width: 243px;
+        margin: 20px 0 0 0;
+        position: relative;
+        z-index: 9;
+
+        p {
+            @include text16;
+            color: $white-color;
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("/assets/images/sidebar-bg.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    &.smallSidebar {
+        padding: 35px 8px;
+
+        .sidebarTop {
+            .sidebarLogo {
+                width: 60px;
+            }
+
+            .sidebarMenu {
+                .menuList {
+                    p {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .sidebarBottom {
+            display: none;
+        }
+    }
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #333;
+    color: white;
+    transition: left 0.3s ease;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+}

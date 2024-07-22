@@ -1,0 +1,61 @@
+body {
+  font-family: "Red Hat Display", sans-serif;
+  background: #24232c;
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+p:last-child {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+*:focus {
+  outline: none;
+}
+a {
+  text-decoration: none;
+}
+img {
+  max-width: 100%;
+}
+
+.container {
+  max-width: 1384px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+input,select,textarea{
+  background: transparent !important;
+  border: 1px solid #ccc !important;
+  border-radius: 10px;
+  color: #ccc !important;
+  padding: 10px !important;
+
+}
+::placeholder {
+  color: #ccc !important;
+}

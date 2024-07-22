@@ -1,0 +1,7 @@
+# production
+build
+node_modules
+.next/
+.idea/
+.env.local
+*.DS_Store

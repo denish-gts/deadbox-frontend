@@ -1,0 +1,148 @@
+@import "../../scss/index.scss";
+
+.magicSection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    @include breakpoint("md-max") {
+        grid-template-columns: 1fr;
+    }
+
+    .magicLeftSide {
+        background: $login-side-bg;
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        padding: 35px 0;
+        overflow-y: hidden;
+
+        @include breakpoint("lg-max") {
+            padding: 20px;
+        }
+        @include breakpoint("md-max") {
+            display: none;
+        }
+        &::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            background: url("../../../public/assets/images/bg-img.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .magicSideBannerDetails {
+            position: relative;
+            z-index: 9;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            max-width: 460px;
+            text-align: left;
+            margin: 0 auto;
+            .logo {
+                max-width: 150px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .magicRightSide {
+        position: relative;
+        padding: 32px 0;
+        overflow-y: hidden;
+        @include flex-center;
+        @include breakpoint("md-max") {
+            height: 100vh;
+            flex-direction: column;
+            gap: 40px;
+            justify-content: space-around;
+        }
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: url("../../../public/assets/images/side-vectore.png");
+            width: 196px;
+            height: 224px;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        .mobileViewLogo {
+            display: none;
+            @include breakpoint("md-max") {
+                display: block;
+                img {
+                    width: 190px;
+                    display: block;
+                    height: 100%;
+                }
+            }
+        }
+        .magicFormAlignment {
+            @include flex-center;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 0 auto;
+            height: 100vh;
+            @include breakpoint("md-max") {
+                height: calc(100vh - 200px);
+                display: block;
+            }
+            @include breakpoint("sm-max") {
+                padding: 20px;
+                width: 100%;
+            }
+            .magicLinkDetailsAlignment {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: $button-bg-bolor;
+                @include flex-center;
+                margin: 0 auto;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                    display: block;
+                }
+            }
+            h2 {
+                @include text24-bold;
+                padding: 20px 0 0 0;
+                text-align: center;
+            }
+            p {
+                padding: 10px 0 0 0;
+                color: $black-color2;
+                text-align: center;
+            }
+        }
+
+        .signUpButton {
+            padding: 20px 0 0 0;
+            width: 100%;
+            button {
+                width: 100%;
+                background: $button-bg-bolor;
+                padding: 15px 30px;
+                border-radius: 50px;
+                border: none;
+                text-transform: uppercase;
+                font-family: "Inter", sans-serif;
+                @include text16-bolder;
+                color: $white-color;
+                cursor: pointer;
+            }
+        }
+    }
+}

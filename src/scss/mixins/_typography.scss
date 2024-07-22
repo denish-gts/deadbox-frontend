@@ -1,0 +1,171 @@
+@mixin text56-bold {
+    font-size: 56px;
+    line-height: 120%;
+    font-weight: 700;
+}
+
+@mixin text48-bold {
+    font-size: 48px;
+    line-height: 120%;
+    font-weight: 700;
+}
+
+@mixin text24 {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 120%;
+    letter-spacing: 0.48px;
+}
+
+@mixin text24-bold {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 120%;
+    letter-spacing: 0.48px;
+}
+
+@mixin text24-bolder {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 120%;
+    letter-spacing: 0.48px;
+}
+
+@mixin text22-bolder {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 120%;
+    letter-spacing: 0.48px;
+}
+@mixin text40-bolder {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 120%;
+}
+@mixin text32-bolder {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 120%;
+}
+
+@mixin text36-bolder {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 120%;
+}
+
+@mixin text18 {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 150%; /* 27px */
+    letter-spacing: 0.36px;
+}
+@mixin text18-bold {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 150%; /* 27px */
+    letter-spacing: 0.36px;
+}
+
+@mixin text20 {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 150%; /* 30px */
+    letter-spacing: 0.4px;
+}
+
+@mixin text20-bold {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 150%; /* 30px */
+    letter-spacing: 0.4px;
+}
+
+@mixin text16-bolder {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.8px;
+}
+@mixin text12-bold {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 10px;
+}
+
+@mixin text12-meduim {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 10px;
+}
+
+@mixin text12 {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 10px;
+}
+
+@mixin text16 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.8px;
+}
+@mixin text16-bold {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.8px;
+}
+
+@mixin text16-meduim {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.8px;
+}
+
+@mixin text16-bolder {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.8px;
+}
+
+@mixin text14-bolder {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 150%; /* 21px */
+    letter-spacing: 0.28px;
+}
+
+@mixin text14 {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+    letter-spacing: 0.28px;
+}
+
+@mixin text50 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 150%; /* 21px */
+}
+
+@mixin text42 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 150%; /* 21px */
+}
+
+@mixin text60-bolder {
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 150%; /* 21px */
+}
+
+@mixin text30-bold {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 150%; /* 21px */
+}
