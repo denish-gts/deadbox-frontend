@@ -85,9 +85,15 @@
             div {
               display: flex;
               align-items: baseline;
-    
+              
               input {
                 margin-right: 0.5rem;
+                @include breakpoint("sm-max") {
+                  width: auto;
+                  &:first-child{
+                    margin-top: 10px !important;
+                  }
+                }
               }
             }
           }
