@@ -120,6 +120,9 @@
 
   .imageContainer {
     overflow: hidden;
+    @include breakpoint("sm-max") {
+    overflow: auto;
+    }
 
     img {
       width: 100%;
