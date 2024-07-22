@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
-import styles from "./signupForm.module.scss";
-import Link from "next/link";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
-import { signIn, useSession } from "next-auth/react";
 import { axiosInstance } from "@/api/base";
 import { setToken, setUserInfo } from "@/utils/auth.util";
-import { useRouter } from "next/navigation";
-import Loader from "../../../component/loader";
+import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
+import { useFormik } from "formik";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import * as Yup from "yup";
+import styles from "./signupForm.module.scss";
 
 const MailIcon = "/assets/icons/mail-icon.svg";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
 const UserIcon = "/assets/icons/user-icon.svg";
-const Logo = "/assets/logo/logo.svg";
+const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/bg.png";
 
 const validationSchema = Yup.object().shape({
