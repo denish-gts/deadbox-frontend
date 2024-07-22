@@ -60,6 +60,12 @@ export default function SignupForm() {
     },
   });
 
+  const redirectToLogin = () => {
+    console.log('click');
+    
+    router.push("/login");
+  }
+
   const handlegoogleSignup = async () => {
     signIn("google");
   };
@@ -124,14 +130,16 @@ export default function SignupForm() {
         {/* <div className={styles.avatar}>
           <i className={styles.icon}></i>
         </div> */}
-        <form>
+        <div className={styles.form}>
           <input type="text" placeholder="First Name" />
           <input type="text" placeholder="Last Name" />
          
           <input type="email" placeholder="Email Address" />
           <input type="tel" placeholder="Phone Number" />
-          <button type="submit">Next Step</button>
-        </form>
+          <button
+          onClick={redirectToLogin}
+          >Next Step</button>
+        </div>
         <p>
           Already have an account? <a href="/login">Login</a>
         </p>
