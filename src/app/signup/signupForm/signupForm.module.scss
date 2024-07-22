@@ -121,7 +121,7 @@
   .imageContainer {
     overflow: hidden;
     @include breakpoint("sm-max") {
-    overflow: auto;
+    overflow: unset;
     }
 
     img {
