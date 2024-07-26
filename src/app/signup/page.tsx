@@ -1,11 +1,26 @@
-"use client"
+"use client";
+import { useState } from "react";
+import SignUpFirstForm from "./Components/SignUpFirstForm";
+import SignUpSecondForm from "./Components/SignUpSecondForm";
 import styles from "./signup.module.scss";
-import SignupForm from "./signupForm";
 export default function Signup() {
-    return (
-        <div>
-            <SignupForm />
-
-        </div>
-    )
+  const [firstOpen, setFirstOpen] = useState(true);
+  const [inputData, setinputData] = useState(null);
+  return (
+    <div>
+      {firstOpen ? (
+        <SignUpFirstForm
+          setFirstOpen={setFirstOpen}
+          inputData={inputData}
+          setinputData={setinputData}
+        />
+      ) : (
+        <SignUpSecondForm
+          setFirstOpen={setFirstOpen}
+          inputData={inputData}
+          setinputData={setinputData}
+        />
+      )}
+    </div>
+  );
 }

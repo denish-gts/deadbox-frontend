@@ -6,7 +6,7 @@ const errorCheckAPIResponse = (error) => {
   const errorsData = error?.response?.data?.errors;
 
   if (errorMsg || error_message) {
-    toast.error(errorMsg || error_message);
+    toast.error(error_message || errorMsg);
   } else if (errorsData) {
     for (const [key, value] of Object.entries(errorsData)) {
       if (value.length > 0) {
