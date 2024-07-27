@@ -15,7 +15,6 @@ const CoseIcon = "/assets/icons/close.png";
 export default function Sidebar({ isOpen, onClose }) {
   const router = useRouter();
   const path = usePathname().split("/")[1];
-  console.log('path', path);
 
   const handleClickLogout = () => {
     setToken("")

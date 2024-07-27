@@ -31,45 +31,44 @@ export default function SignUpFirstForm({
   const router = useRouter();
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSubmit, values, errors, handleChange, setValues } = useFormik({
-    initialValues: {
-      email: "",
-      first_name: "",
-      last_name: "",
-      avatar: "",
-      country_code: "",
-      mobile_no: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      setIsLoading(true);
-      setinputData(values);
-      setFirstOpen(false);
-      // axiosInstance
-      //   .post(`auth/user/register`, values)
-      //   .then((res) => {
-      //     successAPIResponse(res);
-      //     const body = { ...values, base_url: window.location.origin };
-      //     axiosInstance
-      //       .post(`auth/send_magic_link`, body)
-      //       .then((res) => {
-      //         router.push("/magic");
-      //         successAPIResponse(res);
-      //         setIsLoading(false);
-      //       })
-      //       .catch((error) => {
-      //         errorCheckAPIResponse(error);
-      //         setIsLoading(false);
-      //       });
-      //   })
-      //   .catch((error) => {
-      //     errorCheckAPIResponse(error);
-      //     setIsLoading(false);
-      //   });
-    },
-  });
-
-  console.log(errors);
+  const { handleSubmit, values, touched, errors, handleChange, setValues } =
+    useFormik({
+      initialValues: {
+        email: "",
+        first_name: "",
+        last_name: "",
+        avatar: "",
+        country_code: "",
+        mobile_no: "",
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        setIsLoading(true);
+        setinputData(values);
+        setFirstOpen(false);
+        // axiosInstance
+        //   .post(`auth/user/register`, values)
+        //   .then((res) => {
+        //     successAPIResponse(res);
+        //     const body = { ...values, base_url: window.location.origin };
+        //     axiosInstance
+        //       .post(`auth/send_magic_link`, body)
+        //       .then((res) => {
+        //         router.push("/magic");
+        //         successAPIResponse(res);
+        //         setIsLoading(false);
+        //       })
+        //       .catch((error) => {
+        //         errorCheckAPIResponse(error);
+        //         setIsLoading(false);
+        //       });
+        //   })
+        //   .catch((error) => {
+        //     errorCheckAPIResponse(error);
+        //     setIsLoading(false);
+        //   });
+      },
+    });
 
   const handlegoogleSignup = async () => {
     signIn("google");
@@ -152,16 +151,18 @@ export default function SignUpFirstForm({
               onChange={handleChange}
               value={values.first_name}
             />
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.first_name}
-            </p>
+            {errors.first_name && touched.first_name ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.first_name}
+              </p>
+            ) : null}
             <input
               type="text"
               placeholder="Last Name"
@@ -169,16 +170,18 @@ export default function SignUpFirstForm({
               onChange={handleChange}
               value={values.last_name}
             />
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.last_name}
-            </p>
+            {errors.last_name && touched.last_name ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.last_name}
+              </p>
+            ) : null}
             <input
               type="email"
               placeholder="Email Address"
@@ -186,16 +189,18 @@ export default function SignUpFirstForm({
               onChange={handleChange}
               value={values.email}
             />
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.email}
-            </p>
+            {errors.email && touched.email ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.email}
+              </p>
+            ) : null}
             <select
               name="country_code"
               onChange={handleChange}

@@ -20,6 +20,7 @@
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
+    "react-multi-select-component": "^4.3.4",
     "react-redux": "^9.1.2",
     "react-slick": "^0.30.2",
     "react-slider": "^2.0.6",

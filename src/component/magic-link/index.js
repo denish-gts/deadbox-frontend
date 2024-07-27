@@ -13,9 +13,13 @@ function MagicLinkContent() {
     useEffect(() => {
         const token = searchParams.get('token')
         if (token) {
-            axiosInstance.get(`/auth/magic-link/${token}`).then((res) => {
-                setToken(res.data.access_token)
-                setUserInfo({ ...res.data.data, ...res.data.user_info })
+            const apiData = new FormData()
+            apiData.append("magic_link_token",token)
+            axiosInstance.post(`/auth/verify-magic-link`, apiData).then((res) => {
+                localStorage.setItem('userDetails', JSON.stringify(res.data.data))
+                // setToken(res.data.access_token)
+
+                // setUserInfo({ ...res.data.data, ...res.data.user_info })
                 router.push(`/dashboard`)
             }).catch((error) => {
                 if (error?.response?.data?.message) {

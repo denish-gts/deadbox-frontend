@@ -11,6 +11,7 @@ import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import Loader from "@/component/loader";
 import { useRouter } from "next/navigation";
 import { resolve } from "styled-jsx/macro";
+import { MultiSelect } from "react-multi-select-component";
 const MailIcon = "/assets/icons/mail-icon.svg";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
@@ -20,7 +21,9 @@ const BG = "/assets/images/bg1.png";
 const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Zipcode is required."),
   about: Yup.string().required("About Us is required."),
-  group: Yup.string().required("Group Id is required."),
+  group: Yup.array()
+    .required("Group Id is required.")
+    .min(1, "Group Id is required."),
 });
 export default function SignUpSecondForm({
   setFirstOpen,
@@ -29,62 +32,54 @@ export default function SignUpSecondForm({
 }) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const { handleSubmit, values, errors, handleChange, setValues } = useFormik({
-    initialValues: {
-      gender: "",
-      country: "",
-      zip: "",
-      city: "",
-      group: "",
-      over13: "",
-      about: "",
-      privacyPolicy: false,
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      setIsLoading(true);
-      const apiData = new FormData();
+  const [groupOption, setGroupOption] = useState([
+    { label: "Group 1", value: "group1" },
+    { label: "Group 2", value: "group2" },
+    { label: "Group 3", value: "group3" },
+  ]);
 
-      if (inputData.avatar) {
-        apiData.append("f_image", inputData.avatar);
-      }
-      apiData.append("first_name", inputData.first_name);
-      apiData.append("last_name", inputData.last_name);
-      apiData.append("email", inputData.email);
-      apiData.append("phone_code", inputData.country_code);
-      apiData.append("phone", inputData.mobile_no);
-      apiData.append("zipcode", values.zip);
-      apiData.append("privacy_policy", "1");
-      apiData.append("over_13", "");
-      apiData.append("country_title", values.country);
-      apiData.append("city_title", values.city);
-      apiData.append("gender", values.gender);
-      apiData.append("about", values.about);
-      apiData.append("group_id", values.group);
+  const { handleSubmit, values, touched, errors, handleChange, setValues } =
+    useFormik({
+      initialValues: {
+        gender: "",
+        country: "",
+        zip: "",
+        city: "",
+        group: [],
+        over13: "",
+        about: "",
+        privacyPolicy: false,
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        setIsLoading(true);
+        const apiData = new FormData();
 
-      axiosInstance
-        .post(`auth/sign-up`, apiData)
-        .then((res) => {
-          console.log(res);
+        if (inputData.avatar) {
+          apiData.append("f_image", inputData.avatar);
+        }
+        apiData.append("first_name", inputData.first_name);
+        apiData.append("last_name", inputData.last_name);
+        apiData.append("email", inputData.email);
+        apiData.append("phone_code", inputData.country_code);
+        apiData.append("phone", inputData.mobile_no);
+        apiData.append("zipcode", values.zip);
+        apiData.append("privacy_policy", "1");
+        apiData.append("over_13", "");
+        apiData.append("country_title", values.country);
+        apiData.append("city_title", values.city);
+        apiData.append("gender", values.gender);
+        apiData.append("about", values.about);
+        apiData.append("group_id", JSON.stringify(values.group.map((item) => item.value)));
+
+        axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
           successAPIResponse(res);
-          //   setIsMagicLink(true);
-          const body = {
-            email: inputData.email,
-          };
-          const magicApiData = new FormData();
-          magicApiData.append("email", inputData.email);
-          axiosInstance.post(`auth/send-magic-link`, magicApiData).then((res) => {
-            console.log(res, "magic");
-            successAPIResponse(res);
-            setIsLoading(false);
-          });
-        })
-        .catch((error) => {
-          errorCheckAPIResponse(error);
           setIsLoading(false);
         });
-    },
-  });
+      },
+    });
+
+  console.log(errors);
   const router = useRouter();
   // useEffect(() => {
   //   if (session && Object.keys(session).length > 0) {
@@ -159,6 +154,26 @@ export default function SignUpSecondForm({
               name="zip"
               value={values.zip}
             />
+            {errors.zip && touched.zip ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.zip}
+              </p>
+            ) : null}
+          </div>
+          <textarea
+            placeholder="About me"
+            onChange={handleChange}
+            name="about"
+            value={values.about}
+          ></textarea>
+          {errors.about && touched.about ? (
             <p
               style={{
                 color: "red",
@@ -167,40 +182,34 @@ export default function SignUpSecondForm({
                 marginBottom: "16px",
               }}
             >
-              {errors.zip}
+              {errors.about}
             </p>
-          </div>
-          <textarea
-            placeholder="About me"
-            onChange={handleChange}
-            name="about"
-            value={values.about}
-          ></textarea>
-          <p
-            style={{
-              color: "red",
-              fontSize: "12px",
-              marginTop: "-10px",
-              marginBottom: "16px",
-            }}
-          >
-            {errors.about}
-          </p>
-          <select onChange={handleChange} name="group" value={values.group}>
+          ) : null}
+          {/* <select onChange={handleChange} name="group" value={values.group}>
             <option value="">Select Group</option>
-            <option value="2,5,6">Group 1</option>
-            <option value="2,5,6">Group 2</option>
-          </select>
-          <p
-            style={{
-              color: "red",
-              fontSize: "12px",
-              marginTop: "-10px",
-              marginBottom: "16px",
+            <option value="2">Group 1</option>
+            <option value="5">Group 2</option>
+          </select> */}
+          <MultiSelect
+            options={groupOption}
+            value={values.group}
+            onChange={(selected, value) => {
+              setValues({ ...values, group: selected });
             }}
-          >
-            {errors.group}
-          </p>
+            labelledBy="value"
+          />
+          {errors.group && touched.group ? (
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "-10px",
+                marginBottom: "16px",
+              }}
+            >
+              {errors.group}
+            </p>
+          ) : null}
           <div className={styles.inlineRadios}>
             <label>Are you over 13?</label>
             <div>
