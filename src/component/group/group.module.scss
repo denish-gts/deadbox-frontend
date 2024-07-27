@@ -1,0 +1,117 @@
+@import "../../scss/index.scss";
+
+.myGroups {
+
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .flexs{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      @include breakpoint('sm-max') {
+        display: block;
+      }
+    }
+  }
+  
+  
+  
+  .searchContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 20px;
+  }
+  
+  .searchContainer input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .addNewGroupButton {
+    padding: 10px 20px;
+    background-color: #ff4b5c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .groupsTable {
+    width: 100%;
+    border-collapse: collapse;
+    @include breakpoint('sm-max') {
+     
+      display: block;
+    width: 100%;
+    overflow-x: auto;
+    }
+   
+  }
+  
+  .groupsTable th, .groupsTable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .groupsTable th {
+    background-color: #f7f7f7;
+  }
+  
+  .groupName {
+    display: flex;
+    align-items: center;
+  }
+  
+  .groupName img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .removeGroupButton {
+    padding: 5px 10px;
+    background-color: #ff4b5c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .pagination button {
+    padding: 10px;
+    margin: 0 5px;
+    border: none;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 40px;
+
+  }
+  
+  .pagination button[disabled] {
+    background-color: #ff4b5c;
+    color: #fff;
+    width: 40px;
+    cursor: default;
+  }
+  

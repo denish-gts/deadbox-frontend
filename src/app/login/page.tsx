@@ -5,7 +5,6 @@ import styles from "./login.module.scss";
 import LoginForm from "./Components/loginForm";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 export default function Login() {
-  const router = useRouter();
   return (
     <>
       <div>
