@@ -29,7 +29,6 @@ export default function SignUpFirstForm({
   setinputData,
 }) {
   const router = useRouter();
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
@@ -46,59 +45,9 @@ export default function SignUpFirstForm({
         setIsLoading(true);
         setinputData(values);
         setFirstOpen(false);
-        // axiosInstance
-        //   .post(`auth/user/register`, values)
-        //   .then((res) => {
-        //     successAPIResponse(res);
-        //     const body = { ...values, base_url: window.location.origin };
-        //     axiosInstance
-        //       .post(`auth/send_magic_link`, body)
-        //       .then((res) => {
-        //         router.push("/magic");
-        //         successAPIResponse(res);
-        //         setIsLoading(false);
-        //       })
-        //       .catch((error) => {
-        //         errorCheckAPIResponse(error);
-        //         setIsLoading(false);
-        //       });
-        //   })
-        //   .catch((error) => {
-        //     errorCheckAPIResponse(error);
-        //     setIsLoading(false);
-        //   });
       },
     });
 
-  const handlegoogleSignup = async () => {
-    signIn("google");
-  };
-  // const handleClickSendMegiclink = () => {
-  //   formik.handleSubmit();
-  // };
-  useEffect(() => {
-    if (session) {
-      setIsLoading(true);
-      const fullname = session?.user?.name;
-      const body = {
-        email: session?.user?.email,
-        first_name: fullname.split(" ")[0],
-        last_name: fullname.split(" ")[1],
-      };
-      axiosInstance
-        .post(`/auth/authorize`, body)
-        .then((res) => {
-          setToken(res.data.access_token);
-          setUserInfo(res.data.data);
-          router.push(`/dashboard`);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          errorCheckAPIResponse(error);
-          setIsLoading(false);
-        });
-    }
-  }, [session]);
   const [avatar, setAvatar] = useState(null);
 
   const handleAvatarChange = (e) => {
