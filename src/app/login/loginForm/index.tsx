@@ -1,82 +1,14 @@
-import React, { useEffect, useState } from "react";
-import styles from "./loginForm.module.scss";
-import Link from "next/link";
 import Image from "next/image";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { signIn, useSession } from "next-auth/react";
-import { setToken, setUserInfo } from "@/utils/auth.util";
-import { axiosInstance } from "@/api/base";
-import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
-import Loader from "@/component/loader";
 import { useRouter } from "next/navigation";
-const MailIcon = "/assets/icons/mail-icon.svg";
-const SendLinkIcon = "/assets/icons/send-link-icon.svg";
-const GoogleIcon = "/assets/icons/google-icon.svg";
+import styles from "./loginForm.module.scss";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/bg1.png";
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Please enter a valid email address")
-    .required("Email address is required."),
-});
 export default function LoginForm() {
-  const { data: session } = useSession();
-  const [isLoading, setIsLoading] = useState(false);
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      setIsLoading(true);
-      const body = { ...values, base_url: window.location.origin };
-      axiosInstance
-        .post(`auth/send_magic_link`, body)
-        .then((res) => {
-          successAPIResponse(res);
-          //   setIsMagicLink(true);
-          router.push("/magic");
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          errorCheckAPIResponse(error);
-          setIsLoading(false);
-        });
-    },
-  });
-  const router = useRouter();
-  useEffect(() => {
-    if (session && Object.keys(session).length > 0) {
-      setIsLoading(true);
-      const fullname = session?.user?.name;
-      const body = {
-        email: session?.user?.email,
-        first_name: fullname.split(" ")[0],
-        last_name: fullname.split(" ")[1],
-      };
-      axiosInstance
-        .post(`/auth/authorize`, body)
-        .then((res) => {
-          setToken(res.data.access_token);
-          setUserInfo(res.data.data);
-          router.push(`/dashboard`);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          errorCheckAPIResponse(error);
-          setIsLoading(false);
-        });
-    }
-  }, [session]);
 
-  const handleGoogleSignIn = async () => {
-    signIn("google");
-  };
-  const handleClickSendMegiclink = () => {
-    formik.handleSubmit();
-  };
+  const router = useRouter();
+  
+
   return (
     <div className={styles.signupSection}>
     
