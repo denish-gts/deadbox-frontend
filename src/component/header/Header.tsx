@@ -6,8 +6,9 @@ const Logo = "/assets/logo/logo.jpeg";
 const Message = "/assets/images/message.svg";
 const NotificationIcon = "/assets/images/noti.svg";
 const   ProfileImg = "/assets/images/people.png";
-export default function Header() {
+export default function Header({userData, setuserData}) {
   const router = useRouter();
+  console.log(userData?.image)
 
   return (
     <header className={styles.header}>
@@ -22,7 +23,7 @@ export default function Header() {
        
         <Image unoptimized height={0} width={0} src={NotificationIcon} alt="Noti" className={styles.defaultIcon} />
         <Image unoptimized height={0} width={0} src={Message} alt="Message" className={styles.defaultIcon} />
-        <Image unoptimized height={0} width={0} src={ProfileImg} alt="User Icon" className={styles.userIcon} />
+        <img height={0} width={0} src={userData?.image} alt="User Icon" className={styles.userIcon} />
       </div>
     </header>
   );

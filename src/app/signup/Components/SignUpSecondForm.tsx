@@ -30,7 +30,6 @@ export default function SignUpSecondForm({
   inputData,
   setinputData,
 }) {
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [groupOption, setGroupOption] = useState([
     { label: "Group 1", value: "group1" },

@@ -20,7 +20,7 @@ function MagicLinkContent() {
                 // setToken(res.data.access_token)
 
                 // setUserInfo({ ...res.data.data, ...res.data.user_info })
-                router.push(`/dashboard`)
+                router.push(`/home`)
             }).catch((error) => {
                 if (error?.response?.data?.message) {
                     toast.error(error?.response?.data?.message)

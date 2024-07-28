@@ -1,18 +1,45 @@
 import styles from "./home.module.scss";
 import People from "../../../public/assets/images/people.png";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import EditProfile from "./EditProfile";
+import moment from "moment";
+import { axiosInstance, BASE_URL } from "@/api/base";
 const ProfileSection = ({
   isEditProfile,
   setIsEditProfile,
+  userData,
+  setuserData,
 }: {
   isEditProfile: boolean;
   setIsEditProfile: (isEditProfile: boolean) => void;
+  userData: {
+    id: number;
+    role_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_code: string;
+    phone: string;
+    image: string;
+    over_13: boolean;
+    privacy_policy: boolean;
+    address_1: string;
+    address_2: string;
+    city_title: string;
+    state_title: string;
+    country_title: string;
+    zipcode: string;
+    gender: string;
+    about: string;
+    created: string;
+  };
+  setuserData: (userData: any) => void;
 }) => {
   const [avatar, setAvatar] = useState(null);
   const router = useRouter();
+  const token = JSON.parse(localStorage.getItem("userDetails")).token;
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -24,6 +51,7 @@ const ProfileSection = ({
       reader.readAsDataURL(file);
     }
   };
+
   return (
     <div className={styles.profileSection}>
       <div className={styles.profileCard}>
@@ -32,11 +60,11 @@ const ProfileSection = ({
             className={styles.avatar}
             onClick={() => document.getElementById("avatarInput").click()}
           >
-            {avatar ? (
-              <img src={avatar} alt="Avatar" />
-            ) : (
+            {/* {avatar ? ( */}
+              <img src={userData?.image} alt="Avatar" />
+            {/* ) : (
               <i className={styles.icon}></i>
-            )}
+            )} */}
             <div className={styles.plusIcon}>Edit</div>
           </div>
           <input
@@ -49,7 +77,9 @@ const ProfileSection = ({
         </div>
 
         <div className={styles.profileInfo}>
-          <h2>@Leslie Alexander</h2>
+          <h2>
+            @{userData?.first_name} {userData?.last_name}
+          </h2>
           <p>Stock Class - 30 Groups</p>
           <div className={styles.role}>VICE PRESIDENT</div>
         </div>
@@ -62,52 +92,64 @@ const ProfileSection = ({
               <div>
                 <strong>First Name:</strong>
               </div>{" "}
-              Leslie
+              {userData?.first_name}
             </p>
           </div>
           <div>
             <p>
               <div>
-                <strong>First Name:</strong>
+                <strong>Last Name:</strong>
               </div>
-              Alexander
+              {userData?.last_name}
             </p>
           </div>
           <div>
             <p>
-             <div>
-             <strong>Call Sign:</strong></div> Alexie
+              <div>
+                <strong>Call Sign:</strong>
+              </div>{" "}
+              Alexie
             </p>
           </div>
           <div>
             {" "}
             <p>
               <div>
-              <strong>Country:</strong></div> USA
+                <strong>Country:</strong>
+              </div>{" "}
+              {userData?.country_title}
             </p>
           </div>
           <div>
             <p>
               <div>
-              <strong>State:</strong></div> Texas
+                <strong>State:</strong>
+              </div>{" "}
+              {userData?.state_title}
             </p>
           </div>
           <div>
             <p>
               <div>
-              <strong>City:</strong> </div>Dallas
+                <strong>City:</strong>{" "}
+              </div>
+              {userData?.city_title}
             </p>
           </div>
           <div>
             <p>
-             <div>
-             <strong>Joined Date:</strong></div> 15 Aug 2005
+              <div>
+                <strong>Joined Date:</strong>
+              </div>{" "}
+              {moment(userData?.created).format("DD MMM, YYYY")}
             </p>
           </div>
           <div>
             <p>
-             <div>
-             <strong>Last Logon Date:</strong></div> 22 Jun 2024
+              <div>
+                <strong>Last Logon Date:</strong>
+              </div>{" "}
+              -
             </p>
           </div>
         </div>
@@ -115,8 +157,7 @@ const ProfileSection = ({
           <div className={styles.aboutMe}>
             <strong>About Me:</strong>{" "}
           </div>
-          Leslie Alexander was born on January 12, 1943. He grew up in New York
-          City, where he developed a passion for sports...
+          {userData?.about}
         </p>
         <a className={styles.readMore} onClick={() => setIsEditProfile(true)}>
           READ MORE

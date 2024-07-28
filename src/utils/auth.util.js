@@ -23,7 +23,7 @@ export const getCookie = (name) => {
   }
   return null;
 }
-export const getToken = () => getCookie(STORAGEKEY.token);
+export const getToken = () => JSON.parse(localStorage.getItem('userDetails')).token;
 
 
 export const getUserInfo = () => JSON.parse(getCookie(STORAGEKEY.userData));

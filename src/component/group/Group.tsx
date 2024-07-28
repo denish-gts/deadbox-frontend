@@ -1,40 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./group.module.scss";
 import people1 from "../../../public/assets/images/people1.png";
 import Image from "next/image";
+import { BASE_URL } from "@/api/base";
 
 interface Group {
   id: number;
-  name: string;
+  title: string;
   type: string;
   members: number;
   status: string;
+  description: string;
+  logo: string;
+  group_type: string;
+  admin_approval_status: any;
+  created_by: number;
+  updated_by: number;
 }
-
-const groupsData: Group[] = [
-  {
-    id: 1,
-    name: "Mag Fed",
-    type: "Public",
-    members: 1294,
-    status: "Activated Recently"
-  },
-  {
-    id: 2,
-    name: "Airsoft",
-    type: "Public",
-    members: 5107,
-    status: "Activated 1 week ago"
-  },
-  {
-    id: 3,
-    name: "Milsim",
-    type: "Public",
-    members: 7204,
-    status: "Activated 1 month ago"
-  },
-  // Add more group data as necessary
-];
 
 export default function Group({
   isGroup,
@@ -43,7 +25,7 @@ export default function Group({
   isGroup: boolean;
   setIsGroup: (isGroup: boolean) => void;
 }) {
-  const [groups, setGroups] = useState<Group[]>(groupsData);
+  const [groups, setGroups] = useState<Group[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,18 +33,32 @@ export default function Group({
   };
 
   const filteredGroups = groups.filter((group) =>
-    group.name.toLowerCase().includes(searchTerm.toLowerCase())
+    group?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
 
   const handleRemoveGroup = (id: number) => {
     setGroups(groups.filter((group) => group.id !== id));
   };
+  const token = JSON.parse(localStorage.getItem("userDetails")).token;
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/group/list`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res: any) => res.json())
+      .then((data: any) => {
+        setGroups(data.data);
+      });
+  }, []);
 
   return (
     <>
       <div className={styles.myGroups}>
         <div className={styles.flexs}>
-          <div className=''>
+          <div className="">
             <h1>My Groups</h1>
             <p>Manage your selected groups</p>
           </div>
@@ -85,7 +81,7 @@ export default function Group({
           <thead>
             <tr>
               <th>
-              <input type="checkbox" />
+                <input type="checkbox" />
               </th>
               <th>Groups Name</th>
               <th>Group Type</th>
@@ -95,19 +91,25 @@ export default function Group({
             </tr>
           </thead>
           <tbody>
-            {filteredGroups.map((group) => (
-              <tr key={group.id}>
+            {filteredGroups?.map((group) => (
+              <tr key={group?.id}>
                 <td>
                   <input type="checkbox" />
                 </td>
                 <td>
                   <div className={styles.groupName}>
-                    <Image height={0} width={0} unoptimized src={people1} alt={'People'} />
-                    <span>{group.name}</span>
+                    <Image
+                      height={0}
+                      width={0}
+                      unoptimized
+                      src={group?.logo || ""}
+                      alt={"People"}
+                    />
+                    <span>{group.title}</span>
                   </div>
                 </td>
-                <td>{group.type}</td>
-                <td>{group.members}</td>
+                <td>{group.group_type}</td>
+                <td>-</td>
                 <td>{group.status}</td>
                 <td>
                   <button

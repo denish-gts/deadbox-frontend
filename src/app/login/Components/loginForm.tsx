@@ -23,7 +23,6 @@ const validationSchema = Yup.object().shape({
     .required("Email address is required."),
 });
 export default function LoginForm() {
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
