@@ -39,13 +39,13 @@ export default function Group({
   const handleRemoveGroup = (id: number) => {
     setGroups(groups.filter((group) => group.id !== id));
   };
-  const token = JSON.parse(localStorage.getItem("userDetails")).token;
+  const token = JSON.parse(localStorage.getItem("userDetails"));
 
   useEffect(() => {
     fetch(`${BASE_URL}/group/list`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token?.token}`,
       },
     })
       .then((res: any) => res.json())

@@ -39,7 +39,7 @@ const ProfileSection = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const router = useRouter();
-  const token = JSON.parse(localStorage.getItem("userDetails")).token;
+  const token = JSON.parse(localStorage.getItem("userDetails"));
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];

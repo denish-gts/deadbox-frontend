@@ -75,7 +75,7 @@ export default function AddGroup({ setIsGroup }) {
         fetch(`${BASE_URL}/group/create`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token?.token}`,
           },
           body: apiData,
         })
@@ -102,12 +102,12 @@ export default function AddGroup({ setIsGroup }) {
   };
 
   const [userList, setuserList] = useState([]);
-  const token = JSON.parse(localStorage.getItem("userDetails")).token;
+  const token = JSON.parse(localStorage.getItem("userDetails"));
   useEffect(() => {
     fetch(`${BASE_URL}/user/list`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token?.token}`,
       },
     })
       .then((res: any) => res.json())

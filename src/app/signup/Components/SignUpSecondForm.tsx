@@ -21,6 +21,11 @@ const BG = "/assets/images/bg1.png";
 const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Zipcode is required."),
   about: Yup.string().required("About Us is required."),
+  gender: Yup.string().required("Zipcode is required."),
+  country: Yup.string().required("About Us is required."),
+  city: Yup.string().required("About Us is required."),
+  sign: Yup.string().required("About Us is required."),
+  dob: Yup.string().required("About Us is required."),
   group: Yup.array()
     .required("Group Id is required.")
     .min(1, "Group Id is required."),
@@ -30,7 +35,7 @@ export default function SignUpSecondForm({
   inputData,
   setinputData,
 }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [groupOption, setGroupOption] = useState([
     { label: "Group 1", value: "group1" },
     { label: "Group 2", value: "group2" },
@@ -45,9 +50,9 @@ export default function SignUpSecondForm({
         zip: "",
         city: "",
         group: [],
-        over13: "",
         about: "",
-        privacyPolicy: false,
+        sign: "",
+        dob: '',
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
@@ -69,7 +74,7 @@ export default function SignUpSecondForm({
         apiData.append("city_title", values.city);
         apiData.append("gender", values.gender);
         apiData.append("about", values.about);
-        apiData.append("group_id", JSON.stringify(values.group.map((item) => item.value)));
+        apiData.append("group_id", values.group.map((item) => item.value).join(","));
 
         axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
           successAPIResponse(res);
@@ -104,13 +109,13 @@ export default function SignUpSecondForm({
   //   }
   // }, [session]);
 
-  useEffect(() => {
-    if (values.over13 == "yes" && values.privacyPolicy) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  }, [values]);
+  // useEffect(() => {
+  //   if (values.over13 == "yes" && values.privacyPolicy) {
+  //     setIsLoading(false);
+  //   } else {
+  //     setIsLoading(true);
+  //   }
+  // }, [values]);
 
   const handleGoogleSignIn = async () => {
     signIn("google");
@@ -132,12 +137,36 @@ export default function SignUpSecondForm({
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+          {errors.gender && touched.gender ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.gender}
+              </p>
+            ) : null}
           <select onChange={handleChange} name="country" value={values.country}>
             <option value="">Country</option>
             <option value="usa">USA</option>
             <option value="uk">UK</option>
             <option value="canada">Canada</option>
           </select>
+          {errors.country && touched.country ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.country}
+              </p>
+            ) : null}
           <div className={styles.inlineInputs}>
             <input
               type="text"
@@ -146,6 +175,18 @@ export default function SignUpSecondForm({
               name="city"
               value={values.city}
             />
+            {errors.city && touched.city ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.city}
+              </p>
+            ) : null}
             <input
               type="text"
               placeholder="Zipcode"
@@ -166,6 +207,25 @@ export default function SignUpSecondForm({
               </p>
             ) : null}
           </div>
+          <input
+              type="text"
+              placeholder="sign"
+              onChange={handleChange}
+              name="Call Sign/Nickname"
+              value={values.sign}
+            />
+            {errors.sign && touched.sign ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.sign}
+              </p>
+            ) : null}
           <textarea
             placeholder="About me"
             onChange={handleChange}
@@ -209,7 +269,26 @@ export default function SignUpSecondForm({
               {errors.group}
             </p>
           ) : null}
-          <div className={styles.inlineRadios}>
+          <input
+              type="date"
+              placeholder="Date of Birth"
+              onChange={handleChange}
+              name="dob"
+              value={values.dob}
+            />
+            {errors.dob && touched.dob ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.dob}
+              </p>
+            ) : null}
+          {/* <div className={styles.inlineRadios}>
             <label>Are you over 13?</label>
             <div>
               <input
@@ -249,7 +328,7 @@ export default function SignUpSecondForm({
               I have read and understood the{" "}
               <a href="/privacy-policy">Privacy Policy</a>
             </label>
-          </div>
+          </div> */}
           {isLoading ? (
             <button style={{ backgroundColor: "#9e9e9e" }} type="button">
               Submit

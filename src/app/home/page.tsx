@@ -10,8 +10,8 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [userData, setuserData] = useState(null);
   const router = useRouter();
-  const token = JSON.parse(localStorage.getItem("userDetails")).token;
-  if (!token) {
+  const token = JSON.parse(localStorage.getItem("userDetails"));
+  if (!token?.token) {
     router.push("/login");
   }
   useEffect(() => {
@@ -19,11 +19,10 @@ export default function Home() {
       fetch(`${BASE_URL}/user/get-profile`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token?.token}`,
         },
       }).then((res: any) => res.json()),
     ]).then((data: any) => {
-      console.log(data[0]);
       setuserData(data[0].data);
     });
   }, []);

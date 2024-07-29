@@ -87,12 +87,12 @@ export default function EditProfile({
         apiData.append("call_sign", values.call_sign);
         apiData.append("state", values.state);
 
-        const token = JSON.parse(localStorage.getItem("userDetails")).token;
+        const token = JSON.parse(localStorage.getItem("userDetails"));
 
         fetch(`${BASE_URL}/user/update-profile`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token?.token}`,
           },
           body: apiData,
         })
@@ -100,7 +100,17 @@ export default function EditProfile({
           .then((res) => {
             toast.success(res.message);
             setIsLoading(false);
-            setIsEditProfile(false);
+            fetch(`${BASE_URL}/user/get-profile`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token?.token}`,
+              },
+            })
+              .then((res: any) => res.json())
+              .then((data: any) => {
+                setuserData(data.data);
+                setIsEditProfile(false);
+              });
           });
       },
     });

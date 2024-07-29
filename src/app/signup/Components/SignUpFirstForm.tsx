@@ -19,6 +19,8 @@ const BG = "/assets/images/bg.png";
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
   last_name: Yup.string().required("Last Name is required."),
+  country_code: Yup.string().required("First Name is required."),
+  mobile_no: Yup.string().required("Last Name is required."),
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
@@ -29,7 +31,7 @@ export default function SignUpFirstForm({
   setinputData,
 }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
       initialValues: {
@@ -39,6 +41,8 @@ export default function SignUpFirstForm({
         avatar: "",
         country_code: "",
         mobile_no: "",
+        over13: "",
+        privacyPolicy: false,
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
@@ -47,6 +51,14 @@ export default function SignUpFirstForm({
         setFirstOpen(false);
       },
     });
+
+  useEffect(() => {
+    if (values.over13 == "yes" && values.privacyPolicy) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [values]);
 
   const [avatar, setAvatar] = useState(null);
 
@@ -92,6 +104,7 @@ export default function SignUpFirstForm({
           {/* <div className={styles.avatar}>
           <i className={styles.icon}></i>
         </div> */}
+          
           <div className={styles.form}>
             <input
               type="text"
@@ -159,6 +172,18 @@ export default function SignUpFirstForm({
               <option value="+1">+1</option>
               <option value="+44">+44</option>
             </select>
+            {errors.country_code && touched.country_code ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.country_code}
+              </p>
+            ) : null}
             <input
               type="tel"
               placeholder="Phone Number"
@@ -166,7 +191,68 @@ export default function SignUpFirstForm({
               onChange={handleChange}
               value={values.mobile_no}
             />
+            {errors.mobile_no && touched.mobile_no ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.mobile_no}
+              </p>
+            ) : null}
+            <div className={styles.inlineRadios}>
+            <label>Are you over 13?</label>
+            <div>
+              <input
+                type="radio"
+                onChange={() => {
+                  setValues({ ...values, over13: "yes" });
+                }}
+                id="yes"
+                name="age"
+                value="yes"
+              />
+              <label htmlFor="yes">Yes</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="no"
+                onChange={() => {
+                  setValues({ ...values, over13: "no" });
+                }}
+                name="age"
+                value="no"
+              />
+              <label htmlFor="no">No</label>
+            </div>
+          </div>
+          <div className={styles.checkboxContainer}>
+            <input
+              type="checkbox"
+              checked={values.privacyPolicy}
+              onClick={() => {
+                setValues({ ...values, privacyPolicy: !values.privacyPolicy });
+              }}
+              id="policy"
+            />
+            <label htmlFor="policy">
+              I have read and understood the{" "}
+              <a href="/privacy-policy">Privacy Policy</a>
+            </label>
+          </div>
+          {isLoading ? (
+            <>
+            <button style={{ backgroundColor: "#9e9e9e" }} type="button">
+              Next Step
+            </button>
+            </>
+          ) : (
             <button type="submit">Next Step</button>
+          )}
           </div>
           <p>
             Already have an account? <a href="/login">Login</a>

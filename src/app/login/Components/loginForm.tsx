@@ -86,7 +86,7 @@ export default function LoginForm() {
               Submit
             </button>
           ) : (
-            <button type="submit">Submit</button>
+            <button type="submit">Send Magic Link</button>
           )}
         </form>
       </div>
