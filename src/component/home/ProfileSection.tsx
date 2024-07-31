@@ -1,5 +1,5 @@
 import styles from "./home.module.scss";
-import People from "../../../public/assets/images/people.png";
+import People from "../../../public/assets/images/pencil.png";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -65,7 +65,9 @@ const ProfileSection = ({
             {/* ) : (
               <i className={styles.icon}></i>
             )} */}
-            <div className={styles.plusIcon}>Edit</div>
+            <div className={styles.plusIcon}>
+              <Image src={People} alt="People" />
+            </div>
           </div>
           <input
             id="avatarInput"
