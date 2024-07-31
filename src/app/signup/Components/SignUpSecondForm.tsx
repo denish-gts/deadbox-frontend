@@ -16,7 +16,7 @@ const MailIcon = "/assets/icons/mail-icon.svg";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
 const Logo = "/assets/logo/logo.jpeg";
-const BG = "/assets/images/bg1.png";
+const BG = "/assets/images/signin2.jpg";
 
 const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Zipcode is required."),
@@ -30,6 +30,49 @@ const validationSchema = Yup.object().shape({
     .required("Group Id is required.")
     .min(1, "Group Id is required."),
 });
+const CustomMultiSelect = ({ options, selectedOptions, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionChange = (option) => {
+    if (selectedOptions.includes(option)) {
+      onChange(selectedOptions.filter((item) => item !== option));
+    } else {
+      onChange([...selectedOptions, option]);
+    }
+  };
+
+  return (
+    <div className={styles.custommultiselect}>
+      <div className={styles.selectbox} onClick={handleToggle}>
+        {selectedOptions.length > 0
+          ? selectedOptions.join(", ")
+          : "Select options"}
+        <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
+      </div>
+      {isOpen && (
+        <div className={styles.optionscontainer}>
+          {options.map((option) => (
+            <div className={styles.option} key={option.value}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedOptions.includes(option.value)}
+                  onChange={() => handleOptionChange(option.value)}
+                />
+                {option.label}
+              </label>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function SignUpSecondForm({
   setFirstOpen,
   inputData,
@@ -52,7 +95,7 @@ export default function SignUpSecondForm({
         group: [],
         about: "",
         sign: "",
-        dob: '',
+        dob: "",
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
@@ -74,7 +117,10 @@ export default function SignUpSecondForm({
         apiData.append("city_title", values.city);
         apiData.append("gender", values.gender);
         apiData.append("about", values.about);
-        apiData.append("group_id", values.group.map((item) => item.value).join(","));
+        apiData.append(
+          "group_id",
+          values.group.map((item) => item.value).join(",")
+        );
 
         axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
           successAPIResponse(res);
@@ -123,6 +169,20 @@ export default function SignUpSecondForm({
   // const handleClickSendMegiclink = () => {
   //   formik.handleSubmit();
   // };
+
+  const options = [
+    { label: "Grapes", value: "grapes" },
+    { label: "Mango", value: "mango" },
+    { label: "Strawberry", value: "strawberry" },
+    { label: "Watermelon", value: "watermelon" },
+    { label: "Banana", value: "banana" },
+    { label: "Apple", value: "apple" },
+    { label: "Tangerine", value: "tangerine" },
+    { label: "Pineapple", value: "pineapple" },
+  ];
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const [selected, setSelected] = useState([]);
   return (
     <div className={styles.signupSection}>
       <div className={styles.formContainer}>
@@ -138,17 +198,17 @@ export default function SignUpSecondForm({
             <option value="other">Other</option>
           </select>
           {errors.gender && touched.gender ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.gender}
-              </p>
-            ) : null}
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "-10px",
+                marginBottom: "16px",
+              }}
+            >
+              {errors.gender}
+            </p>
+          ) : null}
           <select onChange={handleChange} name="country" value={values.country}>
             <option value="">Country</option>
             <option value="usa">USA</option>
@@ -156,76 +216,88 @@ export default function SignUpSecondForm({
             <option value="canada">Canada</option>
           </select>
           {errors.country && touched.country ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.country}
-              </p>
-            ) : null}
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "-10px",
+                marginBottom: "16px",
+              }}
+            >
+              {errors.country}
+            </p>
+          ) : null}
           <div className={styles.inlineInputs}>
-            <input
-              type="text"
-              placeholder="City"
-              onChange={handleChange}
-              name="city"
-              value={values.city}
-            />
-            {errors.city && touched.city ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.city}
-              </p>
-            ) : null}
-            <input
-              type="text"
-              placeholder="Zipcode"
-              onChange={handleChange}
-              name="zip"
-              value={values.zip}
-            />
-            {errors.zip && touched.zip ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.zip}
-              </p>
-            ) : null}
+            <div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="City"
+                  onChange={handleChange}
+                  name="city"
+                  value={values.city}
+                />
+              </div>
+              <div>
+                {errors.city && touched.city && (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {errors.city}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Zipcode"
+                  onChange={handleChange}
+                  name="zip"
+                  value={values.zip}
+                />
+              </div>
+              <div>
+                {errors.zip && touched.zip && (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {errors.zip}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
           <input
-              type="text"
-              placeholder="sign"
-              onChange={handleChange}
-              name="Call Sign/Nickname"
-              value={values.sign}
-            />
-            {errors.sign && touched.sign ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.sign}
-              </p>
-            ) : null}
+            type="text"
+            placeholder="sign"
+            onChange={handleChange}
+            name="Call Sign/Nickname"
+            value={values.sign}
+          />
+          {errors.sign && touched.sign ? (
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "-10px",
+                marginBottom: "16px",
+              }}
+            >
+              {errors.sign}
+            </p>
+          ) : null}
           <textarea
             placeholder="About me"
             onChange={handleChange}
@@ -244,19 +316,21 @@ export default function SignUpSecondForm({
               {errors.about}
             </p>
           ) : null}
-          {/* <select onChange={handleChange} name="group" value={values.group}>
-            <option value="">Select Group</option>
-            <option value="2">Group 1</option>
-            <option value="5">Group 2</option>
-          </select> */}
-          <MultiSelect
+          <CustomMultiSelect
+            options={options}
+            selectedOptions={selectedOptions}
+            onChange={setSelectedOptions}
+          />
+          {/* <div className={styles.multiselect}> */}
+          {/* <MultiSelect
             options={groupOption}
             value={values.group}
             onChange={(selected, value) => {
               setValues({ ...values, group: selected });
             }}
             labelledBy="value"
-          />
+            />
+            </div>
           {errors.group && touched.group ? (
             <p
               style={{
@@ -268,26 +342,26 @@ export default function SignUpSecondForm({
             >
               {errors.group}
             </p>
-          ) : null}
+          ) : null} */}
           <input
-              type="date"
-              placeholder="Date of Birth"
-              onChange={handleChange}
-              name="dob"
-              value={values.dob}
-            />
-            {errors.dob && touched.dob ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.dob}
-              </p>
-            ) : null}
+            type="date"
+            placeholder="Date of Birth"
+            onChange={handleChange}
+            name="dob"
+            value={values.dob}
+          />
+          {errors.dob && touched.dob ? (
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "-10px",
+                marginBottom: "16px",
+              }}
+            >
+              {errors.dob}
+            </p>
+          ) : null}
           {/* <div className={styles.inlineRadios}>
             <label>Are you over 13?</label>
             <div>

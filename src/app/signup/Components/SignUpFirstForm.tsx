@@ -14,7 +14,7 @@ const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
 const UserIcon = "/assets/icons/user-icon.svg";
 const Logo = "/assets/logo/logo.jpeg";
-const BG = "/assets/images/bg.png";
+const BG = "/assets/images/signin1.jpg";
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
@@ -104,7 +104,7 @@ export default function SignUpFirstForm({
           {/* <div className={styles.avatar}>
           <i className={styles.icon}></i>
         </div> */}
-          
+
           <div className={styles.form}>
             <input
               type="text"
@@ -203,56 +203,52 @@ export default function SignUpFirstForm({
                 {errors.mobile_no}
               </p>
             ) : null}
-            <div className={styles.inlineRadios}>
-            <label>Are you over 13?</label>
-            <div>
-              <input
-                type="radio"
-                onChange={() => {
-                  setValues({ ...values, over13: "yes" });
-                }}
-                id="yes"
-                name="age"
-                value="yes"
-              />
+            <div className={styles.radiogroup}>
+              <span>Are you over 13?</span>
+              <div className={styles.flex}>
+              <input type="radio"  onChange={() => {
+                    setValues({ ...values, over13: "yes" });
+                  }}
+                  id="yes"
+                  name="age"
+                  value="yes" />
               <label htmlFor="yes">Yes</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="no"
-                onChange={() => {
-                  setValues({ ...values, over13: "no" });
-                }}
-                name="age"
-                value="no"
-              />
+              <input type="radio"  id="no"
+                  onChange={() => {
+                    setValues({ ...values, over13: "no" });
+                  }}
+                  name="age"
+                  value="no"/>
               <label htmlFor="no">No</label>
+              </div>
             </div>
-          </div>
-          <div className={styles.checkboxContainer}>
-            <input
-              type="checkbox"
-              checked={values.privacyPolicy}
-              onClick={() => {
-                setValues({ ...values, privacyPolicy: !values.privacyPolicy });
-              }}
-              id="policy"
-            />
-            <label htmlFor="policy">
-              I have read and understood the{" "}
-              <a href="/privacy-policy">Privacy Policy</a>
-            </label>
-          </div>
-          {isLoading ? (
-            <>
-            <button style={{ backgroundColor: "#9e9e9e" }} type="button">
-              Next Step
-            </button>
-            </>
-          ) : (
-            <button type="submit">Next Step</button>
-          )}
+          
+            <div className={styles.checkboxContainer}>
+              <input
+                type="checkbox"
+                checked={values.privacyPolicy}
+                onClick={() => {
+                  setValues({
+                    ...values,
+                    privacyPolicy: !values.privacyPolicy,
+                  });
+                }}
+                id="policy"
+              />
+              <label htmlFor="policy">
+                I have read and understood the{" "}
+                <a href="/privacy-policy">Privacy Policy</a>
+              </label>
+            </div>
+            {isLoading ? (
+              <>
+                <button style={{ backgroundColor: "#9e9e9e" }} type="button">
+                  Next Step
+                </button>
+              </>
+            ) : (
+              <button type="submit">Next Step</button>
+            )}
           </div>
           <p>
             Already have an account? <a href="/login">Login</a>
