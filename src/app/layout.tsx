@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
 const inter = Inter({  subsets: ['latin'],
   });
 
@@ -21,6 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <ToastContainer />
+
         <LayoutCustom>{children}</LayoutCustom>
       </body>
     </html>

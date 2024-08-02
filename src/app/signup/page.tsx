@@ -6,6 +6,7 @@ import styles from "./signup.module.scss";
 export default function Signup() {
   const [firstOpen, setFirstOpen] = useState(true);
   const [inputData, setinputData] = useState(null);
+  console.log('inputDatainputDatainputDatainputData',inputData);
   return (
     <div>
       {firstOpen ? (

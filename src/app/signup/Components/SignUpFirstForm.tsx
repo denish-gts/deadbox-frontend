@@ -19,8 +19,9 @@ const BG = "/assets/images/signin1.jpg";
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
   last_name: Yup.string().required("Last Name is required."),
-  country_code: Yup.string().required("First Name is required."),
-  mobile_no: Yup.string().required("Last Name is required."),
+  country_code: Yup.string().required("Country code is required."),
+  mobile_no: Yup.number().typeError('Please enter numbur value.')
+  .positive('Must be a positive number.').required("Mobile no is required."),
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
@@ -58,7 +59,14 @@ export default function SignUpFirstForm({
     } else {
       setIsLoading(true);
     }
+
   }, [values]);
+  useEffect(() => {
+    if (inputData) {
+      setValues({ ...inputData });
+    }
+  }, [inputData])
+
 
   const [avatar, setAvatar] = useState(null);
 
@@ -206,23 +214,23 @@ export default function SignUpFirstForm({
             <div className={styles.radiogroup}>
               <span>Are you over 13?</span>
               <div className={styles.flex}>
-              <input type="radio"  onChange={() => {
-                    setValues({ ...values, over13: "yes" });
-                  }}
+                <input type="radio" onChange={() => {
+                  setValues({ ...values, over13: "yes" });
+                }}
                   id="yes"
                   name="age"
                   value="yes" />
-              <label htmlFor="yes">Yes</label>
-              <input type="radio"  id="no"
+                <label htmlFor="yes">Yes</label>
+                <input type="radio" id="no"
                   onChange={() => {
                     setValues({ ...values, over13: "no" });
                   }}
                   name="age"
-                  value="no"/>
-              <label htmlFor="no">No</label>
+                  value="no" />
+                <label htmlFor="no">No</label>
               </div>
             </div>
-          
+
             <div className={styles.checkboxContainer}>
               <input
                 type="checkbox"
@@ -237,7 +245,9 @@ export default function SignUpFirstForm({
               />
               <label htmlFor="policy">
                 I have read and understood the{" "}
-                <a href="/privacy-policy">Privacy Policy</a>
+                {/* <a href="/privacy-policy"> */}
+                Privacy Policy
+                {/* </a> */}
               </label>
             </div>
             {isLoading ? (
