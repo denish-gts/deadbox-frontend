@@ -9,7 +9,7 @@ export default function Magic() {
     const router = useRouter();
     return (
         <>
-          Magic
+           magic link send
         </>
     )
 }

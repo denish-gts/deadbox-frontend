@@ -15,14 +15,14 @@ function MagicLinkContent() {
         if (token) {
             const apiData = new FormData()
             apiData.append("magic_link_token",token)
-            axiosInstance.post(`/auth/verify-magic-link`, apiData).then((res) => {
+            axiosInstance.post(`auth/verify-magic-link`, apiData).then((res) => {
                 localStorage.setItem('userDetails', JSON.stringify(res.data.data))
                 // setToken(res.data.access_token)
-
-                // setUserInfo({ ...res.data.data, ...res.data.user_info })
+                setUserInfo({ ...res.data.data})
                 router.push(`/home`)
             }).catch((error) => {
                 if (error?.response?.data?.message) {
+                    
                     toast.error(error?.response?.data?.message)
                 }
             })

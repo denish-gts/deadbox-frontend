@@ -22,7 +22,10 @@ const validationSchema = Yup.object().shape({
     .email("Please enter a valid email address.")
     .required("Email address is required."),
 });
+
 export default function LoginForm() {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
@@ -40,6 +43,11 @@ export default function LoginForm() {
           .post(`auth/send-magic-link`, apiData)
           .then((res) => {
             if (res?.data?.data?.is_user_registered) {
+              router.push('/magic')
+              const res = {
+                data:
+                  { message: 'Magic link has been sent. Please check your inbox.' }
+              }
               successAPIResponse(res);
             } else {
               let error = {
@@ -55,7 +63,6 @@ export default function LoginForm() {
           });
       },
     });
-  const router = useRouter();
 
   return (
     <div className={styles.signupSection}>

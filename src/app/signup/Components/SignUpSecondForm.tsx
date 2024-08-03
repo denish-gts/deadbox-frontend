@@ -77,15 +77,18 @@ export default function SignUpSecondForm({
   setFirstOpen,
   inputData,
 }) {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [groupOption, setGroupOption] = useState([]);
+console.log('groupOptiongroupOption',groupOption);
 
   useEffect(() => {
     axiosInstance.post('group/list', {
       "group_type": "deadbox",
     }).then((data) => {
       const groupOption = data?.data?.data?.map((item) => {
-        return { value: item?.id, label: item?.title }
+        return { value: item?.title, id: item?.id, label: item?.title }
       })
       setGroupOption(groupOption)
 
@@ -114,6 +117,11 @@ export default function SignUpSecondForm({
         if (inputData.avatar) {
           apiData.append("f_image", inputData.avatar);
         }
+        const groupID = values?.group?.map((item) => {          
+          const slectedoption = groupOption.find((op) =>  op.label === item )          
+          return slectedoption?.id
+        })
+        
         apiData.append("first_name", inputData.first_name);
         apiData.append("last_name", inputData.last_name);
         apiData.append("email", inputData.email);
@@ -126,26 +134,29 @@ export default function SignUpSecondForm({
         apiData.append("city_title", values.city);
         apiData.append("gender", values.gender);
         apiData.append("about", values.about);
-        apiData.append("group_id",values.group.toString() as any);
+        apiData.append("group_id", groupID.toString() as any);
+
         axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
           successAPIResponse(res);
-          const body = { email:inputData.email };
-          axiosInstance
-              .post(`auth/send-magic-link`, body)
-              .then((res) => {
-                  // router.push('/magic')
-                  successAPIResponse(res)
-                  setIsLoading(false)
-              })
-              .catch((error) => {
-                  errorCheckAPIResponse(error);
-                  setIsLoading(false)
-              });
+          router.push('/magic')
+
+          // const body = { email: inputData.email };
+          // axiosInstance
+          //   .post(`auth/send-magic-link`, body)
+          //   .then((res) => {
+          //     // router.push('/magic')
+          //     successAPIResponse(res)
+          //     setIsLoading(false)
+          //   })
+          //   .catch((error) => {
+          //     errorCheckAPIResponse(error);
+          //     setIsLoading(false)
+          //   });
           setIsLoading(false);
         }).catch((error) => {
           setIsLoading(false);
-          console.log('errorerrorerrorerror',error);
-          
+          console.log('errorerrorerrorerror', error);
+
           errorCheckAPIResponse(error)
         });
       },
@@ -303,6 +314,13 @@ export default function SignUpSecondForm({
               Group Id is required.
             </p>
           ) : null}
+          <input
+            type="date"
+            placeholder="Date of Birth"
+            // onChange={handleChange}
+            name="dob"
+          // value={values.dob}
+          />
           <button style={{ marginBottom: '10px' }} onClick={() => { setFirstOpen(true) }}>Back</button>
           {isLoading ? (
             <button style={{ backgroundColor: "#9e9e9e" }} type="button">
