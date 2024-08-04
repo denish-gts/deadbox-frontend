@@ -11,6 +11,7 @@ const ProfileSection = ({
 }: {
   userData: {
     id: number;
+    sign_name:string,
     role_id: string;
     first_name: string;
     last_name: string;
@@ -53,11 +54,11 @@ const ProfileSection = ({
             className={styles.avatar}
             onClick={() => document.getElementById("avatarInput").click()}
           >
-            {/* {avatar ? ( */}
-            <img src={userData?.image} alt="Avatar" />
-            {/* ) : (
+            {avatar ? (
+              <img src={userData?.image} alt="Avatar" className={styles.profileImage}/>
+            ) : (
               <i className={styles.icon}></i>
-            )} */}
+            )}
             <div className={styles.plusIcon}>
               <Image src={People} alt="People" />
             </div>
@@ -110,7 +111,7 @@ const ProfileSection = ({
               <div>
                 <strong>Call Sign:</strong>
               </div>{" "}
-              Alexie
+              {userData?.sign_name}
             </p>
           </div>
           <div>

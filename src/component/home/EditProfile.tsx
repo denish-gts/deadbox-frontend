@@ -1,5 +1,5 @@
 'use client'
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import styles from "./home.module.scss";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
@@ -61,8 +61,7 @@ export default function EditProfile() {
 
         postFormData(`user/update-profile`, apiData)
           .then((res) => {
-            toast.success(res.message);
-
+            toast.success('User Profile update success.');
             setIsLoading(false);
             getUserData()
           })
@@ -107,18 +106,21 @@ export default function EditProfile() {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
+    
     if (file) {
       const reader = new FileReader();
       reader.onload = (upload) => {
         setAvatar(upload.target.result);
       };
+
       reader.readAsDataURL(file);
       setValues({ ...values, avatar: file });
     }
   };
+console.log('fffffffffffffffffffffffff',values);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <div className={styles.editProfileContainer}>
         <div className={styles.profileFormContainer}>
           <div className={styles.avatarSection}>
@@ -136,7 +138,7 @@ export default function EditProfile() {
               type="file"
               accept="image/*"
               style={{ display: "none" }}
-              onChange={handleAvatarChange}
+              onChange={(e) => { handleAvatarChange(e) }}
             />
           </div>
           <div className={styles.formSection}>
@@ -323,7 +325,9 @@ export default function EditProfile() {
                 Save My Profile
               </button>
             ) : (
-              <button type="submit" className={styles.saveProfileButton}>
+              <button type="submit" className={styles.saveProfileButton} onClick={() => {
+                handleSubmit()
+              }}>
                 Save My Profile
               </button>
             )}

@@ -26,6 +26,7 @@ const validationSchema = Yup.object().shape({
   country: Yup.string().required("Country Us is required."),
   city: Yup.string().required("City is required."),
   sign_name: Yup.string().required("Sign is required."),
+  address1: Yup.string().required("Address is required."),
   // dob: Yup.string().required("Dob is required."),
   group: Yup.array()
     .required("Group Id is required.")
@@ -109,6 +110,7 @@ export default function SignUpSecondForm({
         about: "",
         sign_name: "",
         dob: "",
+        address1:''
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
@@ -132,6 +134,8 @@ export default function SignUpSecondForm({
         apiData.append("privacy_policy", "1");
         apiData.append("zipcode", values.zip);
         apiData.append("country_title", values.country);
+        apiData.append("sign_name", values.sign_name);
+        apiData.append("address1", values.address1);
         apiData.append("city_title", values.city);
         apiData.append("gender", values.gender);
         apiData.append("about", values.about);
@@ -173,7 +177,7 @@ export default function SignUpSecondForm({
         <form onSubmit={handleSubmit}>
           <Autocomplete
             apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
-            name="fullAddress"
+            name="address1"
             onPlaceSelected={(place) => {
               console.log('ggggggg', place, place?.formatted_address, place?.formatted_address?.split(','));
               const option = place?.formatted_address?.split(',')
@@ -185,8 +189,7 @@ export default function SignUpSecondForm({
               }else  if (option?.length === 1) {
                 defaultOP = {city:option[0]}
               }
-              setValues({ ...values, ...defaultOP });
-              // formik.setFieldValue('fullAddress', place.formatted_address);
+              setValues({ ...values, ...defaultOP,address1:place?.formatted_address });
             }}
             //  onChange={(e) => {
             //     formik.setFieldValue('fullAddress', e.target.value);
@@ -195,6 +198,20 @@ export default function SignUpSecondForm({
             types={['address']}
             placeholder="Address"
           />
+           {
+            errors.address1 && touched.address1 ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.address1}
+              </p>
+            ) : null
+          }
           <div className={styles.inlineInputs}>
             <div>
               <div>
