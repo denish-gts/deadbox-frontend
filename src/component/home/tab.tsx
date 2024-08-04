@@ -7,6 +7,7 @@ import Group from "../group/Group";
 import EditProfile from "./EditProfile";
 import AddGroup from "../group/AddGroup";
 import Image from "next/image";
+import Myprofile from "./Myprofile";
 
 function Profile() {
   return (
@@ -80,7 +81,7 @@ function LogoutIcon() {
   );
 }
 
-const Tabs = ({ userData, setuserData }) => {
+const Tabs = () => {
   const [activeTab, setActiveTab] = useState("MY PROFILE");
   const handleTabClick = (tab: string) => {
     console.log("Tab clicked:", tab);
@@ -139,24 +140,7 @@ const Tabs = ({ userData, setuserData }) => {
       </nav>
       <div className={styles.padding}>
         {activeTab === "MY PROFILE" && (
-          <div>
-            {!isEditProfile ? (
-              <>
-                <ProfileSection
-                  isEditProfile={isEditProfile}
-                  setIsEditProfile={setIsEditProfile}
-                  userData={userData}
-                  setuserData={setuserData}
-                />
-                <SuggestedGroupsSection />
-                <PeopleYouMayKnowSection />
-              </>
-            ) : (
-              <>
-                <EditProfile setIsEditProfile={setIsEditProfile} userData={userData} setuserData={setuserData} />
-              </>
-            )}
-          </div>
+          <Myprofile/>
         )}
         {activeTab === "GROUPS" && (
           <div>

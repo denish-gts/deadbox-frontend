@@ -1,36 +1,31 @@
 "use client";
 
-import { BASE_URL } from "@/api/base";
+// import { post } from "@/api/base";
 import Footer from "@/component/Footer/Footer";
 import Header from "@/component/header/Header";
 import Tabs from "@/component/home/tab";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+// import { errorCheckAPIResponse } from "@/utils/helpers";
+// import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [userData, setuserData] = useState(null);
-  const router = useRouter();
-  const token = JSON.parse(localStorage.getItem("userDetails"));
-  if (!token?.token) {
-    router.push("/login");
-  }
-  useEffect(() => {
-    Promise.all([
-      fetch(`${BASE_URL}/user/get-profile`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token?.token}`,
-        },
-      }).then((res: any) => res.json()),
-    ]).then((data: any) => {
-      setuserData(data[0].data);
-    });
-  }, []);
+  // const [userData, setuserData] = useState({});  
+
+  // useEffect(() => {
+  //   post(`user/get-profile`)
+  //   .then((res) => {      
+  //     setuserData(res?.data?.data);
+  //       // setIsLoading(false)
+  //   })
+  //   .catch((error) => {
+  //       errorCheckAPIResponse(error);
+  //       // setIsLoading(false)
+  //   }); 
+  // }, []);
   return (
     <div>
-      <Header userData={userData} setuserData={setuserData} />
+      <Header />
       <div className="">
-        <Tabs userData={userData} setuserData={setuserData} />
+        <Tabs />
       </div>
       <Footer />
     </div>
