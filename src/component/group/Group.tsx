@@ -1,8 +1,11 @@
+'use client'
 import { useEffect, useState } from "react";
 import styles from "./group.module.scss";
 import people1 from "../../../public/assets/images/people1.png";
 import Image from "next/image";
-import { BASE_URL } from "@/api/base";
+import { BASE_URL, post } from "@/api/base";
+import { errorCheckAPIResponse } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
 
 interface Group {
   id: number;
@@ -18,39 +21,31 @@ interface Group {
   updated_by: number;
 }
 
-export default function Group({
-  isGroup,
-  setIsGroup,
-}: {
-  isGroup: boolean;
-  setIsGroup: (isGroup: boolean) => void;
-}) {
+export default function Group() {
   const [groups, setGroups] = useState<Group[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredGroups = groups.filter((group) =>
+  const filteredGroups = groups?.filter((group) =>
     group?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
 
   const handleRemoveGroup = (id: number) => {
-    setGroups(groups.filter((group) => group.id !== id));
+    setGroups(groups?.filter((group) => group.id !== id));
   };
-  const token = JSON.parse(localStorage.getItem("userDetails"));
 
   useEffect(() => {
-    fetch(`${BASE_URL}/group/list`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token?.token}`,
-      },
-    })
-      .then((res: any) => res.json())
+    post(`group/paginate-my-groups`)
       .then((data: any) => {
-        setGroups(data.data);
+        setGroups(data.data?.data.list);
+      })
+      .catch((error) => {
+        errorCheckAPIResponse(error);
+        // setIsLoading(false)
       });
   }, []);
 
@@ -71,7 +66,7 @@ export default function Group({
             />
             <button
               className={styles.addNewGroupButton}
-              onClick={() => setIsGroup(true)}
+              onClick={() => { router.push('/add-group') }}
             >
               Add New Group
             </button>

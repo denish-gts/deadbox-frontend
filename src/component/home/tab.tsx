@@ -1,13 +1,15 @@
+'use client'
 import { useState } from "react";
 import styles from "./home.module.scss";
-import ProfileSection from "./ProfileSection";
-import SuggestedGroupsSection from "./SuggestedGroupsSection";
-import PeopleYouMayKnowSection from "./PeopleYouMayKnowSection";
-import Group from "../group/Group";
-import EditProfile from "./EditProfile";
-import AddGroup from "../group/AddGroup";
-import Image from "next/image";
-import Myprofile from "./Myprofile";
+import { usePathname, useRouter } from "next/navigation";
+// import ProfileSection from "./ProfileSection";
+// import SuggestedGroupsSection from "./SuggestedGroupsSection";
+// import PeopleYouMayKnowSection from "./PeopleYouMayKnowSection";
+// import Group from "../group/Group";
+// import EditProfile from "./EditProfile";
+// import AddGroup from "../group/AddGroup";
+// import Image from "next/image";
+// import Myprofile from "./Myprofile";
 
 function Profile() {
   return (
@@ -82,11 +84,14 @@ function LogoutIcon() {
 }
 
 const Tabs = () => {
-  const [activeTab, setActiveTab] = useState("MY PROFILE");
-  const handleTabClick = (tab: string) => {
-    console.log("Tab clicked:", tab);
-    setActiveTab(tab);
-  };
+  const path = usePathname();
+  const router = useRouter();
+
+  // const [activeTab, setActiveTab] = useState("MY PROFILE");
+  // const handleTabClick = (tab: string) => {
+  //   console.log("Tab clicked:", tab);
+  //   setActiveTab(tab);
+  // };
 
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isGroup, setIsGroup] = useState(false);
@@ -95,12 +100,10 @@ const Tabs = () => {
     <div>
       <nav className={styles.tabs}>
         <div
-          className={`${styles.tab} ${
-            activeTab === "MY PROFILE" ? styles.active : ""
-          }`}
+          className={`${styles.tab} ${path === "/profile" ? styles.active : ""
+            }`}
           onClick={() => {
-            handleTabClick("MY PROFILE");
-            setIsEditProfile(false)
+            router.push('/profile')
           }}
         >
           <Profile />
@@ -108,37 +111,33 @@ const Tabs = () => {
           <span className={styles.label}>MY PROFILE</span>
         </div>
         <div
-          className={`${styles.tab} ${
-            activeTab === "GROUPS" ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick("GROUPS")}
+          className={`${styles.tab} ${path === "/group" ? styles.active : ""
+            }`}
+          onClick={() => router.push('/group')}
         >
           <GroupIcon />
 
           <span className={styles.label}>GROUPS</span>
         </div>
         <div
-          className={`${styles.tab} ${
-            activeTab === "SETTINGS" ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick("SETTINGS")}
+          className={`${styles.tab} ${path === "/settings" ? styles.active : ""
+            }`}
+          onClick={() => router.push('/settings')}
         >
           <SettingsIcon />
 
           <span className={styles.label}>SETTINGS</span>
         </div>
         <div
-          className={`${styles.tab} ${
-            activeTab === "LOGOUT" ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick("LOGOUT")}
+          className={`${styles.tab} ${path === "/logout" ? styles.active : ""
+            }`}
+          onClick={() => router.push('/logout')}
         >
           <LogoutIcon />
-
           <span className={styles.label}>LOGOUT</span>
         </div>
       </nav>
-      <div className={styles.padding}>
+      {/* <div className={styles.padding}>
         {activeTab === "MY PROFILE" && (
           <Myprofile/>
         )}
@@ -167,7 +166,7 @@ const Tabs = () => {
             <p>Some content about logout</p>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

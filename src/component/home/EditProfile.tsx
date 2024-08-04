@@ -1,9 +1,10 @@
+'use client'
 import { useFormik } from "formik";
 import styles from "./home.module.scss";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
-import { axiosInstance, BASE_URL } from "@/api/base";
-import { successAPIResponse } from "@/utils/helpers";
+import { post } from "@/api/base";
+import { errorCheckAPIResponse } from "@/utils/helpers";
 import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
@@ -16,36 +17,7 @@ const validationSchema = Yup.object().shape({
   about: Yup.string().required("About Us is required."),
 });
 
-export default function EditProfile({
-  userData,
-  setuserData,
-  setIsEditProfile,
-}: {
-  userData: {
-    id: number;
-    role_id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_code: string;
-    phone: string;
-    image: string;
-    over_13: boolean;
-    privacy_policy: boolean;
-    address_1: string;
-    address_2: string;
-    city_title: string;
-    state_title: string;
-    country_title: string;
-    zipcode: string;
-    gender: string;
-    about: string;
-    created: string;
-    callSign: string;
-  };
-  setuserData: (userData: any) => void;
-  setIsEditProfile: (isEditProfile: boolean) => void;
-}) {
+export default function EditProfile() {
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
@@ -87,34 +59,50 @@ export default function EditProfile({
         apiData.append("call_sign", values.call_sign);
         apiData.append("state", values.state);
 
-        const token = JSON.parse(localStorage.getItem("userDetails"));
-
-        fetch(`${BASE_URL}/user/update-profile`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token?.token}`,
-          },
-          body: apiData,
-        })
-          .then((res: any) => res.json())
+        post(`user/update-profile`, apiData)
           .then((res) => {
             toast.success(res.message);
+            
             setIsLoading(false);
-            fetch(`${BASE_URL}/user/get-profile`, {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token?.token}`,
-              },
-            })
-              .then((res: any) => res.json())
-              .then((data: any) => {
-                setuserData(data.data);
-                setIsEditProfile(false);
-              });
+            getUserData()
+          })
+          .catch((error) => {
+            errorCheckAPIResponse(error);
+            // setIsLoading(false)
           });
       },
     });
 
+  const getUserData = () => {
+    post(`user/get-profile`)
+      .then((res) => {
+        const resData = res?.data?.data
+        setValues({
+          email: resData?.email || "",
+          first_name: resData?.first_name || "",
+          last_name: resData?.last_name || "",
+          avatar: "",
+          country_code: resData?.phone_code || "",
+          mobile_no: resData?.phone || "",
+          gender: resData?.gender || "",
+          country: resData?.country_title || "",
+          zip: resData?.zipcode || "",
+          city: resData?.city_title || "",
+          about: resData?.about || "",
+          address: resData?.address_1 || "",
+          call_sign: resData?.callSign || "",
+          state: resData?.state_title || "",
+        })
+        // setIsLoading(false)
+      })
+      .catch((error) => {
+        errorCheckAPIResponse(error);
+        // setIsLoading(false)
+      });
+  }
+  useEffect(() => {
+    getUserData()
+  }, []);
   const [avatar, setAvatar] = useState(null);
 
   const handleAvatarChange = (e) => {
@@ -128,26 +116,6 @@ export default function EditProfile({
       setValues({ ...values, avatar: file });
     }
   };
-
-  useEffect(() => {
-    setValues({
-      email: userData.email || "",
-      first_name: userData.first_name || "",
-      last_name: userData.last_name || "",
-      avatar: "",
-      country_code: userData.phone_code || "",
-      mobile_no: userData.phone || "",
-      gender: userData.gender || "",
-      country: userData.country_title || "",
-      zip: userData.zipcode || "",
-      city: userData.city_title || "",
-      about: userData.about || "",
-      address: userData.address_1 || "",
-      call_sign: userData.callSign || "",
-      state: userData.state_title || "",
-    });
-    setAvatar(userData.image);
-  }, [userData]);
 
   return (
     <form onSubmit={handleSubmit}>

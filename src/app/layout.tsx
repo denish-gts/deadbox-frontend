@@ -23,7 +23,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
       <ToastContainer />
-
         <LayoutCustom>{children}</LayoutCustom>
       </body>
     </html>

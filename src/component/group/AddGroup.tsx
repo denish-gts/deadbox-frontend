@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from "react";
 import styles from "./addGroup.module.scss";
 import people2 from "../../../public/assets/images/people2.png";
@@ -7,8 +8,9 @@ import people3 from "../../../public/assets/images/people3.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { BASE_URL } from "@/api/base";
+import { post } from "@/api/base";
 import { toast } from "react-toastify";
+import { errorCheckAPIResponse } from "@/utils/helpers";
 interface User {
   id: number;
   name: string;
@@ -32,7 +34,7 @@ const usersData: User[] = [
   { id: 4, name: "Jacob Jones", imageUrl: "path/to/image4.jpg" },
   // Add more users as needed
 ];
-export default function AddGroup({ setIsGroup }) {
+export default function AddGroup() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
@@ -71,19 +73,14 @@ export default function AddGroup({ setIsGroup }) {
             })
           )
         );
-
-        fetch(`${BASE_URL}/group/create`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token?.token}`,
-          },
-          body: apiData,
-        })
-          .then((res: any) => res.json())
+        post(`group/create`, apiData)
           .then((res) => {
+            getUserList()
             toast.success(res.message);
-            setIsGroup(false);
             setIsLoading(false);
+          }).catch((error) => {
+            errorCheckAPIResponse(error);
+            // setIsLoading(false)
           });
       },
     });
@@ -102,19 +99,17 @@ export default function AddGroup({ setIsGroup }) {
   };
 
   const [userList, setuserList] = useState([]);
-  const token = JSON.parse(localStorage.getItem("userDetails"));
-  useEffect(() => {
-    fetch(`${BASE_URL}/user/list`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token?.token}`,
-      },
-    })
-      .then((res: any) => res.json())
+  const getUserList = async () => {
+    await post(`user/list`)
       .then((data: any) => {
-        console.log(data);
         setuserList(data.data);
+      }).catch((error) => {
+        errorCheckAPIResponse(error);
+        // setIsLoading(false)
       });
+  }
+  useEffect(() => {
+    getUserList()
   }, []);
 
   const handleInvite = (user: User) => {

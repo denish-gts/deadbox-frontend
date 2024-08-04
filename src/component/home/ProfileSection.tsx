@@ -1,19 +1,14 @@
 import styles from "./home.module.scss";
 import People from "../../../public/assets/images/pencil.png";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import EditProfile from "./EditProfile";
+// import EditProfile from "./EditProfile";
 import moment from "moment";
 
 const ProfileSection = ({
-  isEditProfile,
-  setIsEditProfile,
-  userData,
-  setuserData,
+  userData
 }: {
-  isEditProfile: boolean;
-  setIsEditProfile: (isEditProfile: boolean) => void;
   userData: {
     id: number;
     role_id: string;
@@ -35,9 +30,9 @@ const ProfileSection = ({
     about: string;
     created: string;
   };
-  setuserData: (userData: any) => void;
 }) => {
   const [avatar, setAvatar] = useState(null);
+  const router = useRouter();
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -87,7 +82,9 @@ const ProfileSection = ({
       <div className={styles.profileDetails}>
         <div className={styles.alignText}>
           <h3>Profile</h3>
-          <a className={styles.readMore} onClick={() => setIsEditProfile(true)}>
+          <a className={styles.readMore} onClick={() => {
+            router.push('/edit-profile')
+          }}>
             Edit Profile
           </a>
         </div>
@@ -164,7 +161,9 @@ const ProfileSection = ({
           </div>
           {userData?.about}
         </p>
-        <a className={styles.readMore} onClick={() => setIsEditProfile(true)}>
+        <a className={styles.readMore}
+        // onClick={() => setIsEditProfile(true)}
+        >
           READ MORE
         </a>
       </div>
