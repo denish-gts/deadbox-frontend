@@ -105,10 +105,11 @@ export const authHeader = (header = defaultHeaders) => {
     "Content-Security-Policy": "default-src 'self',frame-src 'self'",
   };
   if (token) {
-    header = { ...headers, "Authorization": `Bearer ${token}` }
+    headers["Authorization"] = `Bearer ${token}`;
   }
   if (header.contentType) {
-    headers = { ...headers, "Content-Type": header.contentType }
+    headers["Content-Type"] = header.contentType;
   }
   return headers;
 };
+

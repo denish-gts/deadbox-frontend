@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import EditProfile from "./EditProfile";
 import moment from "moment";
-import { axiosInstance, BASE_URL } from "@/api/base";
+
 const ProfileSection = ({
   isEditProfile,
   setIsEditProfile,
@@ -38,8 +38,6 @@ const ProfileSection = ({
   setuserData: (userData: any) => void;
 }) => {
   const [avatar, setAvatar] = useState(null);
-  const router = useRouter();
-  const token = JSON.parse(localStorage.getItem("userDetails"));
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -61,7 +59,7 @@ const ProfileSection = ({
             onClick={() => document.getElementById("avatarInput").click()}
           >
             {/* {avatar ? ( */}
-              <img src={userData?.image} alt="Avatar" />
+            <img src={userData?.image} alt="Avatar" />
             {/* ) : (
               <i className={styles.icon}></i>
             )} */}
@@ -87,7 +85,12 @@ const ProfileSection = ({
         </div>
       </div>
       <div className={styles.profileDetails}>
-        <h3>Profile</h3>
+        <div className={styles.alignText}>
+          <h3>Profile</h3>
+          <a className={styles.readMore} onClick={() => setIsEditProfile(true)}>
+            Edit Profile
+          </a>
+        </div>
         <div className={styles.profileDetailsGrid}>
           <div>
             <p>

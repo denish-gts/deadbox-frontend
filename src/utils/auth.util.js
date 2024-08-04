@@ -23,7 +23,7 @@ export const getCookie = (name) => {
   }
   return null;
 }
-export const getToken = () => JSON.parse(localStorage.getItem('userDetails')).token;
+export const getToken = () => getCookie(STORAGEKEY.token);
 
 
 export const getUserInfo = () => JSON.parse(getCookie(STORAGEKEY.userData));
@@ -34,8 +34,7 @@ export const setUserInfo = (data) => setCookie(STORAGEKEY.userData, JSON.stringi
 
 export const authenticate = () => {
   const token = getToken();
-  // return !!token;
-  return true;
+  return !!token;
 };
 
 export const unProtectedRoute = ['/', '/login', '/signup', '/magic-link']

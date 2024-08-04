@@ -19,7 +19,6 @@ export default function Signup() {
         <SignUpSecondForm
           setFirstOpen={setFirstOpen}
           inputData={inputData}
-          setinputData={setinputData}
         />
       )}
     </div>
