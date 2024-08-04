@@ -3,7 +3,7 @@ import styles from "./sidebar.module.scss";
 import Image from "next/image";
 import classNames from "classnames";
 import { signOut } from "next-auth/react";
-import { setToken } from "@/utils/auth.util";
+import { setToken, setUserInfo } from "@/utils/auth.util";
 
 const Logo = "/assets/logo/logo.svg";
 const DashboradIcon = "/assets/icons/dashbord-icon.svg";
@@ -17,9 +17,9 @@ export default function Sidebar({ isOpen, onClose }) {
   const path = usePathname().split("/")[1];
 
   const handleClickLogout = () => {
-    setToken("")
-    signOut({ callbackUrl: "/login" })
-
+    setUserInfo({})
+    setToken('')
+    router.push('/login')
   }
   return (
     // <div className={classNames(styles.sidebarSection, toggleSidebar ? styles.smallSidebar : "")}>

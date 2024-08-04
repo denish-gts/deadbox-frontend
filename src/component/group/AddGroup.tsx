@@ -8,7 +8,7 @@ import people3 from "../../../public/assets/images/people3.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import { post } from "@/api/base";
+import { post, postFormData } from "@/api/base";
 import { toast } from "react-toastify";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 interface User {
@@ -73,9 +73,9 @@ export default function AddGroup() {
             })
           )
         );
-        post(`group/create`, apiData)
+        postFormData(`group/create`, apiData)
           .then((res) => {
-            getUserList()
+            // getUserList()
             toast.success(res.message);
             setIsLoading(false);
           }).catch((error) => {
@@ -101,11 +101,10 @@ export default function AddGroup() {
   const [userList, setuserList] = useState([]);
   const getUserList = async () => {
     await post(`user/list`)
-      .then((data: any) => {
-        setuserList(data.data);
+      .then((data: any) => {        
+        setuserList(data.data?.data);
       }).catch((error) => {
         errorCheckAPIResponse(error);
-        // setIsLoading(false)
       });
   }
   useEffect(() => {

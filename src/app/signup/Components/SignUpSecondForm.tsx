@@ -17,6 +17,7 @@ const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin2.jpg";
+import Autocomplete from 'react-google-autocomplete';
 
 const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Zipcode is required."),
@@ -81,7 +82,7 @@ export default function SignUpSecondForm({
 
   const [isLoading, setIsLoading] = useState(false);
   const [groupOption, setGroupOption] = useState([]);
-console.log('groupOptiongroupOption',groupOption);
+  console.log('groupOptiongroupOption', groupOption);
 
   useEffect(() => {
     axiosInstance.post('group/list', {
@@ -117,11 +118,11 @@ console.log('groupOptiongroupOption',groupOption);
         if (inputData.avatar) {
           apiData.append("f_image", inputData.avatar);
         }
-        const groupID = values?.group?.map((item) => {          
-          const slectedoption = groupOption.find((op) =>  op.label === item )          
+        const groupID = values?.group?.map((item) => {
+          const slectedoption = groupOption.find((op) => op.label === item)
           return slectedoption?.id
         })
-        
+
         apiData.append("first_name", inputData.first_name);
         apiData.append("last_name", inputData.last_name);
         apiData.append("email", inputData.email);
@@ -170,42 +171,30 @@ console.log('groupOptiongroupOption',groupOption);
         </div>
         <h2>Signup</h2>
         <form onSubmit={handleSubmit}>
-          <select onChange={handleChange} name="gender" value={values.gender}>
-            <option value="">Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-          {errors.gender && touched.gender ? (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.gender}
-            </p>
-          ) : null}
-          <select onChange={handleChange} name="country" value={values.country}>
-            <option value="">Country</option>
-            <option value="usa">USA</option>
-            <option value="uk">UK</option>
-            <option value="canada">Canada</option>
-          </select>
-          {errors.country && touched.country ? (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.country}
-            </p>
-          ) : null}
+          <Autocomplete
+            apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
+            name="fullAddress"
+            onPlaceSelected={(place) => {
+              console.log('ggggggg', place, place?.formatted_address, place?.formatted_address?.split(','));
+              const option = place?.formatted_address?.split(',')
+              let defaultOP = {}
+              if (option?.length === 3) {
+                defaultOP = {city:option[0],country:option[2],}
+              }else if (option?.length === 2) {
+                defaultOP = {city:option[0],}
+              }else  if (option?.length === 1) {
+                defaultOP = {city:option[0]}
+              }
+              setValues({ ...values, ...defaultOP });
+              // formik.setFieldValue('fullAddress', place.formatted_address);
+            }}
+            //  onChange={(e) => {
+            //     formik.setFieldValue('fullAddress', e.target.value);
+            //  }}
+            //  value={formik.values.fullAddress}
+            types={['address']}
+            placeholder="Address"
+          />
           <div className={styles.inlineInputs}>
             <div>
               <div>
@@ -258,6 +247,26 @@ console.log('groupOptiongroupOption',groupOption);
               </div>
             </div>
           </div>
+          <select onChange={handleChange} name="country" value={values.country}>
+            <option value="">Country</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+            <option value="canada">Canada</option>
+          </select>
+          {
+            errors.country && touched.country ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.country}
+              </p>
+            ) : null
+          }
           <input
             type="text"
             placeholder="Call Sign/Nickname"
@@ -265,36 +274,40 @@ console.log('groupOptiongroupOption',groupOption);
             name="sign_name"
             value={values.sign_name}
           />
-          {errors.sign_name && touched.sign_name ? (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.sign_name}
-            </p>
-          ) : null}
+          {
+            errors.sign_name && touched.sign_name ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.sign_name}
+              </p>
+            ) : null
+          }
           <textarea
             placeholder="About me"
             onChange={handleChange}
             name="about"
             value={values.about}
           ></textarea>
-          {errors.about && touched.about ? (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              {errors.about}
-            </p>
-          ) : null}
+          {
+            errors.about && touched.about ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.about}
+              </p>
+            ) : null
+          }
           <CustomMultiSelect
             options={groupOption}
             selectedOptions={values.group}
@@ -302,18 +315,20 @@ console.log('groupOptiongroupOption',groupOption);
               setValues({ ...values, group: option });
             }}
           />
-          {errors.group && touched.group ? (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                marginTop: "-10px",
-                marginBottom: "16px",
-              }}
-            >
-              Group Id is required.
-            </p>
-          ) : null}
+          {
+            errors.group && touched.group ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                Group Id is required.
+              </p>
+            ) : null
+          }
           <input
             type="date"
             placeholder="Date of Birth"
@@ -321,14 +336,36 @@ console.log('groupOptiongroupOption',groupOption);
             name="dob"
           // value={values.dob}
           />
+          <select onChange={handleChange} name="gender" value={values.gender}>
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          {
+            errors.gender && touched.gender ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.gender}
+              </p>
+            ) : null
+          }
           <button style={{ marginBottom: '10px' }} onClick={() => { setFirstOpen(true) }}>Back</button>
-          {isLoading ? (
-            <button style={{ backgroundColor: "#9e9e9e" }} type="button">
-              Submit
-            </button>
-          ) : (
-            <button type="submit">Submit</button>
-          )}
+          {
+            isLoading ? (
+              <button style={{ backgroundColor: "#9e9e9e" }} type="button">
+                Submit
+              </button>
+            ) : (
+              <button type="submit">Submit</button>
+            )
+          }
         </form>
       </div>
       <div className={styles.imageContainer}>

@@ -1,15 +1,8 @@
 'use client'
-import { useState } from "react";
 import styles from "./home.module.scss";
 import { usePathname, useRouter } from "next/navigation";
-// import ProfileSection from "./ProfileSection";
-// import SuggestedGroupsSection from "./SuggestedGroupsSection";
-// import PeopleYouMayKnowSection from "./PeopleYouMayKnowSection";
-// import Group from "../group/Group";
-// import EditProfile from "./EditProfile";
-// import AddGroup from "../group/AddGroup";
-// import Image from "next/image";
-// import Myprofile from "./Myprofile";
+import { setToken, setUserInfo } from "@/utils/auth.util";
+
 
 function Profile() {
   return (
@@ -87,14 +80,11 @@ const Tabs = () => {
   const path = usePathname();
   const router = useRouter();
 
-  // const [activeTab, setActiveTab] = useState("MY PROFILE");
-  // const handleTabClick = (tab: string) => {
-  //   console.log("Tab clicked:", tab);
-  //   setActiveTab(tab);
-  // };
-
-  const [isEditProfile, setIsEditProfile] = useState(false);
-  const [isGroup, setIsGroup] = useState(false);
+  const handleClickLogout = () => {
+    setUserInfo({})
+    setToken('')
+    router.push('/login')
+  }
 
   return (
     <div>
@@ -131,42 +121,12 @@ const Tabs = () => {
         <div
           className={`${styles.tab} ${path === "/logout" ? styles.active : ""
             }`}
-          onClick={() => router.push('/logout')}
+          onClick={() => handleClickLogout()}
         >
           <LogoutIcon />
           <span className={styles.label}>LOGOUT</span>
         </div>
       </nav>
-      {/* <div className={styles.padding}>
-        {activeTab === "MY PROFILE" && (
-          <Myprofile/>
-        )}
-        {activeTab === "GROUPS" && (
-          <div>
-            {!isGroup ? (
-              <>
-                <Group isGroup={isGroup} setIsGroup={setIsGroup} />
-              </>
-            ) : (
-              <>
-                <AddGroup setIsGroup={setIsGroup}/>
-              </>
-            )}
-          </div>
-        )}
-        {activeTab === "SETTINGS" && (
-          <div>
-            <h1>Settings</h1>
-            <p>Some content about settings</p>
-          </div>
-        )}
-        {activeTab === "LOGOUT" && (
-          <div>
-            <h1>Logout</h1>
-            <p>Some content about logout</p>
-          </div>
-        )}
-      </div> */}
     </div>
   );
 };

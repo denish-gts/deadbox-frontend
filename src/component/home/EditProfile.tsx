@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import styles from "./home.module.scss";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
-import { post } from "@/api/base";
+import { post, postFormData } from "@/api/base";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 import { toast } from "react-toastify";
 
@@ -59,16 +59,16 @@ export default function EditProfile() {
         apiData.append("call_sign", values.call_sign);
         apiData.append("state", values.state);
 
-        post(`user/update-profile`, apiData)
+        postFormData(`user/update-profile`, apiData)
           .then((res) => {
             toast.success(res.message);
-            
+
             setIsLoading(false);
             getUserData()
           })
           .catch((error) => {
             errorCheckAPIResponse(error);
-            // setIsLoading(false)
+            setIsLoading(false)
           });
       },
     });
