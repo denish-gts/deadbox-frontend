@@ -16,13 +16,13 @@ export const LayoutCustom = ({ children }) => {
   const protectedRoute = protectedRoutes.includes(path);
 
   useEffect(() => {
-    if (authenticate()) {
-      if ([...unProtectedRoute].includes(path)) {
-        router.push(`/profile`)
-      }
-    } else if (!authenticate() && !unProtectedRoute.includes(path)) {
-      router.push('/login')
-    }
+    // if (authenticate()) {
+    //   if ([...unProtectedRoute].includes(path)) {
+    //     router.push(`/profile`)
+    //   }
+    // } else if (!authenticate() && !unProtectedRoute.includes(path)) {
+    //   router.push('/login')
+    // }
   }, [])
   return (
     <>

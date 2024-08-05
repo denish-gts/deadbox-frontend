@@ -8,7 +8,7 @@
     grid-template-columns: 1fr;
   }
   height: 100vh;
-  background-color: #24232c;
+  background-color: #000;
   .radiogroup {
     display: flex;
     align-items: center;
@@ -47,7 +47,7 @@
     border-right: 1px solid #707070;
   }
   .formContainer {
-    background: #24232c;
+    background: #000;
     padding: 2rem 100px;
     display: flex;
     flex-direction: column;

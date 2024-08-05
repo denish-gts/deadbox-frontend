@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
 import styles from "./addGroup.module.scss";
 import people2 from "../../../public/assets/images/people2.png";
@@ -37,6 +37,7 @@ const usersData: User[] = [
 export default function AddGroup() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showModel, setShowModel] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
       initialValues: {
@@ -78,7 +79,8 @@ export default function AddGroup() {
             // getUserList()
             toast.success(res.message);
             setIsLoading(false);
-          }).catch((error) => {
+          })
+          .catch((error) => {
             errorCheckAPIResponse(error);
             // setIsLoading(false)
           });
@@ -101,14 +103,15 @@ export default function AddGroup() {
   const [userList, setuserList] = useState([]);
   const getUserList = async () => {
     await post(`user/list`)
-      .then((data: any) => {        
+      .then((data: any) => {
         setuserList(data.data?.data);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         errorCheckAPIResponse(error);
       });
-  }
+  };
   useEffect(() => {
-    getUserList()
+    getUserList();
   }, []);
 
   const handleInvite = (user: User) => {
@@ -312,12 +315,13 @@ export default function AddGroup() {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         onClick={() => {
-                          setValues({
-                            ...values,
-                            invitees: values.invitees.filter(
-                              (inv) => inv.id !== invitee.id
-                            ),
-                          });
+                          setShowModel(true);
+                          // setValues({
+                          //   ...values,
+                          //   invitees: values.invitees.filter(
+                          //     (inv) => inv.id !== invitee.id
+                          //   ),
+                          // });
                         }}
                       >
                         <g clip-path="url(#clip0_101_535)">
@@ -361,6 +365,32 @@ export default function AddGroup() {
           </div>
         </div>
       </div>
+      {showModel && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <button
+              className={styles.closeButton}
+              onClick={() => setShowModel(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#707070"
+                width={20}
+                height={20}
+                className="bi bi-x-lg"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+              </svg>
+            </button>
+            <h1>Are you sure you want to remove this user?</h1>
+            <div className={styles.buttonGroup}>
+              <button>Yes</button>
+              <button onClick={() => setShowModel(false)}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
