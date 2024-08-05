@@ -52,24 +52,24 @@ const ProfileSection = ({
         <div className={styles.avatarContainer}>
           <div
             className={styles.avatar}
-            onClick={() => document.getElementById("avatarInput").click()}
+            // onClick={() => document.getElementById("avatarInput").click()}
           >
-            {avatar ? (
+            {/* {avatar ? ( */}
               <img src={userData?.image} alt="Avatar" className={styles.profileImage}/>
-            ) : (
+            {/* ) : (
               <i className={styles.icon}></i>
-            )}
-            <div className={styles.plusIcon}>
+            )} */}
+            {/* <div className={styles.plusIcon}>
               <Image src={People} alt="People" />
-            </div>
+            </div> */}
           </div>
-          <input
+          {/* <input
             id="avatarInput"
             type="file"
             accept="image/*"
             style={{ display: "none" }}
             onChange={handleAvatarChange}
-          />
+          /> */}
         </div>
 
         <div className={styles.profileInfo}>

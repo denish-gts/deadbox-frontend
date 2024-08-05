@@ -188,8 +188,8 @@ export default function AddGroup() {
                   value={values.groupType}
                 >
                   <option value="">Select</option>
-                  <option value="deadbox">Deadbox</option>
-                  <option value="saas">Saas</option>
+                  {/* <option value="deadbox">Deadbox</option>
+                  <option value="saas">Saas</option> */}
                   <option value="general_private">General Private</option>
                   <option value="general_public">General Public</option>
                 </select>

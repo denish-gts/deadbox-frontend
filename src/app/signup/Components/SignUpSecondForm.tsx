@@ -27,6 +27,7 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().required("City is required."),
   sign_name: Yup.string().required("Sign is required."),
   address1: Yup.string().required("Address is required."),
+  state_title: Yup.string().required("State is required."),
   // dob: Yup.string().required("Dob is required."),
   group: Yup.array()
     .required("Group Id is required.")
@@ -109,8 +110,9 @@ export default function SignUpSecondForm({
         group: [],
         about: "",
         sign_name: "",
+        state_title: '',
         dob: "",
-        address1:''
+        address1: ''
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
@@ -135,6 +137,7 @@ export default function SignUpSecondForm({
         apiData.append("zipcode", values.zip);
         apiData.append("country_title", values.country);
         apiData.append("sign_name", values.sign_name);
+        apiData.append("state_title", values.state_title);
         apiData.append("address1", values.address1);
         apiData.append("city_title", values.city);
         apiData.append("gender", values.gender);
@@ -144,24 +147,9 @@ export default function SignUpSecondForm({
         axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
           successAPIResponse(res);
           router.push('/magic')
-
-          // const body = { email: inputData.email };
-          // axiosInstance
-          //   .post(`auth/send-magic-link`, body)
-          //   .then((res) => {
-          //     // router.push('/magic')
-          //     successAPIResponse(res)
-          //     setIsLoading(false)
-          //   })
-          //   .catch((error) => {
-          //     errorCheckAPIResponse(error);
-          //     setIsLoading(false)
-          //   });
           setIsLoading(false);
         }).catch((error) => {
           setIsLoading(false);
-          console.log('errorerrorerrorerror', error);
-
           errorCheckAPIResponse(error)
         });
       },
@@ -183,22 +171,22 @@ export default function SignUpSecondForm({
               const option = place?.formatted_address?.split(',')
               let defaultOP = {}
               if (option?.length === 3) {
-                defaultOP = {city:option[0],country:option[2],}
-              }else if (option?.length === 2) {
-                defaultOP = {city:option[0],}
-              }else  if (option?.length === 1) {
-                defaultOP = {city:option[0]}
+                defaultOP = { city: option[0].trim(), state_title: option[1].trim(), country: option[2].trim(), }
+              } else if (option?.length === 2) {
+                defaultOP = { city: option[0].trim(), state_title: option[1].trim() }
+              } else if (option?.length === 1) {
+                defaultOP = { city: option[0].trim() }
               }
-              setValues({ ...values, ...defaultOP,address1:place?.formatted_address });
+              setValues({ ...values, ...defaultOP, address1: place?.formatted_address });
             }}
             //  onChange={(e) => {
             //     formik.setFieldValue('fullAddress', e.target.value);
             //  }}
             //  value={formik.values.fullAddress}
-            types={['address']}
+            // types={['address']}
             placeholder="Address"
           />
-           {
+          {
             errors.address1 && touched.address1 ? (
               <p
                 style={{
@@ -264,11 +252,32 @@ export default function SignUpSecondForm({
               </div>
             </div>
           </div>
+          <input
+            type="text"
+            placeholder="State"
+            onChange={handleChange}
+            name="state_title"
+            value={values.state_title}
+          />
+          {
+            errors.state_title && touched.state_title ? (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {errors.state_title}
+              </p>
+            ) : null
+          }
           <select onChange={handleChange} name="country" value={values.country}>
             <option value="">Country</option>
-            <option value="usa">USA</option>
-            <option value="uk">UK</option>
-            <option value="canada">Canada</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+            <option value="Canada">Canada</option>
           </select>
           {
             errors.country && touched.country ? (

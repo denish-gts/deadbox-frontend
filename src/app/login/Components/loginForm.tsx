@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from "react";
 import styles from "./loginForm.module.scss";
 import Link from "next/link";
@@ -67,7 +68,7 @@ export default function LoginForm() {
   return (
     <div className={styles.signupSection}>
       <div className={styles.formContainer}>
-        <h2>Signin</h2>
+        <h2>SignIn</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -95,6 +96,9 @@ export default function LoginForm() {
           ) : (
             <button type="submit">Send Magic Link</button>
           )}
+          <p style={{ marginTop: '10px' }}>
+            Create an account? <a href="/signup">Signup</a>
+          </p>
         </form>
       </div>
       <div className={styles.imageContainer}>

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { post, postFormData } from "@/api/base";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 import { toast } from "react-toastify";
+import Autocomplete from 'react-google-autocomplete';
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
@@ -23,6 +24,7 @@ export default function EditProfile() {
     useFormik({
       initialValues: {
         email: "",
+        address1: '',
         first_name: "",
         last_name: "",
         avatar: "",
@@ -48,6 +50,7 @@ export default function EditProfile() {
         apiData.append("first_name", values.first_name);
         apiData.append("last_name", values.last_name);
         apiData.append("email", values.email);
+        apiData.append("address1", values.address1);
         apiData.append("phone_code", values.country_code);
         apiData.append("phone", values.mobile_no);
         apiData.append("zipcode", values.zip);
@@ -61,6 +64,7 @@ export default function EditProfile() {
 
         postFormData(`user/update-profile`, apiData)
           .then((res) => {
+            setAvatar(null)
             toast.success('User Profile update success.');
             setIsLoading(false);
             getUserData()
@@ -80,7 +84,7 @@ export default function EditProfile() {
           email: resData?.email || "",
           first_name: resData?.first_name || "",
           last_name: resData?.last_name || "",
-          avatar: "",
+          avatar: resData.image || '',
           country_code: resData?.phone_code || "",
           mobile_no: resData?.phone || "",
           gender: resData?.gender || "",
@@ -91,6 +95,7 @@ export default function EditProfile() {
           address: resData?.address_1 || "",
           call_sign: resData?.callSign || "",
           state: resData?.state_title || "",
+          address1: res?.address1 || ''
         })
         // setIsLoading(false)
       })
@@ -106,7 +111,9 @@ export default function EditProfile() {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    
+    console.log('filefilefilefilefilefile', file);
+
+
     if (file) {
       const reader = new FileReader();
       reader.onload = (upload) => {
@@ -117,21 +124,27 @@ export default function EditProfile() {
       setValues({ ...values, avatar: file });
     }
   };
-console.log('fffffffffffffffffffffffff',values);
+  console.log('fffffffffffffffffffffffff', avatar, values);
 
   return (
     <form>
       <div className={styles.editProfileContainer}>
         <div className={styles.profileFormContainer}>
-          <div className={styles.avatarSection}>
+          <div className={styles.avatarSection}
+            onClick={() => document.getElementById("avatarInput").click()}
+          >
             <div className={styles.avatar}>
-              <img src={avatar} alt="Avatar" className={styles.avatarImage} />
-              <button
+              {avatar ?
+                <img src={avatar} alt="Avatar" className={styles.avatarImage} />
+                :
+                <img src={values.avatar} alt="Avatar" className={styles.avatarImage} />
+              }
+              {/* <button
                 className={styles.deleteAvatarButton}
-                onClick={() => document.getElementById("avatarInput").click()}
+              // onClick={() => document.getElementById("avatarInput").click()}
               >
                 🗑️
-              </button>
+              </button> */}
             </div>
             <input
               id="avatarInput"
@@ -240,12 +253,47 @@ console.log('fffffffffffffffffffffffff',values);
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="address">Address</label>
-              <input
+              {/* <input
                 type="text"
                 name="address"
                 onChange={handleChange}
                 value={values.address}
+              /> */}
+              <Autocomplete
+                apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
+                name="address1"
+                onPlaceSelected={(place) => {
+                  console.log('ggggggg', place, place?.formatted_address, place?.formatted_address?.split(','));
+                  const option = place?.formatted_address?.split(',')
+                  let defaultOP = {}
+                  if (option?.length === 3) {
+                    defaultOP = { city: option[0].trim(), state: option[1].trim(), country: option[2].trim(), }
+                  } else if (option?.length === 2) {
+                    defaultOP = { city: option[0].trim(), state: option[1].trim(), }
+                  } else if (option?.length === 1) {
+                    defaultOP = { city: option[0].trim() }
+                  }
+                  setValues({ ...values, ...defaultOP, address1: place?.formatted_address });
+                }}
+                //  onChange={(e) => {
+                //     formik.setFieldValue('fullAddress', e.target.value);
+                //  }}
+                //  value={formik.values.fullAddress}
+                // types={['address']}
+                placeholder="Address"
               />
+              {
+                errors.address1 && touched.address1 ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.address1}
+                  </p>
+                ) : null
+              }
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
