@@ -7,21 +7,28 @@
   @include breakpoint("md-max") {
     grid-template-columns: 1fr;
   }
-  height: 100vh;
+  // height: 100vh;
   background-color: #000;
   .radiogroup {
     display: flex;
     align-items: center;
-    background-color: #23232c;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     overflow: hidden;
     justify-content: space-between;
-    padding: 10px;
     margin-bottom: 12px;
+    padding: 0 0 0 20px;
+    margin-bottom: 20px;
+    border: 1px solid #999999 !important;
+    width: 100%;
+    height: 56px;
+    border-radius: 5px;
+    font-size: 18px;
+    line-height: 24px;
+    color: #fff !important;
+    background-color: #000 !important;
   }
   .flex {
     display: flex;
+    height: 100%;
   }
 
   .radiogroup label {
@@ -32,7 +39,9 @@
     cursor: pointer;
     color: #fff;
     background-color: transparent;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
   }
 
   .radiogroup input[type="radio"] {
@@ -40,15 +49,19 @@
   }
 
   .radiogroup input[type="radio"]:checked + label {
-    background-color: #4a4a4a;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
   .radiogroup label:not(:last-child) {
-    border-right: 1px solid #707070;
+    border-right: 1px solid #999999;
+    border-left: 1px solid #999999;
+    border-radius: 5px 0 0 5px;
   }
   .formContainer {
     background: #000;
-    padding: 2rem 100px;
+    padding: 2rem 0px;
+    max-width: 478px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,14 +75,18 @@
     }
 
     .logo {
+      width: 244px;
+      height: 52px;
       img {
-        height: 70px;
+        height: 100%;
         width: 100%;
+        object-fit: contain;
       }
     }
 
     h2 {
       margin-bottom: 1rem;
+      padding: 60px 0 0 0;
     }
 
     .avatarContainer {
@@ -78,6 +95,7 @@
       align-items: center;
       margin-bottom: 1rem;
 
+      margin-top: 20px;
       .avatar {
         position: relative;
         background: #444;
@@ -126,29 +144,57 @@
 
       input,
       select {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-        border: none;
+        padding: 0 20px;
+        margin-bottom: 20px;
+        border: 1px solid #999999 !important;
+        width: 100%;
+        height: 56px;
         border-radius: 5px;
+        font-size: 18px;
+        line-height: 24px;
+        color: #fff !important;
+        background-color: #000 !important;
+      }
+      input,
+      select::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
       }
 
+      input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        text-indent: 999px;
+      }
       button {
-        padding: 0.75rem;
+        padding: 0 0.75rem;
         background: #e74c3c;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        height: 56px;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: 2%;
       }
     }
 
     p {
       margin-top: 1rem;
+      font-size: 18px;
+      line-height: 21px;
 
       a {
         color: #e74c3c;
         text-decoration: none;
       }
+    }
+
+    .labelAlignment {
+      font-size: 14px;
+      line-height: 21px;
+      padding: 0 0 0 8px;
     }
   }
 
@@ -156,6 +202,7 @@
     overflow: hidden;
     @include breakpoint("sm-max") {
       overflow: unset;
+      display: none;
     }
 
     img {
@@ -166,6 +213,16 @@
   }
 }
 
+.twoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+  @include breakpoint("sm-max") {
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+}
 .multi-select {
   .react-select__control {
     display: flex;
@@ -240,7 +297,7 @@
     }
   }
 }
-.rmsc .options{
+.rmsc .options {
   background-color: #2e2e2e;
   border: 1px solid #707070;
   border-radius: 8px;

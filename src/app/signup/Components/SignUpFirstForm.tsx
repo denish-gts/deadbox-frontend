@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
   last_name: Yup.string().required("Last Name is required."),
   country_code: Yup.string().required("Country code is required."),
   mobile_no: Yup.number().typeError('Please enter numbur value.')
-  .positive('Must be a positive number.').required("Mobile no is required."),
+    .positive('Must be a positive number.').required("Mobile no is required."),
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
@@ -114,44 +114,52 @@ export default function SignUpFirstForm({
         </div> */}
 
           <div className={styles.form}>
-            <input
-              type="text"
-              placeholder="First Name"
-              name="first_name"
-              onChange={handleChange}
-              value={values.first_name}
-            />
-            {errors.first_name && touched.first_name ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.first_name}
-              </p>
-            ) : null}
-            <input
-              type="text"
-              placeholder="Last Name"
-              name="last_name"
-              onChange={handleChange}
-              value={values.last_name}
-            />
-            {errors.last_name && touched.last_name ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.last_name}
-              </p>
-            ) : null}
+            <div className={styles.twoGrid}>
+              <div>
+
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  name="first_name"
+                  onChange={handleChange}
+                  value={values.first_name}
+                />
+                {errors.first_name && touched.first_name ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {errors.first_name}
+                  </p>
+                ) : null}
+              </div>
+              <div>
+
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  name="last_name"
+                  onChange={handleChange}
+                  value={values.last_name}
+                />
+                {errors.last_name && touched.last_name ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {errors.last_name}
+                  </p>
+                ) : null}
+              </div>
+            </div>
             <input
               type="email"
               placeholder="Email Address"
@@ -243,7 +251,7 @@ export default function SignUpFirstForm({
                 }}
                 id="policy"
               />
-              <label htmlFor="policy">
+              <label htmlFor="policy" className={styles.labelAlignment}>
                 I have read and understood the{" "}
                 {/* <a href="/privacy-policy"> */}
                 Privacy Policy

@@ -29,7 +29,7 @@ export const LayoutCustom = ({ children }) => {
       {protectedRoute && (
         <div>
           <Header />
-          <div >
+          <div className="main-bg">
             <Tabs />
             {children}
           </div>

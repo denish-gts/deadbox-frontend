@@ -87,7 +87,7 @@ const Tabs = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <nav className={styles.tabs}>
         <div
           className={`${styles.tab} ${path === "/profile" ? styles.active : ""

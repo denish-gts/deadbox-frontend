@@ -108,263 +108,266 @@ const PeopleYouMayKnowSection = () => {
     ],
   };
   return (
-    <div className={styles.peopleYouMayKnowSection}>
-      <div className={styles.header}>
-        <h3>People you may know</h3>
-        <a href="#" className={styles.viewAll}>
-          VIEW ALL
-        </a>
+    <div className="container">
+
+      <div className={styles.peopleYouMayKnowSection}>
+        <div className={styles.header}>
+          <h3>People you may know</h3>
+          <a href="#" className={styles.viewAll}>
+            VIEW ALL
+          </a>
+        </div>
+        <p>Explore peoples you might be interested in.</p>
+        <div className={styles.sliderBox}>
+          <Slider {...settings}>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.main}>
+                <div className={styles.itemsBox}>
+                  <div className={styles.centerImage}>
+                    <Image
+                      unoptimized
+                      height={0}
+                      width={0}
+                      src={people1}
+                      alt="people1"
+                    />
+                  </div>
+                  <div className={styles.spacer}>
+                    <p>Jane Cooper</p>
+                    <span>Unitad Status</span>
+                    <div className={styles.btnCenter}>
+                      <button>Add To Group</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Slider>
+          <div>
+
+          </div>
+        </div>
       </div>
-      <p>Explore peoples you might be interested in.</p>
-     <div className={styles.sliderBox}>
-     <Slider {...settings}>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className={styles.main}>
-            <div className={styles.itemsBox}>
-              <div className={styles.centerImage}>
-                <Image
-                  unoptimized
-                  height={0}
-                  width={0}
-                  src={people1}
-                  alt="people1"
-                />
-              </div>
-              <div className={styles.spacer}>
-                <p>Jane Cooper</p>
-                <span>Unitad Status</span>
-                <div className={styles.btnCenter}>
-                  <button>Add To Group</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Slider>
-      <div>
-        
-      </div>
-     </div>
     </div>
   );
 };

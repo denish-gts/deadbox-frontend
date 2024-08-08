@@ -22,7 +22,7 @@
     justify-content: center;
     align-items: center;
     color: white;
-    @include breakpoint("md-max") {
+    @include breakpoint("lg-max") {
       padding: 2rem 50px;
     }
     @include breakpoint("sm-max") {
@@ -53,9 +53,36 @@
         border-radius: 5px;
         width: 100%;
       }
+      input,
+      select {
+        padding: 0 20px;
+        margin-bottom: 20px;
+        border: 1px solid #999999 !important;
+        width: 100%;
+        height: 56px;
+        border-radius: 5px;
+        font-size: 18px;
+        line-height: 24px;
+        color: #fff !important;
+        background-color: #000 !important;
+      }
+      input,
+      select::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
 
-     
-    
+      input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        text-indent: 999px;
+      }
+
+      textarea {
+        font-size: 18px;
+        line-height: 24px;
+        color: #fff !important;
+      }
 
       textarea {
         height: 100px;
@@ -131,6 +158,9 @@
 
   .imageContainer {
     overflow: hidden;
+    @include breakpoint("md-max") {
+      display: none;
+    }
     @include breakpoint("sm-max") {
       overflow: unset;
     }
@@ -150,7 +180,9 @@
   cursor: pointer;
   color: #fff;
   background-color: transparent;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .dropdown-content {
@@ -215,7 +247,7 @@
 }
 
 .custommultiselect {
-  margin: 10px 0;
+  margin: 0 0 20px 0;
   position: relative;
 
   .selectbox {
@@ -227,7 +259,7 @@
     align-items: center;
     cursor: pointer;
     background-color: #000;
-
+    height: 56px;
     .arrow {
       margin-left: 10px;
     }

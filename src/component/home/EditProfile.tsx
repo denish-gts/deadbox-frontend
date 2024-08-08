@@ -7,6 +7,7 @@ import { post, postFormData } from "@/api/base";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 import { toast } from "react-toastify";
 import Autocomplete from 'react-google-autocomplete';
+import classNames from "classnames";
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
@@ -251,7 +252,7 @@ export default function EditProfile() {
                 ) : null}
               </div>
             </div>
-            <div className={styles.formGroup}>
+            <div className={classNames(styles.formGroup, styles.secChild)}>
               <label htmlFor="address">Address</label>
               {/* <input
                 type="text"
