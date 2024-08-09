@@ -645,8 +645,8 @@
 }
 
 .avatarImage {
-  width: 150px;
-  height: 150px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   object-fit: cover;
   @include breakpoint("sm-max") {

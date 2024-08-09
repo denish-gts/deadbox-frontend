@@ -45,14 +45,19 @@
           flex-direction: column;
           width: 100%;
     
-          select,
-          input,
-          textarea {
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            border: none;
-            border-radius: 5px;
-            width: 100%;
+            input,
+            select {
+              padding: 0 20px;
+              margin-bottom: 20px;
+              border: 1px solid #999999 !important;
+              width: 100%;
+              height: 56px;
+              border-radius: 5px;
+              font-size: 18px;
+              line-height: 24px;
+              color: #fff !important;
+              background-color: #000 !important;
+            
           }
     
           textarea {
@@ -68,7 +73,12 @@
               width: calc(50% - 0.5rem);
             }
           }
-    
+    .center{
+      text-align: center;
+      a{
+        color: #e74c3c;
+      }
+    }
           .inlineRadios {
             display: flex;
             align-items: baseline;
@@ -115,11 +125,12 @@
           }
     
           button {
-            padding: 0.75rem;
+            padding: 15px 20px;
             background: #e74c3c;
             color: white;
             border: none;
             border-radius: 5px;
+            font-size: 20px;
             cursor: pointer;
             width: 100%;
           }

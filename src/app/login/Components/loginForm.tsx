@@ -96,7 +96,7 @@ export default function LoginForm() {
           ) : (
             <button type="submit">Send Magic Link</button>
           )}
-          <p style={{ marginTop: '10px' }}>
+          <p style={{ marginTop: '10px' }} className={styles.center}>
             Create an account? <a href="/signup">Signup</a>
           </p>
         </form>
