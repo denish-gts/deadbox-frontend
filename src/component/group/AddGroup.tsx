@@ -289,7 +289,7 @@ export default function AddGroup() {
                   value={""}
                 >
                   <option value="">Select</option>
-                  {userList?.map((user: any) => {
+                  {userList?.map((user: any,) => {
                     return (
                       <option key={user.id} value={user.id}>
                         {user.first_name} {user.last_name}
@@ -298,8 +298,8 @@ export default function AddGroup() {
                   })}
                 </select>
                 <div className={styles.invitedPeople}>
-                  {values.invitees.map((invitee) => (
-                    <div className={styles.person}>
+                  {values.invitees.map((invitee,key) => (
+                    <div className={styles.person} key={key}>
                       <Image
                         src={invitee.image}
                         alt="people1"
