@@ -377,9 +377,9 @@ export default function SignUpSecondForm({
           <input
             type="date"
             placeholder="Date of Birth"
-            // onChange={handleChangeValue}
+            onChange={handleChangeValue}
             name="dob"
-          // value={values.dob}
+            value={values.dob}
           />
           <select onChange={handleChangeValue} name="gender" value={values.gender}>
             <option value="">Gender</option>

@@ -9,10 +9,12 @@ import { useEffect } from "react";
 
 export const LayoutCustom = ({ children }) => {
   const path = usePathname();
+  console.log('pathpathpathpathpath',path);
+  
   const router = useRouter();
   const loginRoutes = ["/login", "/signup", '/magic', '/magic-link', '/'];
   const login = loginRoutes.includes(path);
-  const protectedRoutes = ["/profile", '/edit-profile', '/group', '/add-group', '/'];
+  const protectedRoutes = ["/profile", '/edit-profile', '/group', '/add-group'];
   const protectedRoute = protectedRoutes.includes(path);
 
   useEffect(() => {
