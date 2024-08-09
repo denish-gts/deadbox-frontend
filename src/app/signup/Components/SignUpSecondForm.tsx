@@ -252,7 +252,9 @@ export default function SignUpSecondForm({
               </div>
             </div>
           </div>
+         
           <input
+          
             type="text"
             placeholder="State"
             onChange={handleChange}
@@ -355,6 +357,7 @@ export default function SignUpSecondForm({
               </p>
             ) : null
           }
+          
           <input
             type="date"
             placeholder="Date of Birth"

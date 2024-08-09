@@ -8,7 +8,9 @@ import { errorCheckAPIResponse } from "@/utils/helpers";
 import { toast } from "react-toastify";
 import Autocomplete from 'react-google-autocomplete';
 import classNames from "classnames";
-
+import Pencil from "../../../public/assets/images/pencils.png";
+import Delete from "../../../public/assets/images/delete.svg";
+import Image from "next/image";
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
   last_name: Yup.string().required("Last Name is required."),
@@ -140,12 +142,19 @@ export default function EditProfile() {
                 :
                 <img src={values.avatar} alt="Avatar" className={styles.avatarImage} />
               }
-              {/* <button
+              <button
                 className={styles.deleteAvatarButton}
-              // onClick={() => document.getElementById("avatarInput").click()}
+                onClick={() => document.getElementById("avatarInput").click()}
               >
-                🗑️
-              </button> */}
+                {
+                  avatar ? <>
+                  <Image src={Pencil} alt="Pencil" />
+                  </> : <>
+                  <Image src={Delete} alt="Delete" />
+
+                  </>
+                }
+              </button>
             </div>
             <input
               id="avatarInput"

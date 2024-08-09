@@ -12,7 +12,7 @@ import styles from "./signupForm.module.scss";
 const MailIcon = "/assets/icons/mail-icon.svg";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
-const UserIcon = "/assets/icons/user-icon.svg";
+const UserIcon = "/assets/images/1.png";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin1.jpg";
 
@@ -97,7 +97,7 @@ export default function SignUpFirstForm({
               {avatar ? (
                 <img src={avatar} alt="Avatar" />
               ) : (
-                <i className={styles.icon}></i>
+                <img src={UserIcon} alt="User Icon" />
               )}
               <div className={styles.plusIcon}>+</div>
             </div>
@@ -240,7 +240,17 @@ export default function SignUpFirstForm({
             </div>
 
             <div className={styles.checkboxContainer}>
-              <input
+            <label className={styles.customcheckbox}>
+      <input type="checkbox"  checked={values.privacyPolicy}
+                onClick={() => {
+                  setValues({
+                    ...values,
+                    privacyPolicy: !values.privacyPolicy,
+                  });
+                }}  />
+      <span className={styles.checkmark}></span>
+    </label>
+              {/* <input
                 type="checkbox"
                 checked={values.privacyPolicy}
                 onClick={() => {
@@ -250,7 +260,7 @@ export default function SignUpFirstForm({
                   });
                 }}
                 id="policy"
-              />
+              /> */}
               <label htmlFor="policy" className={styles.labelAlignment}>
                 I have read and understood the{" "}
                 {/* <a href="/privacy-policy"> */}
