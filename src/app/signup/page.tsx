@@ -2,7 +2,7 @@
 import { useState } from "react";
 import SignUpFirstForm from "./Components/SignUpFirstForm";
 import SignUpSecondForm from "./Components/SignUpSecondForm";
-import styles from "./signup.module.scss";
+
 export default function Signup() {
   const [firstOpen, setFirstOpen] = useState(true);
   const [inputData, setinputData] = useState(null);
@@ -19,6 +19,7 @@ export default function Signup() {
         <SignUpSecondForm
           setFirstOpen={setFirstOpen}
           inputData={inputData}
+          setinputData={setinputData}
         />
       )}
     </div>

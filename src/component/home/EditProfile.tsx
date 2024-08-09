@@ -17,53 +17,54 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
-  zip: Yup.string().required("Zipcode is required."),
+  zipcode: Yup.string().required("Zipcode is required."),
   about: Yup.string().required("About Us is required."),
 });
 
 export default function EditProfile() {
   const [isLoading, setIsLoading] = useState(false);
+  const [avatar, setAvatar] = useState(null);
+  const [inputData, setinputData] = useState(null);
+
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
       initialValues: {
         email: "",
-        address1: '',
         first_name: "",
         last_name: "",
         avatar: "",
         country_code: "",
-        mobile_no: "",
+        phone: "",
         gender: "",
-        country: "",
-        zip: "",
-        city: "",
+        country_title: "",
+        zipcode: "",
+        city_title: "",
         about: "",
         address: "",
-        call_sign: "",
-        state: "",
+        sign_name: "",
+        state_title: "",
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
         setIsLoading(true);
         const apiData = new FormData();
 
-        if (values.avatar && values.avatar !== "") {
-          apiData.append("f_image", values.avatar);
+        if (inputData?.avatar && inputData?.avatar !== "") {
+          apiData.append("f_image", inputData?.avatar);
         }
-        apiData.append("first_name", values.first_name);
-        apiData.append("last_name", values.last_name);
-        apiData.append("email", values.email);
-        apiData.append("address1", values.address1);
-        apiData.append("phone_code", values.country_code);
-        apiData.append("phone", values.mobile_no);
-        apiData.append("zipcode", values.zip);
-        apiData.append("country_title", values.country);
-        apiData.append("city_title", values.city);
-        apiData.append("gender", values.gender);
-        apiData.append("about", values.about);
-        apiData.append("address", values.address);
-        apiData.append("call_sign", values.call_sign);
-        apiData.append("state", values.state);
+        apiData.append("first_name", inputData?.first_name);
+        apiData.append("last_name", inputData?.last_name);
+        apiData.append("email", inputData?.email);
+        apiData.append("phone_code", inputData?.country_code);
+        apiData.append("phone", inputData?.phone);
+        apiData.append("zipcode", inputData?.zipcode);
+        apiData.append("country_title", inputData?.country_title);
+        apiData.append("city_title", inputData?.city_title);
+        apiData.append("gender", inputData?.gender);
+        apiData.append("about", inputData?.about);
+        apiData.append("address", inputData?.address);
+        apiData.append("sign_name", inputData?.sign_name);
+        apiData.append("state_title", inputData?.state_title);
 
         postFormData(`user/update-profile`, apiData)
           .then((res) => {
@@ -78,27 +79,29 @@ export default function EditProfile() {
           });
       },
     });
+  console.log('valuesvaluesvaluesvaluesvalues', inputData, errors, values);
 
   const getUserData = () => {
     post(`user/get-profile`)
       .then((res) => {
         const resData = res?.data?.data
+        setAvatar(resData.image)
+        setinputData(resData)
         setValues({
           email: resData?.email || "",
           first_name: resData?.first_name || "",
           last_name: resData?.last_name || "",
           avatar: resData.image || '',
           country_code: resData?.phone_code || "",
-          mobile_no: resData?.phone || "",
+          phone: resData?.phone || "",
           gender: resData?.gender || "",
-          country: resData?.country_title || "",
-          zip: resData?.zipcode || "",
-          city: resData?.city_title || "",
+          country_title: resData?.country_title || "",
+          zipcode: resData?.zipcode || "",
+          city_title: resData?.city_title || "",
           about: resData?.about || "",
-          address: resData?.address_1 || "",
-          call_sign: resData?.callSign || "",
-          state: resData?.state_title || "",
-          address1: res?.address1 || ''
+          address: resData?.address || "",
+          sign_name: resData?.sign_name || "",
+          state_title: resData?.state_title || "",
         })
         // setIsLoading(false)
       })
@@ -110,7 +113,6 @@ export default function EditProfile() {
   useEffect(() => {
     getUserData()
   }, []);
-  const [avatar, setAvatar] = useState(null);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -127,22 +129,89 @@ export default function EditProfile() {
       setValues({ ...values, avatar: file });
     }
   };
-  console.log('fffffffffffffffffffffffff', avatar, values);
 
+  const onSetAddress = (value) => {
+    const option = value?.split(',')
+    let defaultOP: any = {}
+    if (option?.length === 3) {
+      setinputData((pre) => {
+        return { ...pre, address: value, city_title: option[0].trim(), state_title: option[1].trim(), country_title: option[2].trim() }
+      })
+      defaultOP = { city_title: option[0].trim(), state_title: option[1].trim(), country_title: option[2].trim(), }
+    } else if (option?.length === 2) {
+      setinputData((pre) => {
+        return { ...pre, address: value, city_title: option[0].trim(), state_title: option[1].trim() }
+      })
+      defaultOP = { city_title: option[0].trim(), state_title: option[1].trim() }
+    } else if (option?.length === 1) {
+      setinputData((pre) => {
+        return { ...pre, address: value, city_title: option[0].trim() }
+      })
+      defaultOP = { city_title: option[0].trim() }
+    } else {
+      setinputData((pre) => {
+        return { ...pre, address: value }
+      })
+    }
+    console.log('defaultOPdefaultOPdefaultOPdefaultOP', values, inputData, defaultOP);
+    setValues({ ...defaultOP, ...{ address: value } });
+
+  }
+  const handleChangeValue = (e) => {
+    const { name, value } = e.target
+    setinputData((pre) => {
+      return { ...pre, [name]: value }
+    })
+    setValues({ ...values, [name]: value, });
+  }
+  const handleSubmitData=()=>{
+    
+    setIsLoading(true);
+    const apiData = new FormData();
+
+    if (inputData?.avatar && inputData?.avatar !== "") {
+      apiData.append("f_image", inputData?.avatar);
+    }
+    apiData.append("first_name", inputData?.first_name);
+    apiData.append("last_name", inputData?.last_name);
+    apiData.append("email", inputData?.email);
+    apiData.append("phone_code", inputData?.country_code);
+    apiData.append("phone", inputData?.phone);
+    apiData.append("zipcode", inputData?.zipcode);
+    apiData.append("country_title", inputData?.country_title);
+    apiData.append("city_title", inputData?.city_title);
+    apiData.append("gender", inputData?.gender);
+    apiData.append("about", inputData?.about);
+    apiData.append("address", inputData?.address);
+    apiData.append("sign_name", inputData?.sign_name);
+    apiData.append("state_title", inputData?.state_title);
+
+    postFormData(`user/update-profile`, apiData)
+      .then((res) => {
+        setAvatar(null)
+        toast.success('User Profile update success.');
+        setIsLoading(false);
+        getUserData()
+      })
+      .catch((error) => {
+        errorCheckAPIResponse(error);
+        setIsLoading(false)
+      });
+  }
+  
   return (
-    <form>
-      <div className={styles.editProfileContainer}>
-        <div className={styles.profileFormContainer}>
-          <div className={styles.avatarSection}
-            onClick={() => document.getElementById("avatarInput").click()}
-          >
-            <div className={styles.avatar}>
-              {avatar ?
-                <img src={avatar} alt="Avatar" className={styles.avatarImage} />
-                :
-                <img src={values.avatar} alt="Avatar" className={styles.avatarImage} />
-              }
-              <button
+    <div className={styles.editProfileContainer}>
+      <div className={styles.profileFormContainer}>
+        <div className={styles.avatarSection}
+          onClick={() => document.getElementById("avatarInput").click()}
+        >
+          <div className={styles.avatar}>
+            {avatar ?
+              <img src={avatar} alt="Avatar" className={styles.avatarImage} />
+              :
+              <img src={inputData?.avatar} alt="Avatar" className={styles.avatarImage} />
+            }
+           <button
                 className={styles.deleteAvatarButton}
                 onClick={() => document.getElementById("avatarInput").click()}
               >
@@ -155,25 +224,26 @@ export default function EditProfile() {
                   </>
                 }
               </button>
-            </div>
-            <input
-              id="avatarInput"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(e) => { handleAvatarChange(e) }}
-            />
           </div>
-          <div className={styles.formSection}>
-            <h1 className={styles.header}>Edit Profile</h1>
+          <input
+            id="avatarInput"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={(e) => { handleAvatarChange(e) }}
+          />
+        </div>
+        <div className={styles.formSection}>
+          <h1 className={styles.header}>Edit Profile</h1>
+          <form onSubmit={handleSubmit}>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="firstName">First Name</label>
                 <input
                   type="text"
                   name="first_name"
-                  onChange={handleChange}
-                  value={values.first_name}
+                  onChange={handleChangeValue}
+                  value={inputData?.first_name}
                 />
                 {errors.first_name && touched.first_name ? (
                   <p
@@ -191,8 +261,8 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="last_name"
-                  onChange={handleChange}
-                  value={values.last_name}
+                  onChange={handleChangeValue}
+                  value={inputData?.last_name}
                 />
                 {errors.last_name && touched.last_name ? (
                   <p
@@ -211,17 +281,17 @@ export default function EditProfile() {
                 <label htmlFor="callSign">Call Sign</label>
                 <input
                   type="text"
-                  name="call_sign"
-                  onChange={handleChange}
-                  value={values.call_sign}
+                  name="sign_name"
+                  onChange={handleChangeValue}
+                  value={inputData?.sign_name}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="gender">Gender</label>
                 <select
                   name="gender"
-                  onChange={handleChange}
-                  value={values.gender}
+                  onChange={handleChangeValue}
+                  value={inputData?.gender}
                 >
                   <option value="female" selected>
                     Female
@@ -236,9 +306,9 @@ export default function EditProfile() {
                 <label htmlFor="phone">Phone</label>
                 <input
                   type="text"
-                  name="mobile_no"
-                  onChange={handleChange}
-                  value={values.mobile_no}
+                  name="phone"
+                  onChange={handleChangeValue}
+                  value={inputData?.phone}
                 />
               </div>
               <div className={styles.formGroup}>
@@ -246,8 +316,8 @@ export default function EditProfile() {
                 <input
                   type="email"
                   name="email"
-                  onChange={handleChange}
-                  value={values.email}
+                  onChange={handleChangeValue}
+                  value={inputData?.email}
                 />
                 {errors.email && touched.email ? (
                   <p
@@ -261,97 +331,96 @@ export default function EditProfile() {
                 ) : null}
               </div>
             </div>
-            <div className={classNames(styles.formGroup, styles.secChild)}>
+            <div className={styles.formGroup}>
               <label htmlFor="address">Address</label>
               {/* <input
                 type="text"
                 name="address"
                 onChange={handleChange}
-                value={values.address}
+                value={inputData?.address}
               /> */}
               <Autocomplete
                 apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
-                name="address1"
+                name="address"
                 onPlaceSelected={(place) => {
-                  console.log('ggggggg', place, place?.formatted_address, place?.formatted_address?.split(','));
-                  const option = place?.formatted_address?.split(',')
-                  let defaultOP = {}
-                  if (option?.length === 3) {
-                    defaultOP = { city: option[0].trim(), state: option[1].trim(), country: option[2].trim(), }
-                  } else if (option?.length === 2) {
-                    defaultOP = { city: option[0].trim(), state: option[1].trim(), }
-                  } else if (option?.length === 1) {
-                    defaultOP = { city: option[0].trim() }
-                  }
-                  setValues({ ...values, ...defaultOP, address1: place?.formatted_address });
+                  onSetAddress(place?.formatted_address)
                 }}
-                //  onChange={(e) => {
-                //     formik.setFieldValue('fullAddress', e.target.value);
-                //  }}
-                //  value={formik.values.fullAddress}
+                onChange={(event) => {
+                  onSetAddress(event.target.value)
+                }}
+                onKeyDown={(event) => {
+                  if (event.code === "Enter") {
+                    onSetAddress(event.target.value)
+                  }
+                }}
+
+                value={inputData?.address}
                 // types={['address']}
                 placeholder="Address"
               />
               {
-                errors.address1 && touched.address1 ? (
+                errors.address && touched.address ? (
                   <p
                     style={{
                       color: "red",
                       fontSize: "12px",
                     }}
                   >
-                    {errors.address1}
+                    {errors.address}
                   </p>
                 ) : null
               }
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="country">Country</label>
+                <label htmlFor="country_title">Country</label>
                 <select
-                  name="country"
-                  onChange={handleChange}
-                  value={values.country}
+                  name="country_title"
+                  onChange={handleChangeValue}
+                  value={inputData?.country_title}
                 >
-                  <option value="usa">USA</option>
+                  <option value="">Country</option>
+                  <option value="USA">USA</option>
+                  <option value="UK">UK</option>
+                  <option value="Canada">Canada</option>
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label htmlFor="state">State</label>
+                <label htmlFor="state_title">State</label>
                 <input
                   type="text"
-                  name="state"
-                  onChange={handleChange}
-                  value={values.state}
+                  name="state_title"
+                  onChange={handleChangeValue}
+                  value={inputData?.state_title}
                 />
               </div>
             </div>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label htmlFor="city">City</label>
+                <label htmlFor="city_title">City</label>
                 <input
                   type="text"
-                  name="city"
-                  onChange={handleChange}
-                  value={values.city}
+                  name="city_title"
+                  onChange={handleChangeValue}
+                  value={inputData?.city_title}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="zipcode">Zipcode</label>
                 <input
                   type="text"
-                  name="zip"
-                  onChange={handleChange}
-                  value={values.zip}
+                  name="zipcode"
+                  onChange={handleChangeValue}
+                  value={inputData?.zipcode}
                 />
-                {errors.zip && touched.zip ? (
+                {errors.zipcode && touched.zipcode ? (
                   <p
                     style={{
                       color: "red",
                       fontSize: "12px",
                     }}
                   >
-                    {errors.zip}
+                    {errors.zipcode}
                   </p>
                 ) : null}
               </div>
@@ -360,8 +429,8 @@ export default function EditProfile() {
               <label htmlFor="aboutMe">About Me</label>
               <textarea
                 name="about"
-                onChange={handleChange}
-                value={values.about}
+                onChange={handleChangeValue}
+                value={inputData?.about}
               ></textarea>
               {errors.about && touched.about ? (
                 <p
@@ -374,24 +443,27 @@ export default function EditProfile() {
                 </p>
               ) : null}
             </div>
-            {isLoading ? (
-              <button
-                type="button"
-                style={{ backgroundColor: "#9e9e9e" }}
-                className={styles.saveProfileButton}
-              >
-                Save My Profile
-              </button>
-            ) : (
-              <button type="submit" className={styles.saveProfileButton} onClick={() => {
-                handleSubmit()
+          </form>
+          {isLoading ? (
+            <button
+              type="button"
+              style={{ backgroundColor: "#9e9e9e" }}
+              className={styles.saveProfileButton}
+            >
+              Save My Profile
+            </button>
+          ) : (
+            <button className={styles.saveProfileButton}
+              // type="submit"
+              onClick={() => {
+                handleSubmitData()
+                // handleSubmit()
               }}>
-                Save My Profile
-              </button>
-            )}
-          </div>
+              Save My Profile
+            </button>
+          )}
         </div>
       </div>
-    </form>
+    </div>
   );
 }

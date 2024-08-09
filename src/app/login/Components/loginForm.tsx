@@ -68,7 +68,7 @@ export default function LoginForm() {
   return (
     <div className={styles.signupSection}>
       <div className={styles.formContainer}>
-        <h2>SignIn</h2>
+        <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="email"

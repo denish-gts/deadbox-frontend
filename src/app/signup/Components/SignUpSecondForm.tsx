@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./loginForm.module.scss";
-import Link from "next/link";
 import Image from "next/image";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { signIn, useSession } from "next-auth/react";
-import { setToken, setUserInfo } from "@/utils/auth.util";
 import { axiosInstance, BASE_URL } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
-// import Loader from "@/component/loader";
 import { useRouter } from "next/navigation";
-import { resolve } from "styled-jsx/macro";
-import { MultiSelect } from "react-multi-select-component";
-const MailIcon = "/assets/icons/mail-icon.svg";
-const SendLinkIcon = "/assets/icons/send-link-icon.svg";
-const GoogleIcon = "/assets/icons/google-icon.svg";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin2.jpg";
 import Autocomplete from 'react-google-autocomplete';
@@ -30,8 +21,8 @@ const validationSchema = Yup.object().shape({
   state_title: Yup.string().required("State is required."),
   // dob: Yup.string().required("Dob is required."),
   group: Yup.array()
-    .required("Group Id is required.")
-    .min(1, "Group Id is required."),
+    .required("Group name is required.")
+    .min(1, "Group name is required."),
 });
 const CustomMultiSelect = ({ options, selectedOptions, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,8 +42,8 @@ const CustomMultiSelect = ({ options, selectedOptions, onChange }) => {
   return (
     <div className={styles.custommultiselect}>
       <div className={styles.selectbox} onClick={handleToggle}>
-        {selectedOptions.length > 0
-          ? selectedOptions.join(", ")
+        {selectedOptions?.length > 0
+          ? selectedOptions?.join(", ")
           : "Select options"}
         <span className={styles.arrow}>{isOpen ? "▲" : "▼"}</span>
       </div>
@@ -79,12 +70,12 @@ const CustomMultiSelect = ({ options, selectedOptions, onChange }) => {
 export default function SignUpSecondForm({
   setFirstOpen,
   inputData,
+  setinputData,
 }) {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [groupOption, setGroupOption] = useState([]);
-  console.log('groupOptiongroupOption', groupOption);
 
   useEffect(() => {
     axiosInstance.post('group/list', {
@@ -100,7 +91,7 @@ export default function SignUpSecondForm({
 
     })
   }, [])
-  const { handleSubmit, values, touched, errors, handleChange, setValues } =
+  const { handleSubmit, values, touched, errors, setValues } =
     useFormik({
       initialValues: {
         gender: "",
@@ -155,6 +146,36 @@ export default function SignUpSecondForm({
       },
     });
 
+  const onSetAddress = (value) => {
+    const option = value?.split(',')
+    let defaultOP: any = {}
+    if (option?.length === 3) {
+      defaultOP = { ...values, ...inputData, city: option[0].trim(), state_title: option[1].trim(), country: option[2].trim(), }
+    } else if (option?.length === 2) {
+      defaultOP = { ...values, ...inputData, city: option[0].trim(), state_title: option[1].trim() }
+    } else if (option?.length === 1) {
+      defaultOP = { ...values, ...inputData, city: option[0].trim() }
+    } else {
+      defaultOP = { ...value, ...inputData }
+    }
+    setValues({ ...defaultOP, ...{ address1: value } });
+    setinputData((pre) => {
+      return { ...pre, ['address1']: value }
+    })
+  }
+
+  const handleChangeValue = (e) => {
+    const { name, value } = e.target
+    setinputData((pre) => {
+      return { ...pre, [name]: value }
+    })
+    setValues({ ...values, [name]: value });
+  }
+
+  useEffect(() => {
+    setValues({ ...values, ...inputData });
+  }, [setFirstOpen])
+
   return (
     <div className={styles.signupSection}>
       <div className={styles.formContainer}>
@@ -167,23 +188,20 @@ export default function SignUpSecondForm({
             apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
             name="address1"
             onPlaceSelected={(place) => {
-              console.log('ggggggg', place, place?.formatted_address, place?.formatted_address?.split(','));
-              const option = place?.formatted_address?.split(',')
-              let defaultOP = {}
-              if (option?.length === 3) {
-                defaultOP = { city: option[0].trim(), state_title: option[1].trim(), country: option[2].trim(), }
-              } else if (option?.length === 2) {
-                defaultOP = { city: option[0].trim(), state_title: option[1].trim() }
-              } else if (option?.length === 1) {
-                defaultOP = { city: option[0].trim() }
-              }
-              setValues({ ...values, ...defaultOP, address1: place?.formatted_address });
+              const value = place?.formatted_address
+              onSetAddress(value)
             }}
-            //  onChange={(e) => {
-            //     formik.setFieldValue('fullAddress', e.target.value);
-            //  }}
-            //  value={formik.values.fullAddress}
+            onChange={(event) => {
+              onSetAddress(event.target.value)
+            }}
+            value={values.address1}
             // types={['address']}
+            onKeyDown={(event) => {
+              if (event.code === "Enter") {
+                onSetAddress(event.target.value)
+              }
+            }}
+
             placeholder="Address"
           />
           {
@@ -206,7 +224,7 @@ export default function SignUpSecondForm({
                 <input
                   type="text"
                   placeholder="City"
-                  onChange={handleChange}
+                  onChange={handleChangeValue}
                   name="city"
                   value={values.city}
                 />
@@ -231,7 +249,7 @@ export default function SignUpSecondForm({
                 <input
                   type="text"
                   placeholder="Zipcode"
-                  onChange={handleChange}
+                  onChange={handleChangeValue}
                   name="zip"
                   value={values.zip}
                 />
@@ -252,12 +270,10 @@ export default function SignUpSecondForm({
               </div>
             </div>
           </div>
-         
           <input
-          
             type="text"
             placeholder="State"
-            onChange={handleChange}
+            onChange={handleChangeValue}
             name="state_title"
             value={values.state_title}
           />
@@ -275,7 +291,7 @@ export default function SignUpSecondForm({
               </p>
             ) : null
           }
-          <select onChange={handleChange} name="country" value={values.country}>
+          <select onChange={handleChangeValue} name="country" value={values.country}>
             <option value="">Country</option>
             <option value="USA">USA</option>
             <option value="UK">UK</option>
@@ -298,7 +314,7 @@ export default function SignUpSecondForm({
           <input
             type="text"
             placeholder="Call Sign/Nickname"
-            onChange={handleChange}
+            onChange={handleChangeValue}
             name="sign_name"
             value={values.sign_name}
           />
@@ -318,7 +334,7 @@ export default function SignUpSecondForm({
           }
           <textarea
             placeholder="About me"
-            onChange={handleChange}
+            onChange={handleChangeValue}
             name="about"
             value={values.about}
           ></textarea>
@@ -340,7 +356,8 @@ export default function SignUpSecondForm({
             options={groupOption}
             selectedOptions={values.group}
             onChange={(option) => {
-              setValues({ ...values, group: option });
+              const data = { target: { value: option, name: 'group' } }
+              handleChangeValue(data)
             }}
           />
           {
@@ -353,19 +370,18 @@ export default function SignUpSecondForm({
                   marginBottom: "16px",
                 }}
               >
-                Group Id is required.
+                Group name is required.
               </p>
             ) : null
           }
-          
           <input
             type="date"
             placeholder="Date of Birth"
-            // onChange={handleChange}
+            // onChange={handleChangeValue}
             name="dob"
           // value={values.dob}
           />
-          <select onChange={handleChange} name="gender" value={values.gender}>
+          <select onChange={handleChangeValue} name="gender" value={values.gender}>
             <option value="">Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -385,17 +401,22 @@ export default function SignUpSecondForm({
               </p>
             ) : null
           }
-          <button style={{ marginBottom: '10px' }} onClick={() => { setFirstOpen(true) }}>Back</button>
-          {
-            isLoading ? (
-              <button style={{ backgroundColor: "#9e9e9e" }} type="button">
-                Submit
-              </button>
-            ) : (
-              <button type="submit">Submit</button>
-            )
-          }
         </form>
+
+        <button style={{ marginBottom: '10px' }}
+          onClick={() => {
+            setFirstOpen(true)
+          }}
+        >Back</button>
+        {
+          isLoading ? (
+            <button style={{ backgroundColor: "#9e9e9e" }} type="button">
+              Submit
+            </button>
+          ) : (
+            <button onClick={() => { handleSubmit() }}>Submit</button>
+          )
+        }
       </div>
       <div className={styles.imageContainer}>
         <Image src={BG} alt="Background" unoptimized height={0} width={0} />

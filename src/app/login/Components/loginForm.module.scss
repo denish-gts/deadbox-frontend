@@ -123,8 +123,10 @@
               text-decoration: none;
             }
           }
-    
-          button {
+        }
+
+      }
+       button {
             padding: 15px 20px;
             background: #e74c3c;
             color: white;
@@ -134,9 +136,6 @@
             cursor: pointer;
             width: 100%;
           }
-        }
-      }
-    
       .imageContainer {
         overflow: hidden;
         @include breakpoint("sm-max") {

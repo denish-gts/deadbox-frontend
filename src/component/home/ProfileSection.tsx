@@ -30,6 +30,7 @@ const ProfileSection = ({
     gender: string;
     about: string;
     created: string;
+    last_logged_in_at:string
   };
 }) => {
   const [avatar, setAvatar] = useState(null);
@@ -45,7 +46,10 @@ const ProfileSection = ({
       reader.readAsDataURL(file);
     }
   };
-
+  function capitalizeFirstLetter(str) {
+    if (str.length === 0) return str; // Handle empty string
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
   return (
     <div className={styles.profileSection}>
       <div className={styles.profileCard}>
@@ -76,8 +80,8 @@ const ProfileSection = ({
           <h2>
             @{userData?.first_name} {userData?.last_name}
           </h2>
-          <p>Stock Class - 30 Groups</p>
-          <div className={styles.role}>VICE PRESIDENT</div>
+          {/* <p>Stock Class - 30 Groups</p>
+          <div className={styles.role}>VICE PRESIDENT</div> */}
         </div>
       </div>
       <div className={styles.profileDetails}>
@@ -96,7 +100,7 @@ const ProfileSection = ({
                 First Name:
               </div>{" "}
             </p>
-            <h6> {userData?.first_name}</h6>
+            <h6> {capitalizeFirstLetter(userData?.first_name)}</h6>
           </div>
           <div>
             <p>
@@ -104,7 +108,7 @@ const ProfileSection = ({
                 Last Name:
               </div>
             </p>
-            <h6>{userData?.last_name}</h6>
+            <h6>{capitalizeFirstLetter(userData?.last_name)}</h6>
           </div>
           <div>
             <p>
@@ -113,7 +117,7 @@ const ProfileSection = ({
               </div>{" "}
             </p>
             <h6>
-              {userData?.sign_name}
+              {capitalizeFirstLetter(userData?.sign_name)}
             </h6>
           </div>
           <div>
@@ -124,7 +128,7 @@ const ProfileSection = ({
               </div>{" "}
             </p>
             <h6>
-              {userData?.country_title}
+              {capitalizeFirstLetter(userData?.country_title)}
             </h6>
           </div>
           <div>
@@ -134,7 +138,7 @@ const ProfileSection = ({
               </div>{" "}
             </p>
             <h6>
-              {userData?.state_title}
+              {capitalizeFirstLetter(userData?.state_title)}
             </h6>
           </div>
           <div>
@@ -144,7 +148,7 @@ const ProfileSection = ({
               </div>
             </p>
             <h6>
-              {userData?.city_title}
+              {capitalizeFirstLetter(userData?.city_title)}
             </h6>
           </div>
           <div>
@@ -164,7 +168,8 @@ const ProfileSection = ({
               </div>{" "}
             </p>
             <h6>
-              -
+            {moment(userData?.last_logged_in_at).format("DD MMM, YYYY")}
+
             </h6>
           </div>
         </div>
@@ -172,7 +177,7 @@ const ProfileSection = ({
           <p>
             About Me:
           </p>
-          <h6>{userData?.about}</h6>
+          <h6>{capitalizeFirstLetter(userData?.about)}</h6>
         </div>
         <a className={styles.readMore}
         // onClick={() => setIsEditProfile(true)}
