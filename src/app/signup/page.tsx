@@ -36,8 +36,6 @@ const validationSchemaSecond = Yup.object().shape({
 export default function Signup() {
   const router = useRouter();
   const [firstOpen, setFirstOpen] = useState(true);
-  // const [inputData, setinputData] = useState(null);
-  // console.log('inputDatainputDatainputDatainputData', inputData);
   // const [isLoading, setIsLoading] = useState(true);
   const formik = useFormik({
     initialValues: {
@@ -51,7 +49,7 @@ export default function Signup() {
       privacyPolicy: 0,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: () => {
       setFirstOpen(false);
     },
   });
@@ -73,7 +71,6 @@ export default function Signup() {
       },
       validationSchema: validationSchemaSecond,
       onSubmit: (values) => {
-        console.log('fdddddddddddddddddddddddddd', formik?.values, values);
         const allData = { ...formik?.values, ...values }
         // setIsLoading(true);
         const apiData = new FormData();
@@ -92,35 +89,34 @@ export default function Signup() {
         //   return slectedoption?.id
         // })
 
-          apiData.append("first_name", allData.first_name);
-          apiData.append("last_name", allData.last_name);
-          apiData.append("email", allData.email);
-          apiData.append("phone_code", allData.phone_code);
-          apiData.append("phone", allData.phone);
-          apiData.append("over_13", 'true');
-          apiData.append("privacy_policy", "1");
-          apiData.append("zipcode", values.zipcode);
-          apiData.append("country_title", values.country_title);
-          apiData.append("sign_name", values.sign_name);
-          apiData.append("state_title", values.state_title);
-          apiData.append("city_title", values.city_title);
-          apiData.append("gender", values.gender);
-          apiData.append("about", values.about);
-          apiData.append("group_id", values?.group_id as any);
+        apiData.append("first_name", allData.first_name);
+        apiData.append("last_name", allData.last_name);
+        apiData.append("email", allData.email);
+        apiData.append("phone_code", allData.phone_code);
+        apiData.append("phone", allData.phone);
+        apiData.append("over_13", 'true');
+        apiData.append("privacy_policy", "1");
+        apiData.append("zipcode", values.zipcode);
+        apiData.append("country_title", values.country_title);
+        apiData.append("sign_name", values.sign_name);
+        apiData.append("state_title", values.state_title);
+        apiData.append("city_title", values.city_title);
+        apiData.append("gender", values.gender);
+        apiData.append("about", values.about);
+        apiData.append("group_id", values?.group_id as any);
 
-          axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
-            successAPIResponse(res);
-            router.push('/magic')
-            // setIsLoading(false);
-          }).catch((error) => {
-            // setIsLoading(false);
-            errorCheckAPIResponse(error)
-          });
+        axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
+          successAPIResponse(res);
+          router.push('/magic')
+          // setIsLoading(false);
+        }).catch((error) => {
+          // setIsLoading(false);
+          errorCheckAPIResponse(error)
+        });
       },
     });
 
 
-  console.log('formikformikformikformikformikformik', formik?.values, formikSecond?.values);
 
   return (
     <div>

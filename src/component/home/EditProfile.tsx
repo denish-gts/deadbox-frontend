@@ -19,6 +19,14 @@ const validationSchema = Yup.object().shape({
     .required("Email address is required."),
   zipcode: Yup.string().required("Zipcode is required."),
   about: Yup.string().required("About Us is required."),
+  phone_code: Yup.string().required("Country code is required."),
+  phone: Yup.number().typeError('Please enter numbur value.')
+    .positive('Must be a positive number.').required("Mobile no is required."),
+  gender: Yup.string().required("Gender is required."),
+  country_title: Yup.string().required("Country Us is required."),
+  city_title: Yup.string().required("City is required."),
+  sign_name: Yup.string().required("Sign is required."),
+  state_title: Yup.string().required("State is required."),
 });
 
 export default function EditProfile() {
@@ -32,7 +40,7 @@ export default function EditProfile() {
         first_name: "",
         last_name: "",
         avatar: "",
-        country_code: "",
+        phone_code: "",
         phone: "",
         gender: "",
         country_title: "",
@@ -54,7 +62,7 @@ export default function EditProfile() {
         apiData.append("first_name", values?.first_name);
         apiData.append("last_name", values?.last_name);
         apiData.append("email", values?.email);
-        apiData.append("phone_code", values?.country_code);
+        apiData.append("phone_code", values?.phone_code);
         apiData.append("phone", values?.phone);
         apiData.append("zipcode", values?.zipcode);
         apiData.append("country_title", values?.country_title);
@@ -78,7 +86,7 @@ export default function EditProfile() {
           });
       },
     });
-  console.log('valuesvaluesvaluesvaluesvalues', values, errors, values);
+  console.log('errorserrorserrorserrorserrorserrors', errors);
 
   const getUserData = () => {
     post(`user/get-profile`)
@@ -90,7 +98,7 @@ export default function EditProfile() {
           first_name: resData?.first_name || "",
           last_name: resData?.last_name || "",
           avatar: resData.image || '',
-          country_code: resData?.phone_code || "",
+          phone_code: resData?.phone_code || "",
           phone: resData?.phone || "",
           gender: resData?.gender || "",
           country_title: resData?.country_title || "",
@@ -114,8 +122,6 @@ export default function EditProfile() {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    console.log('filefilefilefilefilefile', file);
-
 
     if (file) {
       const reader = new FileReader();
@@ -151,7 +157,6 @@ export default function EditProfile() {
   //       return { ...pre, address: value }
   //     })
   //   }
-  //   console.log('defaultOPdefaultOPdefaultOPdefaultOP', values, values, defaultOP);
   //   setValues({ ...defaultOP, ...{ address: value } });
 
   // }
@@ -163,7 +168,7 @@ export default function EditProfile() {
   //   setValues({ ...values, [name]: value, });
   // }
 
-  
+
   return (
     <div className={styles.editProfileContainer}>
       <div className={styles.profileFormContainer}>
@@ -176,19 +181,19 @@ export default function EditProfile() {
               :
               <img src={values?.avatar} alt="Avatar" className={styles.avatarImage} />
             }
-           <button
-                className={styles.deleteAvatarButton}
-                onClick={() => document.getElementById("avatarInput").click()}
-              >
-                {
-                  avatar ? <>
+            <button
+              className={styles.deleteAvatarButton}
+              onClick={() => document.getElementById("avatarInput").click()}
+            >
+              {
+                avatar ? <>
                   <Image src={Pencil} alt="Pencil" />
-                  </> : <>
+                </> : <>
                   <Image src={Delete} alt="Delete" />
 
-                  </>
-                }
-              </button>
+                </>
+              }
+            </button>
           </div>
           <input
             id="avatarInput"
@@ -250,6 +255,16 @@ export default function EditProfile() {
                   onChange={handleChange}
                   value={values?.sign_name}
                 />
+                {errors.sign_name && touched.sign_name ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.sign_name}
+                  </p>
+                ) : null}
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="gender">Gender</label>
@@ -264,6 +279,16 @@ export default function EditProfile() {
                   <option value="male">Male</option>
                   <option value="other">Other</option>
                 </select>
+                {errors.gender && touched.gender ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.gender}
+                  </p>
+                ) : null}
               </div>
             </div>
             <div className={styles.formRow}>
@@ -275,6 +300,16 @@ export default function EditProfile() {
                   onChange={handleChange}
                   value={values?.phone}
                 />
+                {errors.phone && touched.phone ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.phone}
+                  </p>
+                ) : null}
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="email">Email Address</label>
@@ -343,6 +378,16 @@ export default function EditProfile() {
                   <option value="UK">UK</option>
                   <option value="Canada">Canada</option>
                 </select>
+                {errors.country_title && touched.country_title ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.country_title}
+                  </p>
+                ) : null}
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="state_title">State</label>
@@ -352,6 +397,16 @@ export default function EditProfile() {
                   onChange={handleChange}
                   value={values?.state_title}
                 />
+                {errors.state_title && touched.state_title ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.state_title}
+                  </p>
+                ) : null}
               </div>
             </div>
             <div className={styles.formRow}>
@@ -363,6 +418,16 @@ export default function EditProfile() {
                   onChange={handleChange}
                   value={values?.city_title}
                 />
+                {errors.city_title && touched.city_title ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.city_title}
+                  </p>
+                ) : null}
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="zipcode">Zipcode</label>
@@ -384,23 +449,47 @@ export default function EditProfile() {
                 ) : null}
               </div>
             </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="aboutMe">About Me</label>
-              <textarea
-                name="about"
-                onChange={handleChange}
-                value={values?.about}
-              ></textarea>
-              {errors.about && touched.about ? (
-                <p
-                  style={{
-                    color: "red",
-                    fontSize: "12px",
-                  }}
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label htmlFor="aboutMe">Country Code</label>
+                <select
+                  name="phone_code"
+                  onChange={handleChange}
+                  value={values.phone_code}
                 >
-                  {errors.about}
-                </p>
-              ) : null}
+                  <option value="">Select Country Code</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                </select>
+                {errors.phone_code && touched.phone_code ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.phone_code}
+                  </p>
+                ) : null}
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="aboutMe">About Me</label>
+                <textarea
+                  name="about"
+                  onChange={handleChange}
+                  value={values?.about}
+                ></textarea>
+                {errors.about && touched.about ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.about}
+                  </p>
+                ) : null}
+              </div>
             </div>
           </form>
           {isLoading ? (

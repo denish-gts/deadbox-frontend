@@ -12,7 +12,6 @@ import { post } from "@/api/base";
 
 const Myprofile = () => {
   const [userData, setuserData] = useState(null);
-console.log('userDatauserDatauserDatauserData',userData);
 
   useEffect(() => {
     post(`user/get-profile`)

@@ -21,7 +21,6 @@ export default function SignUpFirstForm({
       setValues({ ...values, avatar: file });
     }
   };
-  console.log('valuesvaluesvaluesvaluesvaluesvaluesvaluesvaluesvaluesvaluesvalues', values);
 
   return (
     <form>

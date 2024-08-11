@@ -275,7 +275,6 @@ export default function AddGroup() {
                   id="invitePeople"
                   name="invitePeople"
                   onChange={(e) => {
-                    console.log(e.target.value);
                     setValues({
                       ...values,
                       invitees: [

@@ -9,7 +9,6 @@ import { useEffect } from "react";
 
 export const LayoutCustom = ({ children }) => {
   const path = usePathname();
-  console.log('pathpathpathpathpath',path);
   
   const router = useRouter();
   const loginRoutes = ["/login", "/signup", '/magic', '/magic-link', '/'];
