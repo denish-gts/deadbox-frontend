@@ -1,75 +1,15 @@
-import { axiosInstance } from "@/api/base";
-import { setToken, setUserInfo } from "@/utils/auth.util";
-import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
-import { useFormik } from "formik";
-import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import * as Yup from "yup";
+import { useState } from "react";
 import styles from "./signupForm.module.scss";
-
-const MailIcon = "/assets/icons/mail-icon.svg";
-const SendLinkIcon = "/assets/icons/send-link-icon.svg";
-const GoogleIcon = "/assets/icons/google-icon.svg";
 const UserIcon = "/assets/images/1.png";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin1.jpg";
 
-const validationSchema = Yup.object().shape({
-  first_name: Yup.string().required("First Name is required."),
-  last_name: Yup.string().required("Last Name is required."),
-  country_code: Yup.string().required("Country code is required."),
-  mobile_no: Yup.number().typeError('Please enter numbur value.')
-    .positive('Must be a positive number.').required("Mobile no is required."),
-  email: Yup.string()
-    .email("Please enter a valid email address.")
-    .required("Email address is required."),
-});
 export default function SignUpFirstForm({
-  setFirstOpen,
-  inputData,
-  setinputData,
+  formik,
 }) {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const { handleSubmit, values, touched, errors, handleChange, setValues } =
-    useFormik({
-      initialValues: {
-        email: "",
-        first_name: "",
-        last_name: "",
-        avatar: "",
-        country_code: "",
-        mobile_no: "",
-        over13: "",
-        privacyPolicy: false,
-      },
-      validationSchema: validationSchema,
-      onSubmit: (values) => {
-        setIsLoading(true);
-        setinputData(values);
-        setFirstOpen(false);
-      },
-    });
-
-  useEffect(() => {
-    if (values.over13 == "yes" && values.privacyPolicy) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-
-  }, [values]);
-  useEffect(() => {
-    if (inputData) {
-      setValues({ ...inputData });
-    }
-  }, [inputData])
-
-
+  const { handleSubmit, values, touched, errors, handleChange, setValues } = formik;
   const [avatar, setAvatar] = useState(null);
-
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -81,8 +21,10 @@ export default function SignUpFirstForm({
       setValues({ ...values, avatar: file });
     }
   };
+  console.log('valuesvaluesvaluesvaluesvaluesvaluesvaluesvaluesvaluesvaluesvalues', values);
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <div className={styles.signupSection}>
         <div className={styles.formContainer}>
           <div className={styles.logo}>
@@ -109,14 +51,10 @@ export default function SignUpFirstForm({
               onChange={handleAvatarChange}
             />
           </div>
-          {/* <div className={styles.avatar}>
-          <i className={styles.icon}></i>
-        </div> */}
 
           <div className={styles.form}>
             <div className={styles.twoGrid}>
               <div>
-
                 <input
                   type="text"
                   placeholder="First Name"
@@ -125,14 +63,7 @@ export default function SignUpFirstForm({
                   value={values.first_name}
                 />
                 {errors.first_name && touched.first_name ? (
-                  <p
-                    style={{
-                      color: "red",
-                      fontSize: "12px",
-                      marginTop: "-10px",
-                      marginBottom: "16px",
-                    }}
-                  >
+                  <p className={styles.error_content}>
                     {errors.first_name}
                   </p>
                 ) : null}
@@ -147,14 +78,7 @@ export default function SignUpFirstForm({
                   value={values.last_name}
                 />
                 {errors.last_name && touched.last_name ? (
-                  <p
-                    style={{
-                      color: "red",
-                      fontSize: "12px",
-                      marginTop: "-10px",
-                      marginBottom: "16px",
-                    }}
-                  >
+                  <p className={styles.error_content}>
                     {errors.last_name}
                   </p>
                 ) : null}
@@ -168,99 +92,74 @@ export default function SignUpFirstForm({
               value={values.email}
             />
             {errors.email && touched.email ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
+              <p className={styles.error_content}>
                 {errors.email}
               </p>
             ) : null}
             <select
-              name="country_code"
+              name="phone_code"
               onChange={handleChange}
-              value={values.country_code}
+              value={values.phone_code}
             >
               <option value="">Select Country Code</option>
               <option value="+1">+1</option>
               <option value="+44">+44</option>
             </select>
-            {errors.country_code && touched.country_code ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.country_code}
+            {errors.phone_code && touched.phone_code ? (
+              <p className={styles.error_content}>
+                {errors.phone_code}
               </p>
             ) : null}
             <input
               type="tel"
               placeholder="Phone Number"
-              name="mobile_no"
+              name="phone"
               onChange={handleChange}
-              value={values.mobile_no}
+              value={values.phone}
             />
-            {errors.mobile_no && touched.mobile_no ? (
-              <p
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                  marginTop: "-10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {errors.mobile_no}
+            {errors.phone && touched.phone ? (
+              <p className={styles.error_content}>
+                {errors.phone}
               </p>
             ) : null}
             <div className={styles.radiogroup}>
               <span>Are you over 13?</span>
               <div className={styles.flex}>
-                <input type="radio" onChange={() => {
-                  setValues({ ...values, over13: "yes" });
-                }}
+                <input type="radio"
+                  onChange={() => {
+                    setValues({ ...values, over13: "true" });
+                  }}
+                  checked={values?.over13 === 'true'}
                   id="yes"
                   name="age"
-                  value="yes" />
+                />
                 <label htmlFor="yes">Yes</label>
-                <input type="radio" id="no"
+                <input
+                  type="radio"
+                  id="no"
                   onChange={() => {
-                    setValues({ ...values, over13: "no" });
+                    setValues({ ...values, over13: "false" });
                   }}
                   name="age"
-                  value="no" />
+                  checked={values?.over13 === 'false'}
+                />
                 <label htmlFor="no">No</label>
               </div>
             </div>
 
             <div className={styles.checkboxContainer}>
-            <label className={styles.customcheckbox}>
-      <input type="checkbox"  checked={values.privacyPolicy}
-                onClick={() => {
-                  setValues({
-                    ...values,
-                    privacyPolicy: !values.privacyPolicy,
-                  });
-                }}  />
-      <span className={styles.checkmark}></span>
-    </label>
-              {/* <input
-                type="checkbox"
-                checked={values.privacyPolicy}
-                onClick={() => {
-                  setValues({
-                    ...values,
-                    privacyPolicy: !values.privacyPolicy,
-                  });
-                }}
-                id="policy"
-              /> */}
+              <label className={styles.customcheckbox}>
+                <input
+                  type="checkbox"
+                  checked={values.privacyPolicy === '1'}
+                  name="privacyPolicy"
+                  onChange={(e) => {
+                    const value = e.target.checked ? '1' : '0'
+                    setValues({ ...values, privacyPolicy: value });
+                  }}
+                />
+                <span className={styles.checkmark}></span>
+              </label>
               <label htmlFor="policy" className={styles.labelAlignment}>
                 I have read and understood the{" "}
                 {/* <a href="/privacy-policy"> */}
@@ -268,14 +167,14 @@ export default function SignUpFirstForm({
                 {/* </a> */}
               </label>
             </div>
-            {isLoading ? (
+            {values?.privacyPolicy === '1' && values?.over13 === 'true' ? (
               <>
-                <button style={{ backgroundColor: "#9e9e9e" }} type="button">
-                  Next Step
-                </button>
+                <button onClick={() => { handleSubmit() }}>Next Step</button>
               </>
             ) : (
-              <button type="submit">Next Step</button>
+              <button style={{ backgroundColor: "#9e9e9e" }} type="button">
+                Next Step
+              </button>
             )}
           </div>
           <p>

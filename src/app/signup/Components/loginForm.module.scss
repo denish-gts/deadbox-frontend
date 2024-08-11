@@ -7,11 +7,19 @@
   @include breakpoint("md-max") {
     grid-template-columns: 1fr;
   }
+
   height: 100vh;
   background-color: #000;
 
   .signupContainer {
     width: 100%;
+  }
+
+  .error_content {
+    color: red;
+    font-size: 12px !important;
+    margin-top: -10px !important;
+    margin-Bottom: 16px !important
   }
 
   .formContainer {
@@ -22,12 +30,15 @@
     justify-content: center;
     align-items: center;
     color: white;
+
     @include breakpoint("lg-max") {
       padding: 2rem 50px;
     }
+
     @include breakpoint("sm-max") {
       padding: 2rem 20px;
     }
+
     .logo {
       img {
         height: 70px;
@@ -53,6 +64,7 @@
         border-radius: 5px;
         width: 100%;
       }
+
       input,
       select {
         padding: 0 20px;
@@ -66,6 +78,7 @@
         color: #fff !important;
         background-color: #000 !important;
       }
+
       input,
       select::placeholder {
         color: rgba(255, 255, 255, 0.7) !important;
@@ -104,6 +117,7 @@
         align-items: baseline;
         gap: 1rem;
         margin-bottom: 1rem;
+
         @include breakpoint("sm-max") {
           display: block;
         }
@@ -118,8 +132,10 @@
 
           input {
             margin-right: 0.5rem;
+
             @include breakpoint("sm-max") {
               width: auto;
+
               &:first-child {
                 margin-top: 10px !important;
               }
@@ -145,7 +161,7 @@
       }
 
     }
-    
+
     button {
       padding: 0.75rem;
       background: #e74c3c;
@@ -159,12 +175,15 @@
 
   .imageContainer {
     overflow: hidden;
+
     @include breakpoint("md-max") {
       display: none;
     }
+
     @include breakpoint("sm-max") {
       overflow: unset;
     }
+
     img {
       width: 100%;
       height: 100%;
@@ -200,6 +219,7 @@
       background-color: #2e2e2e;
       border: none;
       color: #fff;
+
       &:focus {
         outline: none;
       }
@@ -261,6 +281,7 @@
     cursor: pointer;
     background-color: #000;
     height: 56px;
+
     .arrow {
       margin-left: 10px;
     }

@@ -1,6 +1,6 @@
 import styles from "./home.module.scss";
-import People from "../../../public/assets/images/pencil.png";
-import Image from "next/image";
+// import People from "../../../public/assets/images/pencil.png";
+// import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 // import EditProfile from "./EditProfile";
@@ -47,8 +47,8 @@ const ProfileSection = ({
     }
   };
   function capitalizeFirstLetter(str) {
-    if (str.length === 0) return str; // Handle empty string
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    if (str?.length === 0) return str; // Handle empty string
+    return str?.charAt(0).toUpperCase() + str?.slice(1);
 }
   return (
     <div className={styles.profileSection}>

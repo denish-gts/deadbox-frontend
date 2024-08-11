@@ -7,8 +7,17 @@
   @include breakpoint("md-max") {
     grid-template-columns: 1fr;
   }
+
   // height: 100vh;
   background-color: #000;
+
+  .error_content {
+    color: red;
+    font-size: 12px !important;
+    margin-top: -10px!important;
+    margin-Bottom: 16px!important
+  }
+
   .radiogroup {
     display: flex;
     align-items: center;
@@ -26,6 +35,7 @@
     color: #fff !important;
     background-color: #000 !important;
   }
+
   .flex {
     display: flex;
     height: 100%;
@@ -48,7 +58,7 @@
     display: none;
   }
 
-  .radiogroup input[type="radio"]:checked + label {
+  .radiogroup input[type="radio"]:checked+label {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
@@ -57,6 +67,7 @@
     border-left: 1px solid #999999;
     border-radius: 5px 0 0 5px;
   }
+
   .formContainer {
     background: #000;
     padding: 2rem 0px;
@@ -67,9 +78,11 @@
     justify-content: center;
     align-items: center;
     color: white;
+
     @include breakpoint("md-max") {
       padding: 2rem 50px;
     }
+
     @include breakpoint("sm-max") {
       padding: 2rem 20px;
     }
@@ -77,6 +90,7 @@
     .logo {
       width: 244px;
       height: 52px;
+
       img {
         height: 100%;
         width: 100%;
@@ -96,6 +110,7 @@
       margin-bottom: 1rem;
 
       margin-top: 20px;
+
       .avatar {
         position: relative;
         background: #444;
@@ -155,6 +170,7 @@
         color: #fff !important;
         background-color: #000 !important;
       }
+
       input,
       select::placeholder {
         color: rgba(255, 255, 255, 0.7) !important;
@@ -166,6 +182,7 @@
         cursor: pointer;
         text-indent: 999px;
       }
+
       button {
         padding: 0 0.75rem;
         background: #e74c3c;
@@ -200,6 +217,7 @@
 
   .imageContainer {
     overflow: hidden;
+
     @include breakpoint("sm-max") {
       overflow: unset;
       display: none;
@@ -212,15 +230,17 @@
     }
   }
 }
-.checkboxContainer{
+
+.checkboxContainer {
   margin-bottom: 10px;
 }
+
 .customcheckbox {
   position: relative;
   display: inline-block;
   width: 24px;
   height: 24px;
- 
+
   input {
     opacity: 0;
     width: 0;
@@ -241,7 +261,7 @@
       content: '';
       position: absolute;
       display: none;
-      left:8px;
+      left: 8px;
       top: 2px;
       width: 5px;
       height: 10px;
@@ -251,7 +271,7 @@
     }
   }
 
-  input:checked + .checkmark {
+  input:checked+.checkmark {
     background-color: #2c2c2c; // Background color when checked
     border-color: #7f7f7f; // Border color when checked
 
@@ -260,7 +280,7 @@
     }
   }
 
-  input:hover + .checkmark {
+  input:hover+.checkmark {
     border-color: #a5a5a5; // Border color on hover
   }
 }
@@ -275,6 +295,7 @@
     gap: 0px;
   }
 }
+
 .multi-select {
   .react-select__control {
     display: flex;
@@ -349,11 +370,10 @@
     }
   }
 }
+
 .rmsc .options {
   background-color: #2e2e2e;
   border: 1px solid #707070;
   border-radius: 8px;
   color: #fff;
 }
-
-
