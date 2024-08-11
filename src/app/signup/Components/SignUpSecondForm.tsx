@@ -107,7 +107,7 @@ export default function SignUpSecondForm({
           <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
         </div>
         <h2>Signup</h2>
-        <form>
+        <div className={styles.form}>
           {/* <Autocomplete
             apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
             name="address1"
@@ -264,7 +264,7 @@ export default function SignUpSecondForm({
             </p>
           ) : null
           }
-        </form>
+        </div>
 
         <button style={{ marginBottom: '10px' }}
           onClick={() => {

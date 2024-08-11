@@ -1,17 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./addGroup.module.scss";
-import people2 from "../../../public/assets/images/people2.png";
 import Image from "next/image";
-import people1 from "../../../public/assets/images/people1.png";
-import people3 from "../../../public/assets/images/people3.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/navigation";
 import { post, postFormData } from "@/api/base";
-import { toast } from "react-toastify";
-import { errorCheckAPIResponse } from "@/utils/helpers";
+import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import classNames from "classnames";
+import { useRouter } from "next/navigation";
 interface User {
   id: number;
   name: string;
@@ -26,19 +22,17 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
+  invitees: Yup.array()
+    .min(1, 'At least one invitee is required')
+    .required('Invitees are required'),
 });
 
-const usersData: User[] = [
-  { id: 1, name: "Marvin McKinney", imageUrl: "path/to/image1.jpg" },
-  { id: 2, name: "Ralph Edwards", imageUrl: "path/to/image2.jpg" },
-  { id: 3, name: "Leslie Alexander", imageUrl: "path/to/image3.jpg" },
-  { id: 4, name: "Jacob Jones", imageUrl: "path/to/image4.jpg" },
-  // Add more users as needed
-];
 export default function AddGroup() {
   const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [showModel, setShowModel] = useState(false);
+  const [peopleId, setPeopleId] = useState('')
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
       initialValues: {
@@ -54,7 +48,6 @@ export default function AddGroup() {
       onSubmit: (values) => {
         setIsLoading(true);
         const apiData = new FormData();
-
         if (values.avatar) {
           apiData.append("f_image", values.avatar);
         }
@@ -77,13 +70,13 @@ export default function AddGroup() {
         );
         postFormData(`group/create`, apiData)
           .then((res) => {
-            // getUserList()
-            toast.success(res.message);
+            router.push('/group')
+            const msg = { data: { message: 'Group create successfully' } }
+            successAPIResponse(msg)
             setIsLoading(false);
           })
           .catch((error) => {
             errorCheckAPIResponse(error);
-            // setIsLoading(false)
           });
       },
     });
@@ -132,12 +125,14 @@ export default function AddGroup() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div className="container">
         <div className={styles.addGroupContainer}>
           <div className={styles.groupFormContainer}>
             <div className={styles.avatarSection}>
-              <div className={styles.avatar}>
+              <div className={styles.avatar}
+                onClick={() => document.getElementById("avatarInput").click()}
+              >
                 <img
                   src={avatar ? avatar : "https://via.placeholder.com/150"}
                   alt="Avatar"
@@ -145,7 +140,6 @@ export default function AddGroup() {
                 />
                 <button
                   type="button"
-                  onClick={() => document.getElementById("avatarInput").click()}
                   className={styles.deleteAvatarButton}
                 >
                   🗑️
@@ -270,10 +264,10 @@ export default function AddGroup() {
                 ) : null}
               </div>
               <div className={styles.formGroup}>
-                <label htmlFor="invitePeople">Invite People</label>
+                <label htmlFor="invitees">Invite People</label>
                 <select
-                  id="invitePeople"
-                  name="invitePeople"
+                  id="invitees"
+                  name="invitees"
                   onChange={(e) => {
                     setValues({
                       ...values,
@@ -285,6 +279,7 @@ export default function AddGroup() {
                       ],
                     });
                   }}
+
                   value={""}
                 >
                   <option value="">Select</option>
@@ -296,8 +291,18 @@ export default function AddGroup() {
                     );
                   })}
                 </select>
+                {errors.invitees && touched.invitees ? (
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {errors.invitees}
+                    </p>
+                  ) : null}
                 <div className={styles.invitedPeople}>
-                  {values.invitees.map((invitee,key) => (
+                  {values.invitees.map((invitee, key) => (
                     <div className={styles.person} key={key}>
                       <Image
                         src={invitee.image}
@@ -318,12 +323,7 @@ export default function AddGroup() {
                           xmlns="http://www.w3.org/2000/svg"
                           onClick={() => {
                             setShowModel(true);
-                            // setValues({
-                            //   ...values,
-                            //   invitees: values.invitees.filter(
-                            //     (inv) => inv.id !== invitee.id
-                            //   ),
-                            // });
+                            setPeopleId(invitee.id)
                           }}
                         >
                           <g clip-path="url(#clip0_101_535)">
@@ -360,7 +360,11 @@ export default function AddGroup() {
                   Submit My Group
                 </button>
               ) : (
-                <button type="submit" className={styles.submitGroupButton}>
+                <button
+                  onClick={() => {
+                    handleSubmit()
+                  }}
+                  className={styles.submitGroupButton}>
                   Submit My Group
                 </button>
               )}
@@ -373,7 +377,10 @@ export default function AddGroup() {
           <div className={styles.modalContent}>
             <button
               className={styles.closeButton}
-              onClick={() => setShowModel(false)}
+              onClick={() => {
+                setShowModel(false)
+                setPeopleId('')
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -386,14 +393,27 @@ export default function AddGroup() {
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
               </svg>
             </button>
-            <h1>Are you sure you want to remove this user?</h1>
+            <h1>Are you sure you want to remove this people?</h1>
             <div className={styles.buttonGroup}>
-              <button>Yes</button>
-              <button onClick={() => setShowModel(false)}>No</button>
+              <button onClick={() => {
+                setValues({
+                  ...values,
+                  invitees: values.invitees.filter(
+                    (inv) => inv.id !== peopleId
+                  ),
+                });
+                setShowModel(false)
+                setPeopleId('')
+              }}>Yes</button>
+              <button onClick={() => {
+                setPeopleId('')
+                setShowModel(false)
+              }}
+              >No</button>
             </div>
           </div>
         </div>
       )}
-    </form>
+    </>
   );
 }

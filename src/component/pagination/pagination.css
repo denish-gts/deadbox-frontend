@@ -1,0 +1,19 @@
+button {
+  margin: 5px;
+  padding: 5px 10px;
+  /* width: 34px; */
+  cursor: pointer;
+}
+
+/* button:disabled {
+  background-color: #a288db;
+  border-radius: 15%;
+  color: white;
+}
+
+button:hover {
+  background-color: #6D31ed;
+  border-radius: 15%;
+  color: white;
+
+} */
