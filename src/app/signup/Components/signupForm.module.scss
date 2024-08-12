@@ -14,8 +14,8 @@
   .error_content {
     color: red;
     font-size: 12px !important;
-    margin-top: -10px!important;
-    margin-Bottom: 16px!important
+    margin-top: -10px !important;
+    margin-bottom: 16px !important;
   }
 
   .radiogroup {
@@ -25,12 +25,12 @@
     justify-content: space-between;
     margin-bottom: 12px;
     padding: 0 0 0 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: 1px solid #999999 !important;
     width: 100%;
-    height: 56px;
+    height: 50px;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 24px;
     color: #fff !important;
     background-color: #000 !important;
@@ -40,28 +40,25 @@
     display: flex;
     height: 100%;
   }
-span{
-  color: #ffffffb3 !important;
-
-}
+  span {
+    color: #f9f9f9 !important;
+  }
   .radiogroup label {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0px 20px;
     cursor: pointer;
-  color: #ffffffb3 !important;
+    color: #f9f9f9 !important;
     background-color: transparent;
-    transition:
-      background-color 0.3s,
-      color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
   }
 
   .radiogroup input[type="radio"] {
     display: none;
   }
 
-  .radiogroup input[type="radio"]:checked+label {
+  .radiogroup input[type="radio"]:checked + label {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
@@ -74,7 +71,7 @@ span{
   .formContainer {
     background: #000;
     padding: 2rem 0px;
-    max-width: 478px;
+    min-width: 500px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -105,31 +102,61 @@ span{
       margin-bottom: 1rem;
       padding: 60px 0 0 0;
     }
-
+    .avatarupload {
+      position: relative;
+      background: #504f56;
+      border-radius: 50%;
+      height: 130px;
+      width: 130px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .aa {
+        border-radius: 50%;
+      }
+      .avataricon {
+        width: 80%;
+        height: 80%;
+        // background-color: #4a4a4a;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+    }
     .avatarContainer {
-      // display: flex;
-      // justify-content: center;
-      // align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 1rem;
 
       margin-top: 20px;
-
+      .aa {
+        border-radius: 50%;
+      }
       .avatar {
-        // position: relative;
-        // background: #444;
-        // border-radius: 50%;
-        // width: 100px;
-        // height: 100px;
-        // display: flex;
-        // justify-content: center;
-        // align-items: center;
+        position: relative;
+        background: #444;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
         // overflow: hidden;
-.aa{
-  height: 120px;
-  width: 120px;
-  border-radius: 50%;
-}
+        .aa {
+          height: 120px;
+          width: 120px;
+          border-radius: 50%;
+        }
         img {
           width: 120px;
           height: 120px;
@@ -167,19 +194,14 @@ span{
       input,
       select {
         padding: 0 20px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         border: 1px solid #999999 !important;
         width: 100%;
-        height: 56px;
+        height: 50px;
         border-radius: 5px;
-        font-size: 18px;
+        font-size: 14px;
         line-height: 24px;
         background-color: #000 !important;
-      }
-
-      input,
-      select::placeholder {
-        color: rgba(255, 255, 255, 0.7) !important;
       }
 
       input[type="checkbox"] {
@@ -196,8 +218,8 @@ span{
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        height: 56px;
-        font-size: 20px;
+        height: 45px;
+        font-size: 16px;
         line-height: 24px;
         letter-spacing: 2%;
       }
@@ -205,7 +227,7 @@ span{
 
     p {
       margin-top: 1rem;
-      font-size: 18px;
+      font-size: 14px;
       line-height: 21px;
 
       a {
@@ -218,6 +240,7 @@ span{
       font-size: 14px;
       line-height: 21px;
       padding: 0 0 0 8px;
+      color: #f9f9f9 !important;
     }
   }
 
@@ -239,9 +262,8 @@ span{
 
 .checkboxContainer {
   margin-bottom: 10px;
-  label{
-  color: #ffffffb3 !important;
-
+  label {
+    color: #ffffffb3 !important;
   }
 }
 
@@ -256,10 +278,6 @@ span{
     width: 0;
     height: 0;
   }
-  label{
-  color: #ffffffb3 !important;
-
-  }
 
   .checkmark {
     position: absolute;
@@ -272,7 +290,7 @@ span{
     border: 2px solid #7f7f7f; // Border color
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       display: none;
       left: 8px;
@@ -285,7 +303,7 @@ span{
     }
   }
 
-  input:checked+.checkmark {
+  input:checked + .checkmark {
     background-color: #2c2c2c; // Background color when checked
     border-color: #7f7f7f; // Border color when checked
 
@@ -294,7 +312,7 @@ span{
     }
   }
 
-  input:hover+.checkmark {
+  input:hover + .checkmark {
     border-color: #a5a5a5; // Border color on hover
   }
 }

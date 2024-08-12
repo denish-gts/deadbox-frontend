@@ -58,16 +58,25 @@ img {
 
 input,
 select,
+option,
+date,
+tel,date,
 textarea {
   background: transparent !important;
   border: 1px solid #ccc !important;
   border-radius: 10px;
-  color: #ffffffb3 !important;
+  color: #f9f9f9 !important;
   padding: 10px !important;
 }
+
 ::placeholder {
-  color: #ccc !important;
+  color:#f9f9f9 !important;
 }
+
+option{
+  color: #f9f9f9 !important;
+}
+
 
 .container {
   max-width: 1440px;
