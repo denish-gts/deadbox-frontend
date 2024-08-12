@@ -75,12 +75,11 @@
         border-radius: 5px;
         font-size: 18px;
         line-height: 24px;
-        color: #fff !important;
         background-color: #000 !important;
       }
 
       input,
-      select::placeholder {
+      select {
         color: rgba(255, 255, 255, 0.7) !important;
       }
 
@@ -274,6 +273,7 @@
   .selectbox {
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: #ffffffb3 !important;
     padding: 10px;
     display: flex;
     justify-content: space-between;

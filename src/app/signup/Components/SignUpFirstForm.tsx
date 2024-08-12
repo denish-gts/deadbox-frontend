@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./signupForm.module.scss";
-const UserIcon = "/assets/images/1.png";
+const UserIcon = "/assets/images/user1.png";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin1.jpg";
 
@@ -36,11 +36,11 @@ export default function SignUpFirstForm({
               onClick={() => document.getElementById("avatarInput").click()}
             >
               {avatar ? (
-                <img src={avatar} alt="Avatar" />
+                <img src={avatar} alt="Avatar" className={styles.aa} />
               ) : (
                 <img src={UserIcon} alt="User Icon" />
               )}
-              <div className={styles.plusIcon}>+</div>
+              {/* <div className={styles.plusIcon}>+</div> */}
             </div>
             <input
               id="avatarInput"
