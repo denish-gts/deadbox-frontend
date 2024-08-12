@@ -23,7 +23,7 @@ const validationSchemaSecond = Yup.object().shape({
   zipcode: Yup.string().required("Zipcode is required."),
   about: Yup.string().required("About Us is required."),
   gender: Yup.string().required("Gender is required."),
-  country_title: Yup.string().required("Country Us is required."),
+  country_title: Yup.string().required("Country is required."),
   city_title: Yup.string().required("City is required."),
   sign_name: Yup.string().required("Sign is required."),
   // address1: Yup.string().required("Address is required."),
