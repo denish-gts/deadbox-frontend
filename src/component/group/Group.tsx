@@ -118,6 +118,16 @@ export default function Group() {
               <p>Manage your selected groups</p>
             </div>
             <div className={styles.searchContainer}>
+              <div>
+                <select>
+                  <option value="all">All</option>
+                  <option value="deadbox">Dead Box</option>
+                  <option value="saas">SAS</option>
+                  <option value="general_private">General Private</option>
+                  <option value="general_public">General Public</option>
+                </select>
+
+              </div>
               <input
                 type="text"
                 placeholder="Search by groups name"
