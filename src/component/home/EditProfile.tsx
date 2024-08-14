@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Pencil from "../../../public/assets/images/pencils.png";
 import Delete from "../../../public/assets/images/delete.svg";
 import Image from "next/image";
+import Loader from "../common/Loader";
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
@@ -86,7 +87,6 @@ export default function EditProfile() {
           });
       },
     });
-  console.log('errorserrorserrorserrorserrorserrors', errors);
 
   const getUserData = () => {
     post(`user/get-profile`)
@@ -171,6 +171,9 @@ export default function EditProfile() {
 
   return (
     <div className={styles.editProfileContainer}>
+      {isLoading && (
+        <Loader />
+      )}
       <div className={styles.profileFormContainer}>
         <div className={styles.avatarSection}
           onClick={() => document.getElementById("avatarInput").click()}

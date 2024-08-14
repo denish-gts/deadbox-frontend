@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { axiosInstance } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
+import Loader from "@/component/common/Loader";
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
@@ -36,7 +37,7 @@ const validationSchemaSecond = Yup.object().shape({
 export default function Signup() {
   const router = useRouter();
   const [firstOpen, setFirstOpen] = useState(true);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       first_name: "",
@@ -72,7 +73,7 @@ export default function Signup() {
       validationSchema: validationSchemaSecond,
       onSubmit: (values) => {
         const allData = { ...formik?.values, ...values }
-        // setIsLoading(true);
+        setIsLoading(true);
         const apiData = new FormData();
 
         if (allData.avatar) {
@@ -108,9 +109,9 @@ export default function Signup() {
         axiosInstance.post(`auth/sign-up`, apiData).then((res) => {
           successAPIResponse(res);
           router.push('/magic')
-          // setIsLoading(false);
+          setIsLoading(false);
         }).catch((error) => {
-          // setIsLoading(false);
+          setIsLoading(false);
           errorCheckAPIResponse(error)
         });
       },
@@ -120,6 +121,9 @@ export default function Signup() {
 
   return (
     <div>
+      {isLoading && (
+        <Loader />
+      )}
       {firstOpen ? (
         <SignUpFirstForm
           formik={formik}

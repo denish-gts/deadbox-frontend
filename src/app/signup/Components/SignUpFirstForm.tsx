@@ -23,7 +23,7 @@ export default function SignUpFirstForm({
   };
 
   return (
-    <form>
+    <>
       <div className={styles.signupSection}>
         <div className={styles.formContainer}>
           <div className={styles.logo}>
@@ -184,6 +184,6 @@ export default function SignUpFirstForm({
           <Image src={BG} alt="Background" unoptimized height={0} width={0} />
         </div>
       </div>
-    </form>
+    </>
   );
 }

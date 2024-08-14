@@ -8,6 +8,8 @@ import { post, postFormData } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
+import Loader from "../common/Loader";
+
 interface User {
   id: number;
   name: string;
@@ -127,6 +129,9 @@ export default function AddGroup() {
   return (
     <>
       <div className="container">
+      {isLoading && (
+        <Loader />
+      )}
         <div className={styles.addGroupContainer}>
           <div className={styles.groupFormContainer}>
             <div className={styles.avatarSection}>

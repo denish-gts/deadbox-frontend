@@ -7,6 +7,7 @@ import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/utils/auth.util";
 import Pagination from "../pagination/index";
+import Loader from "../common/Loader";
 
 interface Group {
   id: number;
@@ -32,6 +33,7 @@ export default function Group() {
   const [pagination, setPagination] = useState({});
   const initialFilterData = { page: 1, per_page: 10 };
   const [filterData, setFilterData] = useState(initialFilterData);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -43,7 +45,6 @@ export default function Group() {
       return { ...pre, page };
     });
   };
-  console.log('userIDuserIDuserIDuserIDuserID', userID);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -66,6 +67,8 @@ export default function Group() {
         "admin_approval_status": null //0=>Pending,1=>Approved,2=>Declined
     }
     }
+    setIsLoading(true)
+
     post(`group/paginate-my-groups`,payload)
       .then((data: any) => {
         const responce = data.data?.data
@@ -74,10 +77,11 @@ export default function Group() {
         }
         setPagination(paginations);
         setGroups(responce?.list);
+        setIsLoading(false)
       })
       .catch((error) => {
         errorCheckAPIResponse(error);
-        // setIsLoading(false)
+        setIsLoading(false)
       });
   }
   useEffect(() => {
@@ -89,6 +93,8 @@ export default function Group() {
         "group_id": groupId,
         "user_id": userID
       }
+      setIsLoading(true)
+
       post(`group-member/remove`, body)
         .then((data: any) => {
           getGroup()
@@ -96,12 +102,13 @@ export default function Group() {
           setShowModel(false)
           const msg = { data: { message: 'Group remove successfully' } }
           successAPIResponse(msg)
+          setIsLoading(false)
         })
         .catch((error) => {
           setGroupId('')
           setShowModel(false)
           errorCheckAPIResponse(error);
-          // setIsLoading(false)
+          setIsLoading(false)
         });
     }
   }
@@ -110,7 +117,9 @@ export default function Group() {
   return (
     <>
       <div className="container">
-
+      {isLoading && (
+        <Loader />
+      )}
         <div className={styles.myGroups}>
           <div className={styles.flexs}>
             <div className="">

@@ -8,24 +8,31 @@ import PeopleYouMayKnowSection from "./PeopleYouMayKnowSection";
 // import EditProfile from "./EditProfile";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 import { post } from "@/api/base";
+import Loader from "../common/Loader";
 
 
 const Myprofile = () => {
   const [userData, setuserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true)
+
     post(`user/get-profile`)
       .then((res) => {
         setuserData(res?.data?.data);
-        // setIsLoading(false)
+        setIsLoading(false)
       })
       .catch((error) => {
         errorCheckAPIResponse(error);
-        // setIsLoading(false)
+        setIsLoading(false)
       });
   }, []);
   return (
     <div>
+      {isLoading && (
+        <Loader />
+      )}
       <ProfileSection
         userData={userData}
       />

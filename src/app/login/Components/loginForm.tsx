@@ -9,7 +9,7 @@ import { signIn, useSession } from "next-auth/react";
 import { setToken, setUserInfo } from "@/utils/auth.util";
 import { axiosInstance, BASE_URL } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
-// import Loader from "@/component/loader";
+import Loader from "@/component/common/Loader";
 import { useRouter } from "next/navigation";
 import { resolve } from "styled-jsx/macro";
 const MailIcon = "/assets/icons/mail-icon.svg";
@@ -67,6 +67,9 @@ export default function LoginForm() {
 
   return (
     <div className={styles.signupSection}>
+      {isLoading && (
+        <Loader />
+      )}
       <div className={styles.formContainer}>
         <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
