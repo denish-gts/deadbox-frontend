@@ -46,15 +46,9 @@ export default function Magic() {
             <h2>Magic Link Sent</h2>
             <p>
               We have just emailed a confirmation link at the email address you
-              just provided. Click to complete your sign up process!
+              just provided. Click to sign in process!
             </p>
 
-            <div
-              className={styles.signUpButton}
-              onClick={() => router.push("/signup")}
-            >
-              <button>Sign Up</button>
-            </div>
           </div>
         </div>
       </div>

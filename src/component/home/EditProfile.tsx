@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
   phone: Yup.number().typeError('Please enter numbur value.')
     .positive('Must be a positive number.').required("Mobile no is required."),
   gender: Yup.string().required("Gender is required."),
-  country_title: Yup.string().required("Country Us is required."),
+  country_title: Yup.string().required("Country is required."),
   city_title: Yup.string().required("City is required."),
   sign_name: Yup.string().required("Sign is required."),
   state_title: Yup.string().required("State is required."),
