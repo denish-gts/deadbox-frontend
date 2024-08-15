@@ -1,14 +1,15 @@
 
 import Group from "@/component/group/Group";
-import Head from 'next/head';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My Groups",
+};
 
 export default function Page() {
 
   return (
-    <>    <Head>
-    <meta name="description" content="Homepage description" />
-    <title>Homepage Title</title>
-  </Head>
+    <>    
     <Group/> 
     </>
  );

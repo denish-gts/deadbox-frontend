@@ -110,22 +110,6 @@ export default function AddGroup() {
     getUserList();
   }, []);
 
-  const handleInvite = (user: User) => {
-    if (!values.invitees.find((invitee) => invitee.id === user.id)) {
-      setValues((prevData) => ({
-        ...prevData,
-        invitees: [...prevData.invitees, user],
-      }));
-    }
-  };
-
-  const handleRemoveInvite = (userId: number) => {
-    setValues((prevData) => ({
-      ...prevData,
-      invitees: prevData.invitees.filter((invitee) => invitee.id !== userId),
-    }));
-  };
-
   return (
     <>
       <div className="container">
@@ -303,7 +287,7 @@ export default function AddGroup() {
                         fontSize: "12px",
                       }}
                     >
-                      {errors.invitees}
+                      {errors.invitees as any}
                     </p>
                   ) : null}
                 <div className={styles.invitedPeople}>
