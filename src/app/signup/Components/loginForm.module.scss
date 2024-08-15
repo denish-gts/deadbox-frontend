@@ -68,20 +68,19 @@
       input,
       select {
         padding: 0 20px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         border: 1px solid #999999 !important;
         width: 100%;
-        height: 56px;
+        height: 50px;
         border-radius: 5px;
-        font-size: 18px;
+        font-size: 14px;
         line-height: 24px;
-        color: #fff !important;
         background-color: #000 !important;
       }
 
       input,
-      select::placeholder {
-        color: rgba(255, 255, 255, 0.7) !important;
+      select {
+        color: #f9f9f9 !important
       }
 
       input[type="checkbox"] {
@@ -92,13 +91,13 @@
       }
 
       textarea {
-        font-size: 18px;
+        font-size: 14px;
         line-height: 24px;
         color: #fff !important;
       }
 
       textarea {
-        height: 100px;
+        height: 90px;
         resize: none;
       }
 
@@ -272,15 +271,17 @@
   position: relative;
 
   .selectbox {
+    font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: #f9f9f9 !important;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     background-color: #000;
-    height: 56px;
+    height: 50px;
 
     .arrow {
       margin-left: 10px;
@@ -297,6 +298,7 @@
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
+    font-size: 14px;
     margin-top: 5px;
 
     .option {
@@ -312,9 +314,10 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-        align-items: baseline;
+        align-items: center;
 
         input {
+          margin: 0;
           margin-right: 10px;
         }
       }

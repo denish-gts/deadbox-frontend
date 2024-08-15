@@ -37,15 +37,17 @@
   }
 }
 
+
 .avatarSection {
   display: flex;
   justify-content: center;
-  width: 260px;
-  height: 260px;
   position: relative;
+  height: 260px;
+  width: 260px;
   @include breakpoint("sm-max") {
-    justify-content: flex-start;
-    width: 100%;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
   }
 }
 
@@ -53,19 +55,28 @@
   position: relative;
   width: 100%;
   height: 100%;
+  background: linear-gradient(180deg, rgba(239, 239, 239, 0.5) 0%, rgba(137, 137, 137, 0.5) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatarImage {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
   object-fit: cover;
+  @include breakpoint("sm-max") {
+    width: 120px;
+    height: 120px;
+  }
 }
 
 .deleteAvatarButton {
   position: absolute;
-  bottom: -12px;
-  right: 15px;
+  bottom: 0;
+  right: 38px;
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 50%;
@@ -74,6 +85,44 @@
   height: 30px;
   cursor: pointer;
 }
+
+// .avatarSection {
+//   display: flex;
+//   justify-content: center;
+//   width: 260px;
+//   height: 260px;
+//   position: relative;
+//   @include breakpoint("sm-max") {
+//     justify-content: flex-start;
+//     width: 100%;
+//   }
+// }
+
+// .avatar {
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+// }
+
+// .avatarImage {
+//   width: 100%;
+//   height: 100%;
+//   border-radius: 10px;
+//   object-fit: cover;
+// }
+
+// .deleteAvatarButton {
+//   position: absolute;
+//   bottom: -12px;
+//   right: 15px;
+//   background-color: #fff;
+//   border: 1px solid #e0e0e0;
+//   border-radius: 50%;
+//   padding: 5px;
+//   width: 30px;
+//   height: 30px;
+//   cursor: pointer;
+// }
 
 .formSection {
   width: 75%;

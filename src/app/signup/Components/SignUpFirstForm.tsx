@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./signupForm.module.scss";
-const UserIcon = "/assets/images/1.png";
+const UserIcon = "/assets/images/user1.png";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin1.jpg";
 
@@ -30,17 +30,16 @@ export default function SignUpFirstForm({
             <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
           </div>
           <h2>Signup</h2>
-          <div className={styles.avatarContainer}>
+          {/* <div className={styles.avatarContainer}>
             <div
               className={styles.avatar}
               onClick={() => document.getElementById("avatarInput").click()}
             >
               {avatar ? (
-                <img src={avatar} alt="Avatar" />
+                <img src={avatar} alt="Avatar" className={styles.aa} />
               ) : (
                 <img src={UserIcon} alt="User Icon" />
               )}
-              <div className={styles.plusIcon}>+</div>
             </div>
             <input
               id="avatarInput"
@@ -49,7 +48,24 @@ export default function SignUpFirstForm({
               style={{ display: "none" }}
               onChange={handleAvatarChange}
             />
-          </div>
+          </div> */}
+
+          <div className={styles.avatarupload}>
+      <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
+      {avatar ? (
+                <img src={avatar} alt="Avatar" className={styles.aa} />
+              ) : (
+                <img src={UserIcon} alt="User Icon" />
+              )}
+      <input
+              id="avatarInput"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleAvatarChange}
+            />
+      </div>
+    </div>
 
           <div className={styles.form}>
             <div className={styles.twoGrid}>

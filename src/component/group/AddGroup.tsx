@@ -10,6 +10,8 @@ import classNames from "classnames";
 import { useRouter } from "next/navigation";
 import Loader from "../common/Loader";
 
+import Pencil from "../../../public/assets/images/pencils.png";
+import Delete from "../../../public/assets/images/delete.svg";
 interface User {
   id: number;
   name: string;
@@ -118,7 +120,38 @@ export default function AddGroup() {
       )}
         <div className={styles.addGroupContainer}>
           <div className={styles.groupFormContainer}>
-            <div className={styles.avatarSection}>
+          <div className={styles.avatarSection}
+          onClick={() => document.getElementById("avatarInput").click()}
+        >
+          <div className={styles.avatar}>
+            <img
+              src={avatar ? avatar : "https://via.placeholder.com/150"}
+              alt="Avatar"
+              className={styles.avatarImage}
+            />
+            <button
+              className={styles.deleteAvatarButton}
+              onClick={() => document.getElementById("avatarInput").click()}
+            >
+              {
+                !avatar ? <>
+                  <Image src={Pencil} alt="Pencil" />
+                </> : <>
+                  <Image src={Delete} alt="Delete" />
+
+                </>
+              }
+            </button>
+          </div>
+          <input
+            id="avatarInput"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={(e) => { handleAvatarChange(e) }}
+          />
+        </div>
+            {/* <div className={styles.avatarSection}>
               <div className={styles.avatar}
                 onClick={() => document.getElementById("avatarInput").click()}
               >
@@ -141,7 +174,7 @@ export default function AddGroup() {
                 style={{ display: "none" }}
                 onChange={handleAvatarChange}
               />
-            </div>
+            </div> */}
             <div className={styles.formSection}>
               <h1 className={styles.header}>Add New Group</h1>
 

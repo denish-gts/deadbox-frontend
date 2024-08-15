@@ -59,11 +59,35 @@
 
 .searchContainer input {
   padding: 10px;
+  color: #000 !important;
   border: 1px solid #ccc;
   border-radius: 5px;
   @include breakpoint("sm-max") {
     width: 100%;
   }
+  &::placeholder {
+    color: #000 !important;
+  }
+}
+.searchContainer option {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #000;
+  @include breakpoint("sm-max") {
+    width: 100%;
+  }
+
+}
+.searchContainer select {
+  padding: 10px;
+  height: 46px !important;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  @include breakpoint("sm-max") {
+    width: 100%;
+  }
+  color: #000 !important;
 }
 
 .addNewGroupButton {
