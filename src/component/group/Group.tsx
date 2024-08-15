@@ -25,13 +25,12 @@ interface Group {
 
 export default function Group() {
   const [groups, setGroups] = useState<Group[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const [showModel, setShowModel] = useState(false);
   const [userID, setUserID] = useState('')
   const [groupId, setGroupId] = useState('')
   const [pagination, setPagination] = useState({});
-  const initialFilterData = { page: 1, per_page: 10 };
+  const initialFilterData = { page: 1, per_page: 10, title: '', group_type: '' };
   const [filterData, setFilterData] = useState(initialFilterData);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,6 +39,7 @@ export default function Group() {
       setUserID(getUserInfo()?.id)
     }
   }, [router])
+
   const handleClick = (page) => {
     setFilterData((pre) => {
       return { ...pre, page };
@@ -47,29 +47,27 @@ export default function Group() {
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setFilterData((pre) => {
+      return { ...pre, title: e.target.value?.toLowerCase() }
+    })
   };
 
-  const filteredGroups = groups?.filter((group) =>
-    group?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  );
-
   const getGroup = () => {
-    const payload={
+    const payload = {
       "paginate": {
         ...filterData,
         "order": "DESC",
         "order_by": "group.created"
-    },
-    "filter": {
-        "title": null,
-        "group_type": null, //deadbox, saas, general_private, general_public
-        "admin_approval_status": null //0=>Pending,1=>Approved,2=>Declined
-    }
+      },
+      "filter": {
+        "title": (filterData?.title || null),
+        "group_type": (filterData?.group_type || null),
+        "admin_approval_status": null
+      }
     }
     setIsLoading(true)
 
-    post(`group/paginate-my-groups`,payload)
+    post(`group/paginate-my-groups`, payload)
       .then((data: any) => {
         const responce = data.data?.data
         const paginations = {
@@ -112,14 +110,21 @@ export default function Group() {
         });
     }
   }
-  console.log('filterDatafilterDatafilterDatafilterData', filterData);
+
+  const handleChangeGroupType = (e) => {
+    console.log('ffffffffffffffffffffffffffffffff', e.target.value);
+    setFilterData((pre) => {
+      return { ...pre, group_type: e.target.value }
+    })
+
+  }
 
   return (
     <>
       <div className="container">
-      {isLoading && (
-        <Loader />
-      )}
+        {isLoading && (
+          <Loader />
+        )}
         <div className={styles.myGroups}>
           <div className={styles.flexs}>
             <div className="">
@@ -128,8 +133,8 @@ export default function Group() {
             </div>
             <div className={styles.searchContainer}>
               <div>
-                <select>
-                  <option value="all">All</option>
+                <select onChange={(e) => handleChangeGroupType(e)} value={filterData?.group_type}>
+                  <option value="">Select Group Type</option>
                   <option value="deadbox">Dead Box</option>
                   <option value="saas">SAS</option>
                   <option value="general_private">General Private</option>
@@ -140,7 +145,7 @@ export default function Group() {
               <input
                 type="text"
                 placeholder="Search by groups name"
-                value={searchTerm}
+                value={filterData?.title}
                 onChange={handleSearchChange}
               />
               <button
@@ -165,7 +170,7 @@ export default function Group() {
               </tr>
             </thead>
             <tbody>
-              {filteredGroups?.map((group) => (
+              {groups?.map((group) => (
                 <tr key={group?.id}>
                   <td>
                     <input type="checkbox" />
@@ -201,14 +206,17 @@ export default function Group() {
               ))}
             </tbody>
           </table>
-          <div className={styles.pagination}>
-            {/* <button disabled>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button>
-            <button>5</button> */}
-            <Pagination pagination={pagination} handleClick={handleClick} />
-          </div>
+          {groups?.length === 0 && (
+            <div style={{
+              textAlign: 'center',
+              paddingTop: '20px'
+            }}> No data Avilable</div>
+          )}
+          {groups?.length > 0 && (
+            <div className={styles.pagination}>
+              <Pagination pagination={pagination} handleClick={handleClick} />
+            </div>
+          )}
         </div>
       </div>
       {showModel && (
