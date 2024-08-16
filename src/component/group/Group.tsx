@@ -43,7 +43,6 @@ export default function Group() {
       return { ...pre, page };
     });
   };
-  console.log('userIDuserIDuserIDuserIDuserID', userID);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -105,11 +104,10 @@ export default function Group() {
         });
     }
   }
-  console.log('filterDatafilterDatafilterDatafilterData', filterData);
 
   return (
     <>
-      <div className="container">
+
 
         <div className={styles.myGroups}>
           <div className={styles.flexs}>
@@ -191,7 +189,6 @@ export default function Group() {
             <Pagination pagination={pagination} handleClick={handleClick} />
           </div>
         </div>
-      </div>
       {showModel && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
