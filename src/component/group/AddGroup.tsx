@@ -17,12 +17,15 @@ interface User {
   name: string;
   imageUrl: string;
 }
+const phoneRegExp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 
 const validationSchema = Yup.object().shape({
-  groupName: Yup.string().required("First Name is required."),
-  groupType: Yup.string().required("First Name is required."),
-  phone: Yup.string().required("First Name is required."),
-  about: Yup.string().required("First Name is required."),
+  groupName: Yup.string().required("Group Name is required."),
+  groupType: Yup.string().required("Group Type is required."),
+  phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid')
+    .required('Phone number is required'),
+  phone_code: Yup.string().required("Country code is required."),
+  about: Yup.string().required("About is required."),
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
@@ -43,6 +46,7 @@ export default function AddGroup() {
         groupName: "",
         groupType: "",
         phone: "",
+        phone_code: '',
         email: "",
         about: "",
         invitees: [],
@@ -58,6 +62,7 @@ export default function AddGroup() {
         apiData.append("title", values.groupName);
         apiData.append("group_type", values.groupType);
         apiData.append("phone", values.phone);
+        apiData.append("phone_code", values.phone_code);
         apiData.append("email", values.email);
         apiData.append("description", values.about);
 
@@ -75,7 +80,7 @@ export default function AddGroup() {
         postFormData(`group/create`, apiData)
           .then((res) => {
             router.push('/group')
-            const msg = { data: { message: 'Group create successfully' } }
+            const msg = { data: { message: 'Your group is created and sent for the approval to the admin' } }
             successAPIResponse(msg)
             setIsLoading(false);
           })
@@ -115,42 +120,42 @@ export default function AddGroup() {
   return (
     <>
       <div className="container">
-      {isLoading && (
-        <Loader />
-      )}
+        {isLoading && (
+          <Loader />
+        )}
         <div className={styles.addGroupContainer}>
           <div className={styles.groupFormContainer}>
-          <div className={styles.avatarSection}
-          onClick={() => document.getElementById("avatarInput").click()}
-        >
-          <div className={styles.avatar}>
-            <img
-              src={avatar ? avatar : "https://via.placeholder.com/150"}
-              alt="Avatar"
-              className={styles.avatarImage}
-            />
-            <button
-              className={styles.deleteAvatarButton}
+            <div className={styles.avatarSection}
               onClick={() => document.getElementById("avatarInput").click()}
             >
-              {
-                !avatar ? <>
-                  <Image src={Pencil} alt="Pencil" />
-                </> : <>
-                  <Image src={Delete} alt="Delete" />
+              <div className={styles.avatar}>
+                <img
+                  src={avatar ? avatar : "https://via.placeholder.com/150"}
+                  alt="Avatar"
+                  className={styles.avatarImage}
+                />
+                <button
+                  className={styles.deleteAvatarButton}
+                  onClick={() => document.getElementById("avatarInput").click()}
+                >
+                  {
+                    !avatar ? <>
+                      <Image src={Pencil} alt="Pencil" />
+                    </> : <>
+                      <Image src={Delete} alt="Delete" />
 
-                </>
-              }
-            </button>
-          </div>
-          <input
-            id="avatarInput"
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={(e) => { handleAvatarChange(e) }}
-          />
-        </div>
+                    </>
+                  }
+                </button>
+              </div>
+              <input
+                id="avatarInput"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={(e) => { handleAvatarChange(e) }}
+              />
+            </div>
             {/* <div className={styles.avatarSection}>
               <div className={styles.avatar}
                 onClick={() => document.getElementById("avatarInput").click()}
@@ -224,11 +229,49 @@ export default function AddGroup() {
                   ) : null}
                 </div>
               </div>
+              {/* <select
+              name="phone_code"
+              onChange={handleChange}
+              value={values.phone_code}
+            >
+              <option value="">Select Country Code</option>
+              <option value="+1">+1</option>
+              <option value="+44">+44</option>
+            </select>
+            {errors.phone_code && touched.phone_code ? (
+              <p className={styles.error_content}>
+                {errors.phone_code}
+              </p>
+            ) : null} */}
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="phone">Phone</label>
+                  <select
+                    name="phone_code"
+                    onChange={handleChange}
+                    value={values.phone_code}
+                  >
+                    <option value="">Select Country Code</option>
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                  </select>
+                  {errors.phone_code && touched.phone_code ? (
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {errors.phone_code}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <input
-                    type="text"
+                    type="number"
                     id="phone"
                     name="phone"
                     onChange={handleChange}
@@ -314,15 +357,15 @@ export default function AddGroup() {
                   })}
                 </select>
                 {errors.invitees && touched.invitees ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {errors.invitees as any}
-                    </p>
-                  ) : null}
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errors.invitees as any}
+                  </p>
+                ) : null}
                 <div className={styles.invitedPeople}>
                   {values.invitees.map((invitee, key) => (
                     <div className={styles.person} key={key}>
