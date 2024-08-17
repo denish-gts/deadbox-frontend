@@ -1,0 +1,18 @@
+@import "../../scss/index.scss";
+
+.tabsContainer {
+  display: flex !important;
+  font-size: 15px;
+  flex-direction: column;
+  div {
+    padding: 20px 20px;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}
+
+.active {
+  color: #e74c3c;
+  border-bottom: 1px solid #e74c3c;
+}

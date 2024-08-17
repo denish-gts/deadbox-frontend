@@ -121,7 +121,7 @@ export default function Group() {
 
   return (
     <>
-      <div className="container">
+      {/* <div className="container"> */}
         {isLoading && (
           <Loader />
         )}
@@ -218,7 +218,7 @@ export default function Group() {
             </div>
           )}
         </div>
-      </div>
+      {/* </div> */}
       {showModel && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>

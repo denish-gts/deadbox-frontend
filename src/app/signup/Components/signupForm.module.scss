@@ -3,6 +3,7 @@
 .signupSection {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  height: 100vh;
 
   @include breakpoint("md-max") {
     grid-template-columns: 1fr;
