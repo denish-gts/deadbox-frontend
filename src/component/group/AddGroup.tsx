@@ -45,7 +45,7 @@ export default function AddGroup() {
     useFormik({
       initialValues: {
         groupName: "",
-        groupType: "",
+        groupType: "deadbox",
         phone: "",
         phone_code: "",
         email: "",
@@ -73,7 +73,7 @@ export default function AddGroup() {
             values.invitees.map((item) => {
               return {
                 user_id: item.id,
-                role_id: "1",
+                role_id: item?.role_id,
               };
             })
           )
@@ -123,64 +123,123 @@ export default function AddGroup() {
     getUserList();
   }, []);
 
-  const [members, setMembers] = useState([
-    {
-      name: "Marvin McKinney",
-      email: "marvinmckinney@gmail.com",
-      activeOn: "17/07/2024",
-      role: "Member",
-      roleColor: "#6ccf51", // Green
-      avatar: "path/to/avatar1.jpg",
-    },
-    {
-      name: "Jerome Bell",
-      email: "jeromebell@gmail.com",
-      activeOn: "16/07/2024",
-      role: "President",
-      roleColor: "#f44336", // Red
-      avatar: "path/to/avatar2.jpg",
-    },
-    {
-      name: "Bessie Cooper",
-      email: "bessiecooper@gmail.com",
-      activeOn: "16/07/2024",
-      role: "Recruiter",
-      roleColor: "#ffa726", // Orange
-      avatar: "path/to/avatar3.jpg",
-    },
-    {
-      name: "Brooklyn Simmons",
-      email: "brooklynsimmons@gmail.com",
-      activeOn: "16/07/2024",
-      role: "Squad-Leader",
-      roleColor: "#ffa726", // Orange
-      avatar: "path/to/avatar4.jpg",
-    },
-    {
-      name: "Guy Hawkins",
-      email: "guyhawkins@gmail.com",
-      activeOn: "15/07/2024",
-      role: "Vice President",
-      roleColor: "#f44336", // Red
-      avatar: "path/to/avatar5.jpg",
-    },
-  ]);
+  // const [members, setMembers] = useState([
+  //   {
+  //     name: "Marvin McKinney",
+  //     email: "marvinmckinney@gmail.com",
+  //     activeOn: "17/07/2024",
+  //     role: "Member",
+  //     roleColor: "#6ccf51", // Green
+  //     avatar: "path/to/avatar1.jpg",
+  //   },
+  //   {
+  //     name: "Jerome Bell",
+  //     email: "jeromebell@gmail.com",
+  //     activeOn: "16/07/2024",
+  //     role: "President",
+  //     roleColor: "#f44336", // Red
+  //     avatar: "path/to/avatar2.jpg",
+  //   },
+  //   {
+  //     name: "Bessie Cooper",
+  //     email: "bessiecooper@gmail.com",
+  //     activeOn: "16/07/2024",
+  //     role: "Recruiter",
+  //     roleColor: "#ffa726", // Orange
+  //     avatar: "path/to/avatar3.jpg",
+  //   },
+  //   {
+  //     name: "Brooklyn Simmons",
+  //     email: "brooklynsimmons@gmail.com",
+  //     activeOn: "16/07/2024",
+  //     role: "Squad-Leader",
+  //     roleColor: "#ffa726", // Orange
+  //     avatar: "path/to/avatar4.jpg",
+  //   },
+  //   {
+  //     name: "Guy Hawkins",
+  //     email: "guyhawkins@gmail.com",
+  //     activeOn: "15/07/2024",
+  //     role: "Vice President",
+  //     roleColor: "#f44336", // Red
+  //     avatar: "path/to/avatar5.jpg",
+  //   },
+  // ]);
 
-  const roles = [
-    "Member",
-    "President",
-    "Recruiter",
-    "Squad-Leader",
-    "Vice President",
-  ];
+  // const roles = [
+  //   "Member",
+  //   "President",
+  //   "Recruiter",
+  //   "Squad-Leader",
+  //   "Vice President",
+  // ];
 
-  const handleRoleChange = (index, newRole) => {
-    const updatedMembers = members.map((member, i) =>
-      i === index ? { ...member, role: newRole } : member
-    );
-    setMembers(updatedMembers);
-  };
+  // const handleRoleChange = (index, newRole) => {
+  //   const updatedMembers = members.map((member, i) =>
+  //     i === index ? { ...member, role: newRole } : member
+  //   );
+  //   setMembers(updatedMembers);
+  // };
+  const DadboxRoles = [
+    {
+      lable: 'Admin',
+      value: 1
+    },
+    {
+      lable: 'Member',
+      value: 2,
+      color: 'green'
+    }]
+  const sassRoles = [
+    {
+      lable: 'Member',
+      value: 2,
+      color: 'green'
+    },
+    {
+      lable: 'President',
+      value: 3,
+      color: "red",
+    },
+    {
+      lable: "Vice President",
+      value: 4,
+      color: "red",
+    },
+    {
+      lable: 'Recruiter',
+      value: 5,
+      color: 'oranger'
+    },
+    {
+      lable: 'Squad-Leader',
+      value: 6,
+      color: 'oranger'
+    },
+    {
+      lable: 'Prospect',
+      value: 7,
+      color: 'white'
+    },
+    {
+      lable: 'Guest',
+      value: 10,
+      color: 'blue'
 
+    },
+
+  ]
+  const handleChangeRole = (e: any, index: number) => {
+    const updateData = values?.invitees?.map((item: any, i: number) => {
+      if (i === index) {
+        return { ...item, role_id: e.target.value }
+      } else {
+        return item
+      }
+    })
+    setValues({ ...values, invitees: updateData });
+  }
+  const RolesData = values?.groupType === 'deadbox' ? DadboxRoles : sassRoles
   return (
     <>
       <div className="container">
@@ -277,11 +336,10 @@ export default function AddGroup() {
                     onChange={handleChange}
                     value={values.groupType}
                   >
-                    <option value="">Select</option>
-                    {/* <option value="deadbox">Deadbox</option>
-                  <option value="saas">Saas</option> */}
-                    <option value="general_private">General Private</option>
-                    <option value="general_public">General Public</option>
+                    <option value="deadbox">Deadbox</option>
+                    <option value="saas">Saas</option>
+                    {/* <option value="general_private">General Private</option>
+                    <option value="general_public">General Public</option> */}
                   </select>
                   {errors.groupType && touched.groupType ? (
                     <p
@@ -431,13 +489,14 @@ export default function AddGroup() {
                   id="invitees"
                   name="invitees"
                   onChange={(e) => {
+                    const data: any = userList.find(
+                      (user: any) => user.id === parseInt(e.target.value)
+                    )
                     setValues({
                       ...values,
                       invitees: [
                         ...values.invitees,
-                        userList.find(
-                          (user: any) => user.id === parseInt(e.target.value)
-                        ),
+                        ...[{ ...data, role_id: 2 }],
                       ],
                     });
                   }}
@@ -550,14 +609,18 @@ export default function AddGroup() {
                                     }}
                                   ></span>
                                   <select
-                                    value={invitee.role}
-                                    onChange={(e) =>
-                                      handleRoleChange(key, e.target.value)
-                                    }
+                                    value={invitee.role_id}
+                                    onChange={(e) => {
+                                      handleChangeRole(e, key)
+                                    }}
+
                                   >
-                                    {roles.map((role, i) => (
-                                      <option key={i} value={role}>
-                                        {role}
+                                    {RolesData.map((role, i) => (
+                                      <option
+                                        key={i}
+                                        value={role?.value}
+                                      >
+                                        {role?.lable}
                                       </option>
                                     ))}
                                   </select>
