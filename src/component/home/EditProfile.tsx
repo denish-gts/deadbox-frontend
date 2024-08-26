@@ -295,7 +295,7 @@ export default function EditProfile() {
               </div>
             </div>
             <div className={styles.formRow}>
-              <div className={styles.formGroup}>
+              {/* <div className={styles.formGroup}>
                 <label htmlFor="phone">Phone</label>
                 <input
                   type="text"
@@ -313,7 +313,35 @@ export default function EditProfile() {
                     {errors.phone}
                   </p>
                 ) : null}
-              </div>
+              </div> */}
+              <div className={styles.formGroup}>
+  <label htmlFor="phoneWithCode">Phone Number</label>
+  <div className={styles.phoneInputGroup}>
+    <select
+      name="phone_code"
+      onChange={handleChange}
+      value={values.phone_code}
+      className={styles.phoneCodeSelect}
+    >
+      <option value="">Code</option>
+      <option value="+1">+1</option>
+      <option value="+44">+44</option>
+    </select>
+    <input
+      type="text"
+      name="phone"
+      onChange={handleChange}
+      value={values.phone}
+      className={styles.phoneNumberInput}
+      placeholder="Phone Number"
+    />
+  </div>
+  {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
+    <p style={{ color: "red", fontSize: "12px" }}>
+      {errors.phone_code || errors.phone}
+    </p>
+  ) : null}
+</div>
               <div className={styles.formGroup}>
                 <label htmlFor="email">Email Address</label>
                 <input
@@ -452,7 +480,7 @@ export default function EditProfile() {
                 ) : null}
               </div>
             </div>
-            <div className={styles.formRow}>
+            {/* <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="aboutMe">Country Code</label>
                 <select
@@ -493,7 +521,7 @@ export default function EditProfile() {
                   </p>
                 ) : null}
               </div>
-            </div>
+            </div> */}
           </form>
           {isLoading ? (
             <button
