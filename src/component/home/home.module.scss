@@ -676,6 +676,55 @@
   }
 }
 
+.formGroup {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .phoneInputGroup {
+    display: flex;
+    align-items: center;
+    // border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .phoneCodeSelect {
+      width: 80px;
+      padding: 8px;
+      border: none;
+      background-color: #f9f9f9;
+      font-size: 14px;
+      border-right: 1px solid #ccc;
+
+      &:focus {
+        outline: none;
+        background-color: #e9e9e9;
+      }
+    }
+
+    .phoneNumberInput {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        background-color: #f9f9f9;
+      }
+    }
+  }
+
+  p {
+    margin-top: 4px;
+  }
+}
+
 .formRow {
   display: flex;
   justify-content: space-between;
