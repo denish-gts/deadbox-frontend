@@ -4,8 +4,6 @@ import styles from "./group.module.scss";
 import Image from "next/image";
 import { post } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
-import { useRouter } from "next/navigation";
-import { getUserInfo } from "@/utils/auth.util";
 import Pagination from "../pagination/index";
 import Loader from "../common/Loader";
 
@@ -23,22 +21,14 @@ interface Group {
   updated_by: number;
 }
 
-export default function Group() {
+export default function RequestedMember() {
   const [groups, setGroups] = useState<Group[]>([]);
-  const router = useRouter();
   const [showModel, setShowModel] = useState(false);
-  const [userID, setUserID] = useState('')
   const [groupId, setGroupId] = useState('')
   const [pagination, setPagination] = useState({});
   const initialFilterData = { page: 1, per_page: 10, title: '', group_type: '' };
   const [filterData, setFilterData] = useState(initialFilterData);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setUserID(getUserInfo()?.id)
-    }
-  }, [router])
 
   const handleClick = (page) => {
     setFilterData((pre) => {
@@ -54,20 +44,21 @@ export default function Group() {
 
   const getGroup = () => {
     const payload = {
+      "list_type": "suggested_list",
       "paginate": {
         ...filterData,
         "order": "DESC",
-        "order_by": "group.created"
+        "order_by": "groupMember.created"
       },
       "filter": {
         "title": (filterData?.title || null),
-        "group_type": (filterData?.group_type || null),
         "admin_approval_status": null
       }
+
     }
     setIsLoading(true)
 
-    post(`group/paginate-my-groups`, payload)
+    post(`group-member/paginate-join-request`, payload)
       .then((data: any) => {
         const responce = data.data?.data
         const paginations = {
@@ -86,37 +77,24 @@ export default function Group() {
     getGroup()
   }, [filterData]);
 
-  const hadleClickRemove = () => {
-    if (userID && groupId) {
-      const body = {
-        "group_id": groupId,
-        "user_id": userID
-      }
-      setIsLoading(true)
+  const hadleClickJoinGroup = () => {
+    setIsLoading(true)
 
-      post(`group-member/remove`, body)
-        .then((data: any) => {
-          getGroup()
-          setGroupId('')
-          setShowModel(false)
-          const msg = { data: { message: 'Group remove successfully' } }
-          successAPIResponse(msg)
-          setIsLoading(false)
-        })
-        .catch((error) => {
-          setGroupId('')
-          setShowModel(false)
-          errorCheckAPIResponse(error);
-          setIsLoading(false)
-        });
-    }
-  }
-
-  const handleChangeGroupType = (e) => {
-    setFilterData((pre) => {
-      return { ...pre, group_type: e.target.value }
-    })
-
+    post(`group-member/request-join`, { group_id: groupId })
+      .then((res) => {
+        setIsLoading(false)
+        setGroupId('')
+        setShowModel(false)
+        const msg = { data: { message: 'Group join successfully' } }
+        successAPIResponse(msg)
+        getGroup()
+      })
+      .catch((error) => {
+        setGroupId('')
+        setShowModel(false)
+        errorCheckAPIResponse(error);
+        setIsLoading(false)
+      });
   }
 
   return (
@@ -128,32 +106,16 @@ export default function Group() {
       <div className={styles.myGroups}>
         <div className={styles.flexs}>
           <div className="">
-            <h1>My Groups</h1>
+            <h1>Requested Member</h1>
             <p>Manage your selected groups</p>
           </div>
           <div className={styles.searchContainer}>
-            <div>
-              <select onChange={(e) => handleChangeGroupType(e)} value={filterData?.group_type}>
-                <option value="">Select Group Type</option>
-                <option value="deadbox">Dead Box</option>
-                <option value="saas">SAS</option>
-                <option value="general_private">General Private</option>
-                <option value="general_public">General Public</option>
-              </select>
-
-            </div>
             <input
               type="text"
               placeholder="Search by groups name"
               value={filterData?.title}
               onChange={handleSearchChange}
             />
-            <button
-              className={styles.addNewGroupButton}
-              onClick={() => { router.push('/add-group') }}
-            >
-              Add New Group
-            </button>
           </div>
         </div>
         <table className={styles.groupsTable}>
@@ -165,27 +127,11 @@ export default function Group() {
               <th>Groups Name</th>
               <th>Group Type</th>
               <th>Members</th>
-              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {groups?.map((group: any) => {
-              let groupStatus = ''
-
-              switch (group.status) {
-                case 0:
-                  groupStatus = 'Requested'
-                  break;
-                case 1:
-                  groupStatus = 'Joined'
-                  break;
-                case 2:
-                  groupStatus = 'Rejected'
-                  break;
-                default:
-                  break;
-              }
               return (
                 <tr key={group?.id}>
                   <td>
@@ -205,16 +151,14 @@ export default function Group() {
                   </td>
                   <td>{group.group_type}</td>
                   <td>{group.total_members}</td>
-                  <td>{groupStatus}</td>
                   <td>
                     <button
-                      className={styles.removeGroupButton}
+                      className={styles.acceptBtn}
                       onClick={() => {
                         setGroupId(group.id as any)
                         setShowModel(true)
-                      }}
-                    >
-                      Remove Group
+                      }}                  >
+                      Join Group
                     </button>
                   </td>
                 </tr>
@@ -256,10 +200,10 @@ export default function Group() {
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
               </svg>
             </button>
-            <h1>Are you sure you want to remove the group?</h1>
+            <h1>Are you sure you want to Join the group?</h1>
             <div className={styles.buttonGroup}>
               <button onClick={() => {
-                hadleClickRemove()
+                hadleClickJoinGroup()
               }}>Yes</button>
               <button onClick={() => {
                 setShowModel(false)

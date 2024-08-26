@@ -1,119 +1,122 @@
-"use client";
+'use client'
 import { useEffect, useState } from "react";
 import styles from "./group.module.scss";
 import Image from "next/image";
 import { post } from "@/api/base";
-import { errorCheckAPIResponse } from "@/utils/helpers";
-import { useRouter } from "next/navigation";
-import { getUserInfo } from "@/utils/auth.util";
+import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import Pagination from "../pagination/index";
+import Loader from "../common/Loader";
 
 interface Group {
   id: number;
   title: string;
   type: string;
   members: number;
-  sd: string;
+  status: string;
   description: string;
   logo: string;
   group_type: string;
-  admin_approval_sd: any;
+  admin_approval_status: any;
   created_by: number;
   updated_by: number;
 }
 
 export default function AllGroup() {
   const [groups, setGroups] = useState<Group[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const router = useRouter();
-  const [showModal, setShowModal] = useState(false);
-  const [modalAction, setModalAction] = useState<string | null>(null);
-  const [userID, setUserID] = useState("");
-  const [groupId, setGroupId] = useState<number | null>(null);
+  const [showModel, setShowModel] = useState(false);
+  const [groupId, setGroupId] = useState('')
   const [pagination, setPagination] = useState({});
-  const initialFilterData = { page: 1, per_page: 10 };
+  const initialFilterData = { page: 1, per_page: 10, title: '', group_type: '' };
   const [filterData, setFilterData] = useState(initialFilterData);
-  const [sd, setSd] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setUserID(getUserInfo()?.id);
-    }
-  }, [router]);
-
-  const handleClick = (page: number) => {
-    setFilterData((prev) => {
-      return { ...prev, page };
+  const handleClick = (page) => {
+    setFilterData((pre) => {
+      return { ...pre, page };
     });
   };
 
-  const sdHandler = (action: string, id: number) => {
-    setGroupId(id);
-    setSd(action);
-    setModalAction(action);
-    setShowModal(true);
-  };
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setFilterData((pre) => {
+      return { ...pre, title: e.target.value?.toLowerCase() }
+    })
   };
-
-  const filteredGroups = groups?.filter((group) =>
-    group?.title?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  );
 
   const getGroup = () => {
     const payload = {
-      paginate: {
+      "list_type": "suggested_list",
+      "paginate": {
         ...filterData,
-        order: "DESC",
-        order_by: "group.created",
+        "order": "DESC",
+        "order_by": "group.created"
       },
-      filter: {
-        title: null,
-        group_type: null,
-        admin_approval_sd: null,
-      },
-    };
-    post('group/paginate-my-groups', payload)
+      "filter": {
+        "title": (filterData?.title || null),
+        "admin_approval_status": 1
+      }
+
+    }
+    setIsLoading(true)
+
+    post(`group/paginate-my-groups`, payload)
       .then((data: any) => {
-        const response = data.data?.data;
+        const responce = data.data?.data
         const paginations = {
-          pages: response.pages,
-          total: response?.total,
-          current_page: response?.page,
-          per_page: 10,
-        };
+          pages: responce.pages, total: responce?.total, current_page: responce?.page, per_page: 10
+        }
         setPagination(paginations);
-        setGroups(response?.list);
+        setGroups(responce?.list);
+        setIsLoading(false)
       })
       .catch((error) => {
         errorCheckAPIResponse(error);
+        setIsLoading(false)
       });
-  };
-
+  }
   useEffect(() => {
-    getGroup();
+    getGroup()
   }, [filterData]);
 
-  const handleModalAction = (action: string) => {
-    // Handle Accept/Reject based on the action
-    console.log(`${action} group with ID: ${groupId}`);
-    // Here you would send the request to accept or reject the group
-    // e.g., post(`group/${action}`, { groupId });
+  const hadleClickJoinGroup = () => {
+    setIsLoading(true)
 
-    setShowModal(false); // Close modal after action
-  };
+    post(`group-member/request-join`, { group_id: groupId })
+      .then((res) => {
+        setIsLoading(false)
+        setGroupId('')
+        setShowModel(false)
+        const msg = { data: { message: 'Group join successfully' } }
+        successAPIResponse(msg)
+        getGroup()
+      })
+      .catch((error) => {
+        setGroupId('')
+        setShowModel(false)
+        errorCheckAPIResponse(error);
+        setIsLoading(false)
+      });
+  }
 
   return (
     <>
+      {/* <div className="container"> */}
+      {isLoading && (
+        <Loader />
+      )}
       <div className={styles.myGroups}>
         <div className={styles.flexs}>
           <div className="">
             <h1>All Groups</h1>
             <p>Manage your selected groups</p>
           </div>
-         
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Search by groups name"
+              value={filterData?.title}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
         <table className={styles.groupsTable}>
           <thead>
@@ -124,60 +127,72 @@ export default function AllGroup() {
               <th>Groups Name</th>
               <th>Group Type</th>
               <th>Members</th>
-              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredGroups?.map((group) => (
-              <tr key={group?.id}>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>
-                  <div className={styles.groupName}>
-                    <Image
-                      height={0}
-                      width={0}
-                      unoptimized
-                      src={group?.logo || ""}
-                      alt={"People"}
-                    />
-                    <span>{group.title}</span>
-                  </div>
-                </td>
-                <td>{group.group_type}</td>
-                <td>{group.total_members}</td>
-                {/* <td>-</td> */}
-                <td>
-                  <button
-                    className={styles.acceptBtn}
-                    onClick={() => sdHandler("accept", group.id)}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className={styles.rejectBtn}
-                    onClick={() => sdHandler("reject", group.id)}
-                  >
-                    Reject
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {groups?.map((group: any) => {
+              return (
+                <tr key={group?.id}>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
+                  <td>
+                    <div className={styles.groupName}>
+                      <Image
+                        height={0}
+                        width={0}
+                        unoptimized
+                        src={group?.logo || ""}
+                        alt={"People"}
+                      />
+                      <span>{group.title}</span>
+                    </div>
+                  </td>
+                  <td>{group.group_type}</td>
+                  <td>{group.total_members}</td>
+                  <td>
+                    <button
+                      className={styles.acceptBtn}
+                      onClick={() => {
+                        setGroupId(group.id as any)
+                        setShowModel(true)
+                      }}                  >
+                      Join Group
+                    </button>
+                    <button
+                      className={styles.rejectBtn}
+                    // onClick={() => sdHandler("reject", group.id)}
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
-        <div className={styles.pagination}>
-          <Pagination pagination={pagination} handleClick={handleClick} />
-        </div>
+        {groups?.length === 0 && (
+          <div style={{
+            textAlign: 'center',
+            paddingTop: '20px'
+          }}> No data Avilable</div>
+        )}
+        {groups?.length > 0 && (
+          <div className={styles.pagination}>
+            <Pagination pagination={pagination} handleClick={handleClick} />
+          </div>
+        )}
       </div>
-
-      {showModal && (
+      {/* </div> */}
+      {showModel && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <button
               className={styles.closeButton}
               onClick={() => {
-                setShowModal(false);
+                setGroupId('')
+                setShowModel(false)
               }}
             >
               <svg
@@ -191,20 +206,15 @@ export default function AllGroup() {
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
               </svg>
             </button>
-            <h1>Are you sure you want to {modalAction} the group?</h1>
+            <h1>Are you sure you want to Join the group?</h1>
             <div className={styles.buttonGroup}>
-              <button
-                onClick={() => handleModalAction(modalAction || "")}
-              >
-                Yes
-              </button>
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                }}
-              >
-                No
-              </button>
+              <button onClick={() => {
+                hadleClickJoinGroup()
+              }}>Yes</button>
+              <button onClick={() => {
+                setShowModel(false)
+                setGroupId('')
+              }}>No</button>
             </div>
           </div>
         </div>
