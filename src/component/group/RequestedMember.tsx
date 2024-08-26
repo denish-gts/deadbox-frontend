@@ -24,12 +24,14 @@ interface Group {
 export default function RequestedMember() {
   const [groups, setGroups] = useState<Group[]>([]);
   const [showModel, setShowModel] = useState(false);
-  const [groupId, setGroupId] = useState('')
+  const initalpayload = { response_status: 0, role_id: '', id: '' }
+  const [payload, setPayload] = useState(initalpayload)
   const [pagination, setPagination] = useState({});
   const initialFilterData = { page: 1, per_page: 10, title: '', group_type: '' };
   const [filterData, setFilterData] = useState(initialFilterData);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [query, setQuery] = useState('');
+  const [timeoutId, setTimeoutId] = useState(null);
   const handleClick = (page) => {
     setFilterData((pre) => {
       return { ...pre, page };
@@ -37,9 +39,7 @@ export default function RequestedMember() {
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterData((pre) => {
-      return { ...pre, title: e.target.value?.toLowerCase() }
-    })
+    setQuery(e.target.value?.toLowerCase())
   };
 
   const getGroup = () => {
@@ -80,23 +80,52 @@ export default function RequestedMember() {
   const hadleClickJoinGroup = () => {
     setIsLoading(true)
 
-    post(`group-member/request-join`, { group_id: groupId })
+    post(`group-member/response-join-request`, payload)
       .then((res) => {
         setIsLoading(false)
-        setGroupId('')
+        setPayload(initalpayload)
         setShowModel(false)
-        const msg = { data: { message: 'Group join successfully' } }
+        const msg = { data: { message: `Group ${payload?.response_status === 1 ? 'Accept' : 'Reject'} successfully` } }
         successAPIResponse(msg)
         getGroup()
       })
       .catch((error) => {
-        setGroupId('')
+        setPayload(initalpayload)
         setShowModel(false)
         errorCheckAPIResponse(error);
         setIsLoading(false)
       });
   }
+  useEffect(() => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    const newTimeoutId = setTimeout(() => {
+      performSearch(query);
+    }, 500);
 
+    setTimeoutId(newTimeoutId);
+
+    return () => clearTimeout(newTimeoutId);
+  }, [query]);
+
+  const performSearch = (query) => {
+    setFilterData((pre) => {
+      return { ...pre, page: 1, title: query }
+    })
+  };
+  const handleChangeRole = (e, i) => {
+    setGroups((pre) => {
+      return pre?.map((item, index) => {
+        if (index === i) {
+          return { ...item, role_id: e.target.value }
+        } else {
+          return item
+        }
+      })
+    })
+
+  }
   return (
     <>
       {/* <div className="container"> */}
@@ -113,7 +142,7 @@ export default function RequestedMember() {
             <input
               type="text"
               placeholder="Search by groups name"
-              value={filterData?.title}
+              value={query}
               onChange={handleSearchChange}
             />
           </div>
@@ -126,12 +155,12 @@ export default function RequestedMember() {
               </th>
               <th>Groups Name</th>
               <th>Group Type</th>
-              <th>Members</th>
+              <th>Role</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {groups?.map((group: any) => {
+            {groups?.map((group: any, index: number) => {
               return (
                 <tr key={group?.id}>
                   <td>
@@ -143,22 +172,41 @@ export default function RequestedMember() {
                         height={0}
                         width={0}
                         unoptimized
-                        src={group?.logo || ""}
+                        src={group?.group?.logo || ""}
                         alt={"People"}
                       />
-                      <span>{group.title}</span>
+                      <span>{group.group?.title}</span>
                     </div>
                   </td>
-                  <td>{group.group_type}</td>
-                  <td>{group.total_members}</td>
+                  <td>{group.group.group_type}</td>
+                  <td>
+                    <div className={styles.roleDropdown}>
+                      <select
+                        onChange={(e) =>
+                          handleChangeRole(e, index)}
+                        value={group?.role_id}
+                      >
+                        <option value={1}>Admin</option>
+                        <option value={2}>Member</option>
+                      </select>
+                    </div>
+                  </td>
                   <td>
                     <button
                       className={styles.acceptBtn}
                       onClick={() => {
-                        setGroupId(group.id as any)
+                        setPayload({ id: group.id, response_status: 1, role_id: group?.role_id } as any)
                         setShowModel(true)
                       }}                  >
-                      Join Group
+                      Accept
+                    </button>
+                    <button
+                      className={styles.rejectBtn}
+                      onClick={() => {
+                        setPayload({ id: group.id, response_status: 2, role_id: group?.role_id } as any)
+                        setShowModel(true)
+                      }}                      >
+                      Reject
                     </button>
                   </td>
                 </tr>
@@ -185,7 +233,7 @@ export default function RequestedMember() {
             <button
               className={styles.closeButton}
               onClick={() => {
-                setGroupId('')
+                setPayload(initalpayload)
                 setShowModel(false)
               }}
             >
@@ -200,14 +248,14 @@ export default function RequestedMember() {
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
               </svg>
             </button>
-            <h1>Are you sure you want to Join the group?</h1>
+            <h1>Are you sure you want to {payload?.response_status === 1 ? 'Accept' : 'Reject'} the group?</h1>
             <div className={styles.buttonGroup}>
               <button onClick={() => {
                 hadleClickJoinGroup()
               }}>Yes</button>
               <button onClick={() => {
                 setShowModel(false)
-                setGroupId('')
+                setPayload(initalpayload)
               }}>No</button>
             </div>
           </div>

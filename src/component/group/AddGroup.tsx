@@ -313,34 +313,34 @@ export default function AddGroup() {
 
 
 
-              <div className={styles.formGroup}>
-  <label htmlFor="phoneWithCode">Phone Number</label>
-  <div className={styles.grids}>
-    <select
-      name="phone_code"
-      onChange={handleChange}
-      value={values.phone_code}
-      className={styles.phoneCodeSelect}
-    >
-      <option value="">Code</option>
-      <option value="+1">+1</option>
-      <option value="+44">+44</option>
-    </select>
-    <input
-      type="text"
-      name="phone"
-      onChange={handleChange}
-      value={values.phone}
-      className={styles.phoneNumberInput}
-      placeholder="Phone Number"
-    />
-  </div>
-  {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
-    <p style={{ color: "red", fontSize: "12px" }}>
-      {errors.phone_code || errors.phone}
-    </p>
-  ) : null}
-</div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="phoneWithCode">Phone Number</label>
+                  <div className={styles.grids}>
+                    <select
+                      name="phone_code"
+                      onChange={handleChange}
+                      value={values.phone_code}
+                      className={styles.phoneCodeSelect}
+                    >
+                      <option value="">Code</option>
+                      <option value="+1">+1</option>
+                      <option value="+44">+44</option>
+                    </select>
+                    <input
+                      type="text"
+                      name="phone"
+                      onChange={handleChange}
+                      value={values.phone}
+                      className={styles.phoneNumberInput}
+                      placeholder="Phone Number"
+                    />
+                  </div>
+                  {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
+                    <p style={{ color: "red", fontSize: "12px" }}>
+                      {errors.phone_code || errors.phone}
+                    </p>
+                  ) : null}
+                </div>
                 {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <select
@@ -511,7 +511,7 @@ export default function AddGroup() {
                     </div>
                   ))}
                    </div> */}
-{values.invitees && (
+                {values.invitees && (
                   <div className={styles.memberTable}>
                     <table>
                       <thead>
@@ -609,7 +609,7 @@ export default function AddGroup() {
                     </table>
                   </div>
                 )}
-               
+
               </div>
 
               {isLoading ? (

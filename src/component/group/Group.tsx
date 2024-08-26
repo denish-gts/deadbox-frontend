@@ -33,7 +33,8 @@ export default function Group() {
   const initialFilterData = { page: 1, per_page: 10, title: '', group_type: '' };
   const [filterData, setFilterData] = useState(initialFilterData);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [query, setQuery] = useState('');
+  const [timeoutId, setTimeoutId] = useState(null);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setUserID(getUserInfo()?.id)
@@ -47,9 +48,7 @@ export default function Group() {
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterData((pre) => {
-      return { ...pre, title: e.target.value?.toLowerCase() }
-    })
+    setQuery(e.target.value?.toLowerCase())
   };
 
   const getGroup = () => {
@@ -118,7 +117,24 @@ export default function Group() {
     })
 
   }
+  useEffect(() => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    const newTimeoutId = setTimeout(() => {
+        performSearch(query);
+    }, 500);
 
+    setTimeoutId(newTimeoutId);
+
+    return () => clearTimeout(newTimeoutId);
+  }, [query]);
+
+  const performSearch = (query) => {
+    setFilterData((pre) => {
+      return { ...pre, page: 1, title: query }
+    })
+  };
   return (
     <>
       {/* <div className="container"> */}
@@ -145,7 +161,7 @@ export default function Group() {
             <input
               type="text"
               placeholder="Search by groups name"
-              value={filterData?.title}
+              value={query}
               onChange={handleSearchChange}
             />
             <button

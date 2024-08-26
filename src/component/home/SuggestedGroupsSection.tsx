@@ -8,13 +8,11 @@ import { post } from '@/api/base';
 import { errorCheckAPIResponse, successAPIResponse } from '@/utils/helpers';
 import Loader from '../common/Loader';
 
-
 const SuggestedGroupsSection = () => {
   const [suggestedGroup, setSuggestedGroup] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModel, setShowModel] = useState(false);
   const [groupId, setGroupId] = useState('')
-  console.log('suggestedGroupsuggestedGroupsuggestedGroup', suggestedGroup);
   const getGroupList = () => {
     setIsLoading(true)
     const payload = {
@@ -68,7 +66,7 @@ const SuggestedGroupsSection = () => {
       <div className={styles.suggestedGroupsSection}>
         <div className={styles.header}>
           <h3>Suggested for you</h3>
-          <a href="#" className={styles.viewAll}>VIEW ALL</a>
+          <a href="/all-groups" className={styles.viewAll}>VIEW ALL</a>
         </div>
         <div className={styles.groups}>
           {suggestedGroup?.map((group, index) => {
@@ -78,8 +76,8 @@ const SuggestedGroupsSection = () => {
                   <Image unoptimized height={0} width={0} src={group?.logo} alt="Group 1" />
                 </div>
                 <div>
-                  <p>{group?.group_type}</p>
-                  <span>{group?.total_members}</span>
+                  <p>{group?.title}</p>
+                  <span>Members - {group?.total_members}</span>
                   <button className={styles.joinButton}
                     onClick={() => {
                       setGroupId(group.id as any)
