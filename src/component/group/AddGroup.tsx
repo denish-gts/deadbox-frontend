@@ -511,7 +511,7 @@ export default function AddGroup() {
                     </div>
                   ))}
                    </div> */}
-                {values.invitees && (
+                {values.invitees && values.invitees.length > 0 && (
                   <div className={styles.memberTable}>
                     <table>
                       <thead>
