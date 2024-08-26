@@ -292,7 +292,11 @@
     }
   }
 }
+.grids{
+  display: grid !important;
+  grid-template-columns: 100px 1fr !important;
 
+}
 
 .memberTable {
   width: 100%;

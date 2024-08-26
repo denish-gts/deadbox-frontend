@@ -310,7 +310,38 @@ export default function AddGroup() {
               </p>
             ) : null} */}
               <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+
+
+
+              <div className={styles.formGroup}>
+  <label htmlFor="phoneWithCode">Phone Number</label>
+  <div className={styles.grids}>
+    <select
+      name="phone_code"
+      onChange={handleChange}
+      value={values.phone_code}
+      className={styles.phoneCodeSelect}
+    >
+      <option value="">Code</option>
+      <option value="+1">+1</option>
+      <option value="+44">+44</option>
+    </select>
+    <input
+      type="text"
+      name="phone"
+      onChange={handleChange}
+      value={values.phone}
+      className={styles.phoneNumberInput}
+      placeholder="Phone Number"
+    />
+  </div>
+  {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
+    <p style={{ color: "red", fontSize: "12px" }}>
+      {errors.phone_code || errors.phone}
+    </p>
+  ) : null}
+</div>
+                {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <select
                     name="phone_code"
@@ -331,10 +362,10 @@ export default function AddGroup() {
                       {errors.phone_code}
                     </p>
                   ) : null}
-                </div>
+                </div> */}
               </div>
               <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+                {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <input
                     type="number"
@@ -353,7 +384,7 @@ export default function AddGroup() {
                       {errors.phone}
                     </p>
                   ) : null}
-                </div>
+                </div> */}
                 <div className={styles.formGroup}>
                   <label htmlFor="email">Email Address</label>
                   <input
