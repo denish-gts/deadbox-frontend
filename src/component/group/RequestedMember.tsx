@@ -32,6 +32,7 @@ export default function RequestedMember() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [timeoutId, setTimeoutId] = useState(null);
+  
   const handleClick = (page) => {
     const data = { ...filterData, page }
     setFilterData(data);

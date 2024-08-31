@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import styles from "./group.module.scss";
 import Image from "next/image";
 import { post } from "@/api/base";
@@ -35,6 +35,8 @@ export default function Group() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [timeoutId, setTimeoutId] = useState(null);
+  const [roleList, setRoleList] = useState([]);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setUserID(getUserInfo()?.id)
@@ -50,7 +52,16 @@ export default function Group() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value?.toLowerCase())
   };
-
+  useEffect(() => {
+    post(`master/group-role/list`)
+      .then((data: any) => {
+        console.log('datadatadatadatadatadata', data);
+        setRoleList(data.data.data)
+      })
+      .catch((error) => {
+        errorCheckAPIResponse(error);
+      });
+  }, [])
   const getGroup = (filterData) => {
     const payload = {
       "paginate": {
@@ -72,8 +83,13 @@ export default function Group() {
         const paginations = {
           pages: responce.pages, total: responce?.total, current_page: responce?.page, per_page: 10
         }
+        const groupData = responce?.list.map((item) => {
+          const roleObj = roleList.find((roleitem) => roleitem?.id === item?.asMember?.role_id)
+          return { ...item, roleName: roleObj?.title }
+        })
+
         setPagination(paginations);
-        setGroups(responce?.list);
+        setGroups(groupData);
         setIsLoading(false)
       })
       .catch((error) => {
@@ -178,6 +194,7 @@ export default function Group() {
               <th>Groups Name</th>
               <th>Group Type</th>
               <th>Members</th>
+              <th>Role</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -218,6 +235,7 @@ export default function Group() {
                   </td>
                   <td>{group.group_type}</td>
                   <td>{group.total_members}</td>
+                  <td>{group.roleName}</td>
                   <td>{groupStatus}</td>
                   <td>
                     <button

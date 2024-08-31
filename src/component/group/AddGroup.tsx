@@ -45,7 +45,7 @@ export default function AddGroup() {
     useFormik({
       initialValues: {
         groupName: "",
-        groupType: "deadbox",
+        groupType: "general_private",
         phone: "",
         phone_code: "",
         email: "",
@@ -190,45 +190,7 @@ export default function AddGroup() {
       value: 2,
       color: 'green'
     }]
-  const sassRoles = [
-    {
-      lable: 'Member',
-      value: 2,
-      color: 'green'
-    },
-    {
-      lable: 'President',
-      value: 3,
-      color: "red",
-    },
-    {
-      lable: "Vice President",
-      value: 4,
-      color: "red",
-    },
-    {
-      lable: 'Recruiter',
-      value: 5,
-      color: 'oranger'
-    },
-    {
-      lable: 'Squad-Leader',
-      value: 6,
-      color: 'oranger'
-    },
-    {
-      lable: 'Prospect',
-      value: 7,
-      color: 'white'
-    },
-    {
-      lable: 'Guest',
-      value: 10,
-      color: 'blue'
 
-    },
-
-  ]
   const handleChangeRole = (e: any, index: number) => {
     const updateData = values?.invitees?.map((item: any, i: number) => {
       if (i === index) {
@@ -239,7 +201,7 @@ export default function AddGroup() {
     })
     setValues({ ...values, invitees: updateData });
   }
-  const RolesData = values?.groupType === 'deadbox' ? DadboxRoles : sassRoles
+  const RolesData =  DadboxRoles
   return (
     <>
       <div className="container">
@@ -336,10 +298,10 @@ export default function AddGroup() {
                     onChange={handleChange}
                     value={values.groupType}
                   >
-                    <option value="deadbox">Deadbox</option>
-                    <option value="saas">Saas</option>
-                    {/* <option value="general_private">General Private</option>
-                    <option value="general_public">General Public</option> */}
+                    {/* <option value="deadbox">Deadbox</option>
+                    <option value="saas">Saas</option> */}
+                    <option value="general_private">General Private</option>
+                    <option value="general_public">General Public</option>
                   </select>
                   {errors.groupType && touched.groupType ? (
                     <p
