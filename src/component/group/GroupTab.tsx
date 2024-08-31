@@ -8,15 +8,9 @@ import RequestedMember from "./RequestedMember";
 import { usePathname, useRouter } from "next/navigation";
 
 function GroupTab() {
-  const path = usePathname();
+  const activeTab = usePathname();
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState("All-Group");
-  console.log('pathpathpathpathpathpath', path);
-
-  useEffect(() => {
-    setActiveTab(path)
-  }, [path])
   return (
     <>
       <div className="container">

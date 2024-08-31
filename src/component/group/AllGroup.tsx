@@ -31,18 +31,18 @@ export default function AllGroup() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [timeoutId, setTimeoutId] = useState(null);
-  
+
   const handleClick = (page) => {
-    setFilterData((pre) => {
-      return { ...pre, page };
-    });
+    const data = { ...filterData, page }
+    setFilterData(data);
+    getGroup(data)
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value?.toLowerCase())
   };
 
-  const getGroup = () => {
+  const getGroup = (filterData) => {
     const payload = {
       "list_type": "suggested_list",
       "paginate": {
@@ -73,9 +73,6 @@ export default function AllGroup() {
         setIsLoading(false)
       });
   }
-  useEffect(() => {
-    getGroup()
-  }, [filterData]);
 
   const hadleClickJoinGroup = () => {
     setIsLoading(true)
@@ -87,7 +84,7 @@ export default function AllGroup() {
         setShowModel(false)
         const msg = { data: { message: 'Group join successfully' } }
         successAPIResponse(msg)
-        getGroup()
+        getGroup(filterData)
       })
       .catch((error) => {
         setGroupId('')
@@ -102,7 +99,7 @@ export default function AllGroup() {
       clearTimeout(timeoutId);
     }
     const newTimeoutId = setTimeout(() => {
-        performSearch(query);
+      performSearch(query);
     }, 500);
 
     setTimeoutId(newTimeoutId);
@@ -111,9 +108,9 @@ export default function AllGroup() {
   }, [query]);
 
   const performSearch = (query) => {
-    setFilterData((pre) => {
-      return { ...pre, page: 1, title: query }
-    })
+    const data = { ...filterData, page: 1, title: query }    
+    setFilterData(data);
+    getGroup(data)
   };
 
   return (

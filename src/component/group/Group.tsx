@@ -42,16 +42,16 @@ export default function Group() {
   }, [router])
 
   const handleClick = (page) => {
-    setFilterData((pre) => {
-      return { ...pre, page };
-    });
+    const data = { ...filterData, page }
+    setFilterData(data);
+    getGroup(data)
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value?.toLowerCase())
   };
 
-  const getGroup = () => {
+  const getGroup = (filterData) => {
     const payload = {
       "paginate": {
         ...filterData,
@@ -81,9 +81,6 @@ export default function Group() {
         setIsLoading(false)
       });
   }
-  useEffect(() => {
-    getGroup()
-  }, [filterData]);
 
   const hadleClickRemove = () => {
     if (userID && groupId) {
@@ -95,7 +92,7 @@ export default function Group() {
 
       post(`group-member/remove`, body)
         .then((data: any) => {
-          getGroup()
+          getGroup(filterData)
           setGroupId('')
           setShowModel(false)
           const msg = { data: { message: 'Group remove successfully' } }
@@ -112,17 +109,17 @@ export default function Group() {
   }
 
   const handleChangeGroupType = (e) => {
-    setFilterData((pre) => {
-      return { ...pre, group_type: e.target.value }
-    })
-
+    const data = { ...filterData, group_type: e.target.value }
+    setFilterData(data);
+    getGroup(data)
   }
+
   useEffect(() => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
     const newTimeoutId = setTimeout(() => {
-        performSearch(query);
+      performSearch(query);
     }, 500);
 
     setTimeoutId(newTimeoutId);
@@ -131,9 +128,9 @@ export default function Group() {
   }, [query]);
 
   const performSearch = (query) => {
-    setFilterData((pre) => {
-      return { ...pre, page: 1, title: query }
-    })
+    const data = { ...filterData, page: 1, title: query }
+    setFilterData(data);
+    getGroup(data)
   };
   return (
     <>

@@ -68,27 +68,33 @@ const SuggestedGroupsSection = () => {
           <h3>Suggested for you</h3>
           <a href="/all-groups" className={styles.viewAll}>VIEW ALL</a>
         </div>
-        <div className={styles.groups}>
-          {suggestedGroup?.map((group, index) => {
-            return (
-              <div className={styles.group} key={index}>
-                <div>
-                  <Image unoptimized height={0} width={0} src={group?.logo} alt="Group 1" />
+        {suggestedGroup.length > 0 ? <>
+
+          <div className={styles.groups}>
+            {suggestedGroup?.map((group, index) => {
+              return (
+                <div className={styles.group} key={index}>
+                  <div>
+                    <Image unoptimized height={0} width={0} src={group?.logo} alt="Group 1" />
+                  </div>
+                  <div>
+                    <p>{group?.title}</p>
+                    <span>Members - {group?.total_members}</span>
+                    <button className={styles.joinButton}
+                      onClick={() => {
+                        setGroupId(group.id as any)
+                        setShowModel(true)
+                      }}
+                    >JOIN GROUP</button>
+                  </div>
                 </div>
-                <div>
-                  <p>{group?.title}</p>
-                  <span>Members - {group?.total_members}</span>
-                  <button className={styles.joinButton}
-                    onClick={() => {
-                      setGroupId(group.id as any)
-                      setShowModel(true)
-                    }}
-                  >JOIN GROUP</button>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+
+          </div>
+        </> :
+          <span style={{ textAlign: 'center', display: 'block', fontSize: '20px' }}>No Group availabe.</span>
+        }
       </div>
       {showModel && (
         <div className={styles.modal}>
