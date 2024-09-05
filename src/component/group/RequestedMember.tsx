@@ -32,7 +32,7 @@ export default function RequestedMember() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [timeoutId, setTimeoutId] = useState(null);
-  
+
   const handleClick = (page) => {
     const data = { ...filterData, page }
     setFilterData(data);
@@ -151,6 +151,9 @@ export default function RequestedMember() {
               <th>
                 <input type="checkbox" />
               </th>
+              <th>Member Name</th>
+              <th>Mobile No.</th>
+              <th>Email</th>
               <th>Groups Name</th>
               <th>Group Type</th>
               <th>Role</th>
@@ -164,6 +167,9 @@ export default function RequestedMember() {
                   <td>
                     <input type="checkbox" />
                   </td>
+                  <td>{group.memberUser.first_name} {group.memberUser.last_name}</td>
+                  <td>{group.memberUser.phone}</td>
+                  <td>{group.memberUser.email}</td>
                   <td>
                     <div className={styles.groupName}>
                       <Image

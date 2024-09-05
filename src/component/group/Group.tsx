@@ -6,6 +6,7 @@ import { post } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/utils/auth.util";
+import { RoleData } from '@/utils/data'
 import Pagination from "../pagination/index";
 import Loader from "../common/Loader";
 
@@ -35,7 +36,6 @@ export default function Group() {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState('');
   const [timeoutId, setTimeoutId] = useState(null);
-  const [roleList, setRoleList] = useState([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -52,16 +52,7 @@ export default function Group() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value?.toLowerCase())
   };
-  useEffect(() => {
-    post(`master/group-role/list`)
-      .then((data: any) => {
-        console.log('datadatadatadatadatadata', data);
-        setRoleList(data.data.data)
-      })
-      .catch((error) => {
-        errorCheckAPIResponse(error);
-      });
-  }, [])
+
   const getGroup = (filterData) => {
     const payload = {
       "paginate": {
@@ -84,8 +75,12 @@ export default function Group() {
           pages: responce.pages, total: responce?.total, current_page: responce?.page, per_page: 10
         }
         const groupData = responce?.list.map((item) => {
-          const roleObj = roleList.find((roleitem) => roleitem?.id === item?.asMember?.role_id)
-          return { ...item, roleName: roleObj?.title }
+          const roleObj = RoleData.map((roleitem) => {
+            if (item?.asMember?.role_id?.toString()?.split(',')?.includes(roleitem?.id?.toString())) {
+              return roleitem?.title
+            }
+          }).filter((item) => item).toString()
+          return { ...item, roleName: roleObj }
         })
 
         setPagination(paginations);

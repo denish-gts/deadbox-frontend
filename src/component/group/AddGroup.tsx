@@ -201,7 +201,7 @@ export default function AddGroup() {
     })
     setValues({ ...values, invitees: updateData });
   }
-  const RolesData =  DadboxRoles
+  const RolesData = DadboxRoles
   return (
     <>
       <div className="container">
@@ -454,13 +454,16 @@ export default function AddGroup() {
                     const data: any = userList.find(
                       (user: any) => user.id === parseInt(e.target.value)
                     )
-                    setValues({
-                      ...values,
-                      invitees: [
-                        ...values.invitees,
-                        ...[{ ...data, role_id: 2 }],
-                      ],
-                    });
+                    const isUserExist = values.invitees.some((item) => item.id === data?.id)
+                    if (!isUserExist) {
+                      setValues({
+                        ...values,
+                        invitees: [
+                          ...values.invitees,
+                          ...[{ ...data, role_id: 2 }],
+                        ],
+                      });
+                    }
                   }}
                   value={""}
                 >
@@ -539,7 +542,6 @@ export default function AddGroup() {
                         <tr>
                           <th>MEMBER NAME</th>
                           <th>EMAIL ADDRESS</th>
-                          <th>ACTIVE ON</th>
                           <th>GROUP ROLES</th>
                           <th>ACTION</th>
                         </tr>
@@ -556,11 +558,10 @@ export default function AddGroup() {
                                   width={0}
                                   unoptimized
                                 />
-                                <span>{invitee.name}</span>
+                                <span>{invitee?.first_name} {invitee?.last_name}</span>
                               </div>
                             </td>
                             <td>{invitee.email}</td>
-                            <td>{invitee.activeOn}</td>
                             <td>
                               <div className={styles.roleDropdown}>
                                 <div className={styles.role}>
