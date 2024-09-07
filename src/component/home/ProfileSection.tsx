@@ -69,7 +69,7 @@ const ProfileSection = ({
         <div className={styles.avatarContainer}>
           <div
             className={styles.avatar}
-            // onClick={() => document.getElementById("avatarInput").click()}
+          // onClick={() => document.getElementById("avatarInput").click()}
           >
             {/* {avatar ? ( */}
             <img
@@ -173,15 +173,7 @@ const ProfileSection = ({
             ref={textRef}
             className={textLength > 200 && !isExpanded ? "ellipsis" : ""}
           >
-            Kenan Foundation Asia believes in a world where everyone has the
-            right to build a better life for themselves, their family, and their
-            community. Every day, we are working in Thailand and the region to
-            inspire students, develop skilled people, and grow strong leaders by
-            empowering them with the knowledge, technology, and skills necessary
-            for a better future. Whether it’s an entrepreneur, a small business
-            owner, a teacher, a student, a community leader, or a non-profit
-            manager, we conduct tailored, engaging activities to train, coach
-            and equip them so they can achieve their dreams.
+            {userData?.about}
           </h6>
         </div>
 
