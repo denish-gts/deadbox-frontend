@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { axiosInstance } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
-import Loader from "@/component/common/Loader";
+import Loader from "@/component/common/loader";
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),

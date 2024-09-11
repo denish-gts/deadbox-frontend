@@ -8,7 +8,7 @@ import PeopleYouMayKnowSection from "./PeopleYouMayKnowSection";
 // import EditProfile from "./EditProfile";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 import { post } from "@/api/base";
-import Loader from "../common/Loader";
+import Loader from "../common/loader";
 
 
 const Myprofile = () => {

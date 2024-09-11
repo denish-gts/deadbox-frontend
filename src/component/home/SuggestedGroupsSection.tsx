@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { post } from '@/api/base';
 import { errorCheckAPIResponse, successAPIResponse } from '@/utils/helpers';
-import Loader from '../common/Loader';
+import Loader from '../common/loader';
 
 const SuggestedGroupsSection = () => {
   const [suggestedGroup, setSuggestedGroup] = useState([]);

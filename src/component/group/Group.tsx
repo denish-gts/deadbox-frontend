@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/utils/auth.util";
 import { RoleData } from '@/utils/data'
 import Pagination from "../pagination/index";
-import Loader from "../common/Loader";
+import Loader from "../common/loader";
 
 interface Group {
   id: number;

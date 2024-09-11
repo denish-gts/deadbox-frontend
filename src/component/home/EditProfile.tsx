@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import Pencil from "../../../public/assets/images/pencils.png";
 import Delete from "../../../public/assets/images/delete.svg";
 import Image from "next/image";
-import Loader from "../common/Loader";
+import Loader from "../common/loader";
 
 const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("First Name is required."),
