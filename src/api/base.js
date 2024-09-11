@@ -2,7 +2,9 @@ import { getToken } from "@/utils/auth.util";
 import axios from "axios";
 
 export const API_PREFIX = "";
-const BASE_URL = 'https://sg-aggregator-backend-production.up.railway.app/';
+// const BASE_URL = 'https://sg-aggregator-backend-production.up.railway.app/';
+export const BASE_URL = 'https://splendid-flow-deadbox-development.up.railway.app';
+
 
 const axiosApi = axios.create({
   baseURL: `${BASE_URL}`,
@@ -110,3 +112,4 @@ export const authHeader = (header = defaultHeaders) => {
   }
   return headers;
 };
+

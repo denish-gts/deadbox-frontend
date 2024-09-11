@@ -1,0 +1,22 @@
+.multi-select {
+    .react-select__control {
+      border: 1px solid #ccc;
+      box-shadow: none;
+      &:hover {
+        border-color: #aaa;
+      }
+    }
+  
+    .react-select__menu {
+      z-index: 1000;
+    }
+  
+    .react-select__option {
+      display: flex;
+      align-items: center;
+  
+      input {
+        margin-right: 10px;
+      }
+    }
+  }

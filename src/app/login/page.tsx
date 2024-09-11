@@ -1,12 +1,15 @@
-"use client";
+import LoginForm from "./Components/loginForm";
+import type { Metadata } from "next";
 
-import { useRouter } from "next/navigation";
-import LoginForm from "./loginForm";
+export const metadata: Metadata = {
+  title: "Login",
+};
+
 export default function Login() {
   return (
     <>
       <div>
-        <LoginForm />
+        <LoginForm/>
       </div>
     </>
   );

@@ -34,8 +34,7 @@ export const setUserInfo = (data) => setCookie(STORAGEKEY.userData, JSON.stringi
 
 export const authenticate = () => {
   const token = getToken();
-  // return !!token;
-  return true;
+  return !!token;
 };
 
-export const unProtectedRoute = ['/', '/login', '/signup', '/magic-link']
+export const unProtectedRoute = ['/', '/login', , 'magic', '/signup', '/magic-link']

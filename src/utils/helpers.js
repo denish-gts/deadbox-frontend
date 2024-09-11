@@ -4,9 +4,12 @@ const errorCheckAPIResponse = (error) => {
   const errorMsg = error?.response?.data?.error;
   const error_message = error?.response?.data?.message;
   const errorsData = error?.response?.data?.errors;
+  if ([errorMsg, error_message, errorsData].includes('Missing authorization in header')) {
+    return;
+  }
 
   if (errorMsg || error_message) {
-    toast.error(errorMsg || error_message);
+    toast.error(error_message || errorMsg);
   } else if (errorsData) {
     for (const [key, value] of Object.entries(errorsData)) {
       if (value.length > 0) {

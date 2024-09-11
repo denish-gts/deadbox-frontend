@@ -1,9 +1,16 @@
-"use client";
-import SignupForm from "./signupForm";
-export default function Signup() {
+import type { Metadata } from "next";
+import SignupContent from "./singupContent";
+
+export const metadata: Metadata = {
+  title: "Singup",
+};
+
+export default function Singup() {
   return (
-    <div>
-      <SignupForm />
-    </div>
+    <>
+      <div>
+        <SignupContent/>
+      </div>
+    </>
   );
 }
