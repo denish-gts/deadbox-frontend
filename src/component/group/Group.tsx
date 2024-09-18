@@ -156,6 +156,12 @@ export default function Group() {
             <p>Manage your selected groups</p>
           </div>
           <div className={styles.searchContainer}>
+          <input
+              type="text"
+              placeholder="Search by groups name"
+              value={query}
+              onChange={handleSearchChange}
+            />
             <div>
               <select onChange={(e) => handleChangeGroupType(e)} value={filterData?.group_type}>
                 <option value="">Select Group Type</option>
@@ -164,14 +170,7 @@ export default function Group() {
                 <option value="general_private">General Private</option>
                 <option value="general_public">General Public</option>
               </select>
-
             </div>
-            <input
-              type="text"
-              placeholder="Search by groups name"
-              value={query}
-              onChange={handleSearchChange}
-            />
             <button
               className={styles.addNewGroupButton}
               onClick={() => { router.push('/add-group') }}

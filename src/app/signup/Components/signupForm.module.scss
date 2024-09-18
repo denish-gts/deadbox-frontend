@@ -120,6 +120,9 @@
       align-items: center;
       .aa {
         border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
       .avataricon {
         width: 80%;
@@ -190,7 +193,6 @@
     .form {
       display: flex;
       flex-direction: column;
-      width: 100%;
 
       input,
       select {
@@ -203,6 +205,9 @@
         font-size: 14px;
         line-height: 24px;
         background-color: #000 !important;
+        option{
+          color:#f9f9f9 !important;
+        }
       }
 
       input[type="checkbox"] {
