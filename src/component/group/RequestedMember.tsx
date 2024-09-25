@@ -5,7 +5,7 @@ import Image from "next/image";
 import { post } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import Pagination from "../pagination/index";
-import Loader from "../common/Loader";
+import Loader from "../common/loader";
 
 interface Group {
   id: number;

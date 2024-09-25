@@ -8,7 +8,7 @@ import { post, postFormData } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
-import Loader from "../common/Loader";
+import Loader from "../common/loader";
 
 import Pencil from "../../../public/assets/images/pencils.png";
 import Delete from "../../../public/assets/images/delete.svg";
