@@ -4,10 +4,10 @@ import SignUpSecondForm from "./Components/SignUpSecondForm";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { axiosInstance } from "@/api/base";
-import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
+import { errorCheckAPIResponse } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
-import Loader from "@/component/common/Loader";
 import { setToken, setUserInfo, getUserInfo } from "@/utils/auth.util";
+import Loader from "@/component/common/loader";
 
 const validationSchemaSecond = Yup.object().shape({
   zipcode: Yup.string().required("Zipcode is required."),
@@ -85,7 +85,7 @@ export default function SignupContent() {
         apiData.append("group_id", values?.group_id as any);
 
         axiosInstance.post(`auth/sign-up/step-2`, apiData).then((res) => {
-          successAPIResponse(res);
+          // successAPIResponse(res);
           // router.push('/magic')
           setToken(res.data.data.token)
           setUserInfo(res.data.data)
