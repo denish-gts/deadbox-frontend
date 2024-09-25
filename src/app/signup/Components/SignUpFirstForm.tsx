@@ -9,18 +9,18 @@ export default function SignUpFirstForm({
   formik,
 }) {
   const { handleSubmit, values, touched, errors, handleChange, setValues } = formik;
-  const [avatar, setAvatar] = useState(null);
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (upload) => {
-        setAvatar(upload.target.result);
-      };
-      reader.readAsDataURL(file);
-      setValues({ ...values, avatar: file });
-    }
-  };
+  // const [avatar, setAvatar] = useState(null);
+  // const handleAvatarChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (upload) => {
+  //       setAvatar(upload.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //     setValues({ ...values, avatar: file });
+  //   }
+  // };
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function SignUpFirstForm({
           <div className={styles.logo}>
             <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
           </div>
-          <h2>Signup</h2>
+          <h2>Signup Step 1</h2>
           {/* <div className={styles.avatarContainer}>
             <div
               className={styles.avatar}
@@ -50,22 +50,22 @@ export default function SignUpFirstForm({
             />
           </div> */}
 
-          <div className={styles.avatarupload}>
-      <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
-      {avatar ? (
+          {/* <div className={styles.avatarupload}>
+            <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
+              {avatar ? (
                 <img src={avatar} alt="Avatar" className={styles.aa} />
               ) : (
                 <img src={UserIcon} alt="User Icon" />
               )}
-      <input
-              id="avatarInput"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleAvatarChange}
-            />
-      </div>
-    </div>
+              <input
+                id="avatarInput"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleAvatarChange}
+              />
+            </div>
+          </div> */}
 
           <div className={styles.form}>
             <div className={styles.twoGrid}>
@@ -137,14 +137,26 @@ export default function SignUpFirstForm({
                 {errors.phone}
               </p>
             ) : null}
+            <input
+              type="text"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+              value={values.password}
+            />
+            {errors.password && touched.password ? (
+              <p className={styles.error_content}>
+                {errors.password}
+              </p>
+            ) : null}
             <div className={styles.radiogroup}>
               <span>Are you over 13?</span>
               <div className={styles.flex}>
                 <input type="radio"
                   onChange={() => {
-                    setValues({ ...values, over13: "true" });
+                    setValues({ ...values, over_13: true });
                   }}
-                  checked={values?.over13 === 'true'}
+                  checked={values?.over_13}
                   id="yes"
                   name="age"
                 />
@@ -153,10 +165,10 @@ export default function SignUpFirstForm({
                   type="radio"
                   id="no"
                   onChange={() => {
-                    setValues({ ...values, over13: "false" });
+                    setValues({ ...values, over_13: false });
                   }}
                   name="age"
-                  checked={values?.over13 === 'false'}
+                  checked={values?.over_13 === false}
                 />
                 <label htmlFor="no">No</label>
               </div>
@@ -166,11 +178,11 @@ export default function SignUpFirstForm({
               <label className={styles.customcheckbox}>
                 <input
                   type="checkbox"
-                  checked={values.privacyPolicy === '1'}
-                  name="privacyPolicy"
+                  checked={values.privacy_policy === '1'}
+                  name="privacy_policy"
                   onChange={(e) => {
                     const value = e.target.checked ? '1' : '0'
-                    setValues({ ...values, privacyPolicy: value });
+                    setValues({ ...values, privacy_policy: value });
                   }}
                 />
                 <span className={styles.checkmark}></span>
@@ -182,7 +194,7 @@ export default function SignUpFirstForm({
                 {/* </a> */}
               </label>
             </div>
-            {values?.privacyPolicy === '1' && values?.over13 === 'true' ? (
+            {values?.privacy_policy === '1' && values?.over_13 ? (
               <>
                 <button onClick={() => { handleSubmit() }}>Next Step</button>
               </>

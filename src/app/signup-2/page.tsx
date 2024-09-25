@@ -1,15 +1,16 @@
-import Signup from "./signup/page";
 import type { Metadata } from "next";
+import SignupContent from "./singupContent";
 
 export const metadata: Metadata = {
   title: "Singup",
 };
 
-export default function Page() {
-
+export default function Singup() {
   return (
     <>
-      <Signup />
+      <div>
+        <SignupContent/>
+      </div>
     </>
   );
 }

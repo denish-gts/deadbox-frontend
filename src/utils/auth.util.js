@@ -37,4 +37,4 @@ export const authenticate = () => {
   return !!token;
 };
 
-export const unProtectedRoute = ['/', '/login', , 'magic', '/signup', '/magic-link']
+export const unProtectedRoute = ['/', '/login', , 'magic',,'/verifyemail','/signup-2', '/signup', '/magic-link','/verify-email']

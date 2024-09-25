@@ -8,15 +8,17 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const LayoutCustom = ({ children }) => {
-  const path = usePathname();
+  const path = `/${usePathname().split('/')[1]}`;
 
   const router = useRouter();
-  const loginRoutes = ["/login", "/signup", '/magic', '/magic-link', '/'];
+  const loginRoutes = ["/login", "/signup",,'/signup-2', '/magic', '/verifyemail','/magic-link', '/','/verify-email'];
   const login = loginRoutes.includes(path);
   const protectedRoutes = ["/profile", '/edit-profile', '/group', '/add-group', '/all-groups', '/requsted-member'];
   const protectedRoute = protectedRoutes.includes(path);
 
   useEffect(() => {
+    console.log('xsdsdsdsddsd',!authenticate() ,path, !unProtectedRoute.includes(path),);
+    
     if (authenticate()) {
       if ([...unProtectedRoute].includes(path)) {
         router.push(`/profile`)
