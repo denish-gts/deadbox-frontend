@@ -70,7 +70,6 @@ export default function SignUpSecondForm({
 
     }).catch((error) => {
       errorCheckAPIResponse(error)
-
     })
   }, [])
   const { handleSubmit, handleChange, values, touched, errors, setValues } = formik
@@ -119,7 +118,7 @@ export default function SignUpSecondForm({
         <div className={styles.logo}>
           <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
         </div>
-        <h2>Signup</h2>
+        <h2>Signup Step 2</h2>
         <div className={styles.avatarupload}>
             <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
               {avatar ? (

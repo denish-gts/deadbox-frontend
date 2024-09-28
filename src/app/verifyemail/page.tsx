@@ -44,7 +44,7 @@ export default function Magic() {
                 </defs>
               </svg>
             </div>
-            <h2>Magic Link Sent</h2>
+            <h2>Confirmation Link Sent</h2>
             <p>
               We have just emailed a confirmation link at the email address you
               just provided. Click to sign in process!

@@ -4,9 +4,7 @@ import VerifyEmailContent from "../../../../component/verifyEmail";
 function SearchBarFallback() {
     return <>Loading</>
 }
-function VerifyEmail() {
-    console.log('ddddddddddddddddddddddd');
-    
+function VerifyEmail() {    
     return (
         <Suspense fallback={<SearchBarFallback />}>
             <VerifyEmailContent />

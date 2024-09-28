@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import  { useEffect } from "react";
+import { useParams, useRouter } from 'next/navigation'
 import { axiosInstance } from "@/api/base";
 import { toast } from "react-toastify";
 import { setUserInfo, setToken } from "@/utils/auth.util";
@@ -11,7 +11,6 @@ function VerifyEmailContent() {
 
     const params = useParams(); // Access dynamic route parameters
     const { email, token } = params;
-    console.log('ffffffffffffffffffffff', params, email, token, router.query);
 
     useEffect(() => {
 

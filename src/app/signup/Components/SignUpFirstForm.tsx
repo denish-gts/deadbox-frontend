@@ -111,32 +111,34 @@ export default function SignUpFirstForm({
                 {errors.email}
               </p>
             ) : null}
-            <select
-              name="phone_code"
-              onChange={handleChange}
-              value={values.phone_code}
-            >
-              <option value="">Select Country Code</option>
-              <option value="+1">+1</option>
-              <option value="+44">+44</option>
-            </select>
-            {errors.phone_code && touched.phone_code ? (
-              <p className={styles.error_content}>
-                {errors.phone_code}
-              </p>
-            ) : null}
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              name="phone"
-              onChange={handleChange}
-              value={values.phone}
-            />
-            {errors.phone && touched.phone ? (
-              <p className={styles.error_content}>
-                {errors.phone}
-              </p>
-            ) : null}
+            <div className={styles.phonenumberContainer}>
+              <select
+                name="phone_code"
+                onChange={handleChange}
+                value={values.phone_code}
+              >
+                <option value="">Select Country Code</option>
+                <option value="+1">+1</option>
+                <option value="+44">+44</option>
+              </select>
+              {errors.phone_code && touched.phone_code ? (
+                <p className={styles.error_content}>
+                  {errors.phone_code}
+                </p>
+              ) : null}
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                name="phone"
+                onChange={handleChange}
+                value={values.phone}
+              />
+              {errors.phone && touched.phone ? (
+                <p className={styles.error_content}>
+                  {errors.phone}
+                </p>
+              ) : null}
+            </div>
             <input
               type="text"
               placeholder="Password"
@@ -188,10 +190,7 @@ export default function SignUpFirstForm({
                 <span className={styles.checkmark}></span>
               </label>
               <label htmlFor="policy" className={styles.labelAlignment}>
-                I have read and understood the{" "}
-                {/* <a href="/privacy-policy"> */}
-                Privacy Policy
-                {/* </a> */}
+                I agree to Terms and Conditions and Privacy Policy
               </label>
             </div>
             {values?.privacy_policy === '1' && values?.over_13 ? (

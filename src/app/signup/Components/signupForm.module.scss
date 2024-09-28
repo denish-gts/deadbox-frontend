@@ -260,7 +260,10 @@
     }
   }
 }
-
+.phonenumberContainer{
+  display: grid;
+  grid-template-columns: 150px 1fr;
+}
 .checkboxContainer {
   margin-bottom: 10px;
   label {
