@@ -9,18 +9,18 @@ export default function SignUpFirstForm({
   formik,
 }) {
   const { handleSubmit, values, touched, errors, handleChange, setValues } = formik;
-  const [avatar, setAvatar] = useState(null);
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (upload) => {
-        setAvatar(upload.target.result);
-      };
-      reader.readAsDataURL(file);
-      setValues({ ...values, avatar: file });
-    }
-  };
+  // const [avatar, setAvatar] = useState(null);
+  // const handleAvatarChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (upload) => {
+  //       setAvatar(upload.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //     setValues({ ...values, avatar: file });
+  //   }
+  // };
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function SignUpFirstForm({
           <div className={styles.logo}>
             <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
           </div>
-          <h2>Signup</h2>
+          <h2>Signup Step 1</h2>
           {/* <div className={styles.avatarContainer}>
             <div
               className={styles.avatar}
@@ -50,22 +50,22 @@ export default function SignUpFirstForm({
             />
           </div> */}
 
-          <div className={styles.avatarupload}>
-      <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
-      {avatar ? (
+          {/* <div className={styles.avatarupload}>
+            <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
+              {avatar ? (
                 <img src={avatar} alt="Avatar" className={styles.aa} />
               ) : (
                 <img src={UserIcon} alt="User Icon" />
               )}
-      <input
-              id="avatarInput"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleAvatarChange}
-            />
-      </div>
-    </div>
+              <input
+                id="avatarInput"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleAvatarChange}
+              />
+            </div>
+          </div> */}
 
           <div className={styles.form}>
             <div className={styles.twoGrid}>
@@ -111,30 +111,44 @@ export default function SignUpFirstForm({
                 {errors.email}
               </p>
             ) : null}
-            <select
-              name="phone_code"
-              onChange={handleChange}
-              value={values.phone_code}
-            >
-              <option value="">Select Country Code</option>
-              <option value="+1">+1</option>
-              <option value="+44">+44</option>
-            </select>
-            {errors.phone_code && touched.phone_code ? (
-              <p className={styles.error_content}>
-                {errors.phone_code}
-              </p>
-            ) : null}
+            <div className={styles.phonenumberContainer}>
+              <select
+                name="phone_code"
+                onChange={handleChange}
+                value={values.phone_code}
+              >
+                <option value="">Select Country Code</option>
+                <option value="+1">+1</option>
+                <option value="+44">+44</option>
+              </select>
+              {errors.phone_code && touched.phone_code ? (
+                <p className={styles.error_content}>
+                  {errors.phone_code}
+                </p>
+              ) : null}
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                name="phone"
+                onChange={handleChange}
+                value={values.phone}
+              />
+              {errors.phone && touched.phone ? (
+                <p className={styles.error_content}>
+                  {errors.phone}
+                </p>
+              ) : null}
+            </div>
             <input
-              type="tel"
-              placeholder="Phone Number"
-              name="phone"
+              type="text"
+              placeholder="Password"
+              name="password"
               onChange={handleChange}
-              value={values.phone}
+              value={values.password}
             />
-            {errors.phone && touched.phone ? (
+            {errors.password && touched.password ? (
               <p className={styles.error_content}>
-                {errors.phone}
+                {errors.password}
               </p>
             ) : null}
             <div className={styles.radiogroup}>
@@ -142,9 +156,9 @@ export default function SignUpFirstForm({
               <div className={styles.flex}>
                 <input type="radio"
                   onChange={() => {
-                    setValues({ ...values, over13: "true" });
+                    setValues({ ...values, over_13: true });
                   }}
-                  checked={values?.over13 === 'true'}
+                  checked={values?.over_13}
                   id="yes"
                   name="age"
                 />
@@ -153,10 +167,10 @@ export default function SignUpFirstForm({
                   type="radio"
                   id="no"
                   onChange={() => {
-                    setValues({ ...values, over13: "false" });
+                    setValues({ ...values, over_13: false });
                   }}
                   name="age"
-                  checked={values?.over13 === 'false'}
+                  checked={values?.over_13 === false}
                 />
                 <label htmlFor="no">No</label>
               </div>
@@ -166,23 +180,20 @@ export default function SignUpFirstForm({
               <label className={styles.customcheckbox}>
                 <input
                   type="checkbox"
-                  checked={values.privacyPolicy === '1'}
-                  name="privacyPolicy"
+                  checked={values.privacy_policy === '1'}
+                  name="privacy_policy"
                   onChange={(e) => {
                     const value = e.target.checked ? '1' : '0'
-                    setValues({ ...values, privacyPolicy: value });
+                    setValues({ ...values, privacy_policy: value });
                   }}
                 />
                 <span className={styles.checkmark}></span>
               </label>
               <label htmlFor="policy" className={styles.labelAlignment}>
-                I have read and understood the{" "}
-                {/* <a href="/privacy-policy"> */}
-                Privacy Policy
-                {/* </a> */}
+                I agree to Terms and Conditions and Privacy Policy
               </label>
             </div>
-            {values?.privacyPolicy === '1' && values?.over13 === 'true' ? (
+            {values?.privacy_policy === '1' && values?.over_13 ? (
               <>
                 <button onClick={() => { handleSubmit() }}>Next Step</button>
               </>

@@ -22,6 +22,8 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email address.")
     .required("Email address is required."),
+  password: Yup.string().required("Password is required."),
+
 });
 
 export default function LoginForm() {
@@ -32,29 +34,18 @@ export default function LoginForm() {
     useFormik({
       initialValues: {
         email: "",
+        password: ''
       },
       validationSchema: validationSchema,
       onSubmit: (values) => {
         setIsLoading(true);
-        const apiData = new FormData();
-
-        apiData.append("email", values.email);
 
         axiosInstance
-          .post(`auth/send-magic-link`, apiData)
+          .post(`auth/sign-in`, values)
           .then((res) => {
-            if (res?.data?.data?.is_user_registered) {
-              router.push('/magic')
-              const res = {
-                data:
-                  { message: 'Magic link has been sent. Please check your inbox.' }
-              }
-              successAPIResponse(res);
-            } else {
-              let error = {
-                response: { data: { message: "You are not registered." } },
-              };
-              errorCheckAPIResponse(error);
+            if (res.data.data.signup_complete_status == 1) {
+              setToken(res.data.data.token)
+              setUserInfo(res.data.data)
             }
             setIsLoading(false);
           })
@@ -71,6 +62,9 @@ export default function LoginForm() {
         <Loader />
       )}
       <div className={styles.formContainer}>
+        <div className={styles.logo}>
+          <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
+        </div>
         <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <input
@@ -92,12 +86,24 @@ export default function LoginForm() {
               {errors.email}
             </p>
           ) : null}
+          <input
+            type="text"
+            placeholder="Password"
+            name="password"
+            onChange={handleChange}
+            value={values.password}
+          />
+          {errors.password && touched.password ? (
+            <p className={styles.error_content}>
+              {errors.password}
+            </p>
+          ) : null}
           {isLoading ? (
             <button style={{ backgroundColor: "#9e9e9e" }} type="button">
               Submit
             </button>
           ) : (
-            <button type="submit">Send Magic Link</button>
+            <button type="submit">Signin</button>
           )}
           <p style={{ marginTop: '10px' }} className={styles.center}>
             Create an account? <a href="/signup">Signup</a>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./loginForm.module.scss";
 import Image from "next/image";
+const UserIcon = "/assets/images/user1.png";
+
 import { axiosInstance } from "@/api/base";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 const Logo = "/assets/logo/logo.jpeg";
@@ -51,7 +53,7 @@ const CustomMultiSelect = ({ options, selectedOptions, onChange }) => {
 };
 
 export default function SignUpSecondForm({
-  setFirstOpen,
+  // setFirstOpen,
   formik
 }) {
 
@@ -68,11 +70,21 @@ export default function SignUpSecondForm({
 
     }).catch((error) => {
       errorCheckAPIResponse(error)
-
     })
   }, [])
   const { handleSubmit, handleChange, values, touched, errors, setValues } = formik
-
+  const [avatar, setAvatar] = useState(null);
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (upload) => {
+        setAvatar(upload.target.result);
+      };
+      reader.readAsDataURL(file);
+      setValues({ ...values, avatar: file });
+    }
+  };
   // const onSetAddress = (value) => {
   //   const option = value?.split(',')
   //   let defaultOP: any = {}
@@ -106,8 +118,26 @@ export default function SignUpSecondForm({
         <div className={styles.logo}>
           <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
         </div>
-        <h2>Signup</h2>
+        <h2>Signup Step 2</h2>
+        <div className={styles.avatarupload}>
+            <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
+              {avatar ? (
+                <img src={avatar} alt="Avatar" className={styles.aa} />
+              ) : (
+                <img src={UserIcon} alt="User Icon" />
+              )}
+              <input
+                id="avatarInput"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleAvatarChange}
+              />
+            </div>
+          </div>
         <div className={styles.form}>
+
+          
           {/* <Autocomplete
             apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
             name="address1"
@@ -266,11 +296,11 @@ export default function SignUpSecondForm({
           }
         </div>
 
-        <button style={{ marginBottom: '10px' }}
+        {/* <button style={{ marginBottom: '10px' }}
           onClick={() => {
             setFirstOpen(true)
           }}
-        >Back</button>
+        >Back</button> */}
         {/* {
           isLoading ? (
             <button style={{ backgroundColor: "#9e9e9e" }} type="button">
