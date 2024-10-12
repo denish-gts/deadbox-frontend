@@ -5,7 +5,6 @@ export const metadata: Metadata = {
   title: "Singup",
 };
 
-
 export default function Singup() {
   return (
     <>
