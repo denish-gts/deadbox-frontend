@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^14.2.12",
+    "@next/swc-linux-x64-gnu": "^14.2.15",
     "aos": "^2.3.4",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
