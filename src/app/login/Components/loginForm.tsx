@@ -46,6 +46,7 @@ export default function LoginForm() {
             if (res.data.data.signup_complete_status == 1) {
               setToken(res.data.data.token)
               setUserInfo(res.data.data)
+              router.push(`/profile`);
             }
             setIsLoading(false);
           })
@@ -94,10 +95,19 @@ export default function LoginForm() {
             value={values.password}
           />
           {errors.password && touched.password ? (
-            <p className={styles.error_content}>
+            <p className={styles.error_content}
+            style={{
+              color: "red",
+              fontSize: "12px",
+              marginTop: "-10px",
+              marginBottom: "16px",
+            }}>
               {errors.password}
             </p>
           ) : null}
+          <p className={styles.forgotPassword}>
+            <a href="/forgot-password">Forgot your Password ?</a>
+          </p>
           {isLoading ? (
             <button style={{ backgroundColor: "#9e9e9e" }} type="button">
               Submit
@@ -108,6 +118,7 @@ export default function LoginForm() {
           <p style={{ marginTop: '10px' }} className={styles.center}>
             Create an account? <a href="/signup">Signup</a>
           </p>
+
         </form>
       </div>
       <div className={styles.imageContainer}>
