@@ -27,7 +27,9 @@ export default function Sidebar({ isOpen, onClose }) {
     <div className={styles.sidebarSection}>
       <div className={styles.sidebarTop}>
         <div className={styles.sidebarFlexAlignment}>
-          <div className={styles.sidebarLogo} onClick={() => router.push('/')}>
+          <div className={styles.sidebarLogo} 
+          // onClick={() => router.push('/')}
+          >
             <Image unoptimized height={0} width={0} src={Logo} alt="Logo" />
           </div>
           <div className={styles.closeIcon} >
