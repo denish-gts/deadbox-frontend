@@ -156,7 +156,7 @@ export default function Group() {
             <p>Manage your selected groups</p>
           </div>
           <div className={styles.searchContainer}>
-          <input
+            <input
               type="text"
               placeholder="Search by groups name"
               value={query}
@@ -215,8 +215,11 @@ export default function Group() {
                   <td>
                     <input type="checkbox" />
                   </td>
-                  <td>
-                    <div className={styles.groupName}>
+                  <td style={{ cursor: "pointer" }}>
+                    <div className={styles.groupName}
+                      onClick={() => {
+                        router.push(`/edit-group/${parseInt(group?.id)}}`)
+                      }}>
                       <Image
                         height={0}
                         width={0}

@@ -22,20 +22,23 @@ const phoneRegExp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 const validationSchema = Yup.object().shape({
   groupName: Yup.string().required("Group Name is required."),
   groupType: Yup.string().required("Group Type is required."),
-  phone: Yup.string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("Phone number is required"),
-  phone_code: Yup.string().required("Country code is required."),
   about: Yup.string().required("About is required."),
-  email: Yup.string()
-    .email("Please enter a valid email address.")
-    .required("Email address is required."),
   invitees: Yup.array()
     .min(1, "At least one invitee is required")
     .required("Invitees are required"),
 });
 
-export default function AddGroup() {
+const validationSchema1 = Yup.object().shape({
+  phone: Yup.string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("Phone number is required"),
+  phone_code: Yup.string().required("Country code is required."),
+  email: Yup.string()
+    .email("Please enter a valid email address.")
+    .required("Email address is required."),
+});
+
+export default function AddGroup({ header, groupId, type }) {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +56,7 @@ export default function AddGroup() {
         invitees: [],
         avatar: "",
       },
-      validationSchema: validationSchema,
+      validationSchema: type === 'edit_group' ? validationSchema : { ...validationSchema, ...validationSchema1 },
       onSubmit: (values) => {
         setIsLoading(true);
         const apiData = new FormData();
@@ -62,9 +65,13 @@ export default function AddGroup() {
         }
         apiData.append("title", values.groupName);
         apiData.append("group_type", values.groupType);
-        apiData.append("phone", values.phone);
-        apiData.append("phone_code", values.phone_code);
-        apiData.append("email", values.email);
+        if (type !== 'edit_group') {
+          apiData.append("phone", values.phone);
+          apiData.append("phone_code", values.phone_code);
+          apiData.append("email", values.email);
+        }else{
+          apiData.append("id", parseInt(groupId) as any);    
+        }
         apiData.append("description", values.about);
 
         apiData.append(
@@ -78,20 +85,23 @@ export default function AddGroup() {
             })
           )
         );
-        postFormData(`group/create`, apiData)
+        const URL = type === 'edit_group' ? 'group/update' : 'group/create'
+        const message = type === 'edit_group' ? "Your group is update.": "Your group is created and sent for the approval to the admin"
+
+        postFormData(URL, apiData)
           .then((res) => {
             router.push("/group");
             const msg = {
               data: {
                 message:
-                  "Your group is created and sent for the approval to the admin",
-              },
+                message              },
             };
             successAPIResponse(msg);
             setIsLoading(false);
           })
           .catch((error) => {
             errorCheckAPIResponse(error);
+            setIsLoading(false);
           });
       },
     });
@@ -119,9 +129,33 @@ export default function AddGroup() {
         errorCheckAPIResponse(error);
       });
   };
+
   useEffect(() => {
     getUserList();
-  }, []);
+    if (groupId) {
+      const body = {
+        "id": parseInt(groupId),
+      }
+      setIsLoading(true)
+      post(`group/details`, body)
+        .then((data: any) => {
+          const responce = data.data.data;
+          const getData = {
+            groupName: responce.group.title,
+            invitees: responce.member_list,
+            about: responce.group.description,
+            avatar: responce.group.logo
+          }
+          setAvatar(responce.group.logo)
+          setValues({ ...values, ...getData });
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          errorCheckAPIResponse(error);
+          setIsLoading(false)
+        });
+    }
+  }, [groupId]);
 
   // const [members, setMembers] = useState([
   //   {
@@ -268,7 +302,7 @@ export default function AddGroup() {
               />
             </div> */}
             <div className={styles.formSection}>
-              <h1 className={styles.header}>Add New Group</h1>
+              <h1 className={styles.header}>{header || 'Add New Group'}</h1>
 
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
@@ -329,39 +363,41 @@ export default function AddGroup() {
                 {errors.phone_code}
               </p>
             ) : null} */}
-              <div className={styles.formRow}>
+              {type !== 'edit_group' && (
+                <>
+                  <div className={styles.formRow}>
 
 
 
-                <div className={styles.formGroup}>
-                  <label htmlFor="phoneWithCode">Phone Number</label>
-                  <div className={styles.grids}>
-                    <select
-                      name="phone_code"
-                      onChange={handleChange}
-                      value={values.phone_code}
-                      className={styles.phoneCodeSelect}
-                    >
-                      <option value="">Code</option>
-                      <option value="+1">+1</option>
-                      <option value="+44">+44</option>
-                    </select>
-                    <input
-                      type="text"
-                      name="phone"
-                      onChange={handleChange}
-                      value={values.phone}
-                      className={styles.phoneNumberInput}
-                      placeholder="Phone Number"
-                    />
-                  </div>
-                  {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
-                    <p style={{ color: "red", fontSize: "12px" }}>
-                      {errors.phone_code || errors.phone}
-                    </p>
-                  ) : null}
-                </div>
-                {/* <div className={styles.formGroup}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="phoneWithCode">Phone Number</label>
+                      <div className={styles.grids}>
+                        <select
+                          name="phone_code"
+                          onChange={handleChange}
+                          value={values.phone_code}
+                          className={styles.phoneCodeSelect}
+                        >
+                          <option value="">Code</option>
+                          <option value="+1">+1</option>
+                          <option value="+44">+44</option>
+                        </select>
+                        <input
+                          type="text"
+                          name="phone"
+                          onChange={handleChange}
+                          value={values.phone}
+                          className={styles.phoneNumberInput}
+                          placeholder="Phone Number"
+                        />
+                      </div>
+                      {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
+                        <p style={{ color: "red", fontSize: "12px" }}>
+                          {errors.phone_code || errors.phone}
+                        </p>
+                      ) : null}
+                    </div>
+                    {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <select
                     name="phone_code"
@@ -383,9 +419,9 @@ export default function AddGroup() {
                     </p>
                   ) : null}
                 </div> */}
-              </div>
-              <div className={styles.formRow}>
-                {/* <div className={styles.formGroup}>
+                  </div>
+                  <div className={styles.formRow}>
+                    {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <input
                     type="number"
@@ -405,27 +441,29 @@ export default function AddGroup() {
                     </p>
                   ) : null}
                 </div> */}
-                <div className={styles.formGroup}>
-                  <label htmlFor="email">Email Address</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    onChange={handleChange}
-                    value={values.email}
-                  />
-                  {errors.email && touched.email ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {errors.email}
-                    </p>
-                  ) : null}
-                </div>
-              </div>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="email">Email Address</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        onChange={handleChange}
+                        value={values.email}
+                      />
+                      {errors.email && touched.email ? (
+                        <p
+                          style={{
+                            color: "red",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {errors.email}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                </>
+              )}
               <div className={classNames(styles.formGroup, styles.secRow)}>
                 <label htmlFor="aboutGroup">About Group</label>
                 <textarea
@@ -644,7 +682,7 @@ export default function AddGroup() {
                   style={{ backgroundColor: "#9e9e9e" }}
                   className={styles.submitGroupButton}
                 >
-                  Submit My Group
+                  {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
                 </button>
               ) : (
                 <button
@@ -653,7 +691,7 @@ export default function AddGroup() {
                   }}
                   className={styles.submitGroupButton}
                 >
-                  Submit My Group
+                  {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
                 </button>
               )}
             </div>

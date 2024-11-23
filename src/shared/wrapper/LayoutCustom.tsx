@@ -13,7 +13,7 @@ export const LayoutCustom = ({ children }) => {
   const router = useRouter();
   const loginRoutes = ["/login",'/forgot-password', "/signup",,'/signup-2', '/magic', '/verifyemail','/magic-link', '/','/verify-email'];
   const login = loginRoutes.includes(path);
-  const protectedRoutes = ["/profile", '/edit-profile', '/group', '/add-group', '/all-groups', '/requsted-member'];
+  const protectedRoutes = ["/profile",'/edit-group', '/edit-profile', '/group', '/add-group', '/all-groups', '/requsted-member'];
   const protectedRoute = protectedRoutes.includes(path);
 
   useEffect(() => {
