@@ -3,7 +3,7 @@ import styles from "./loginForm.module.scss";
 import Image from "next/image";
 const UserIcon = "/assets/images/user1.png";
 
-import { axiosInstance } from "@/api/base";
+import { axiosInstance, post } from "@/api/base";
 import { errorCheckAPIResponse } from "@/utils/helpers";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin2.jpg";
@@ -71,6 +71,22 @@ export default function SignUpSecondForm({
     }).catch((error) => {
       errorCheckAPIResponse(error)
     })
+    // post(`group/details`, body)
+    //     .then((data: any) => {
+          // const responce = data.data.data;
+          // const getData = {
+          //   groupName: responce.group.title,
+          //   invitees: responce.member_list,
+          //   about: responce.group.description,
+          //   avatar: responce.group.logo
+          // }
+          // setAvatar(responce.group.logo)
+          // setValues({ ...values, ...getData });
+          // setIsLoading(false)
+        // })
+        // .catch((error) => {
+        //   errorCheckAPIResponse(error);
+        // });
   }, [])
   const { handleSubmit, handleChange, values, touched, errors, setValues } = formik
   const [avatar, setAvatar] = useState(null);
