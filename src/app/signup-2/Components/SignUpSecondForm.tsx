@@ -5,6 +5,7 @@ const UserIcon = "/assets/images/user1.png";
 
 import { axiosInstance, post } from "@/api/base";
 import { errorCheckAPIResponse } from "@/utils/helpers";
+import Loader from "@/component/common/loader";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin2.jpg";
 // import Autocomplete from 'react-google-autocomplete';
@@ -58,6 +59,7 @@ export default function SignUpSecondForm({
 }) {
 
   const [groupOption, setGroupOption] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     axiosInstance.post('group/list', {
@@ -71,22 +73,7 @@ export default function SignUpSecondForm({
     }).catch((error) => {
       errorCheckAPIResponse(error)
     })
-    // post(`group/details`, body)
-    //     .then((data: any) => {
-          // const responce = data.data.data;
-          // const getData = {
-          //   groupName: responce.group.title,
-          //   invitees: responce.member_list,
-          //   about: responce.group.description,
-          //   avatar: responce.group.logo
-          // }
-          // setAvatar(responce.group.logo)
-          // setValues({ ...values, ...getData });
-          // setIsLoading(false)
-        // })
-        // .catch((error) => {
-        //   errorCheckAPIResponse(error);
-        // });
+
   }, [])
   const { handleSubmit, handleChange, values, touched, errors, setValues } = formik
   const [avatar, setAvatar] = useState(null);
@@ -100,6 +87,50 @@ export default function SignUpSecondForm({
       reader.readAsDataURL(file);
       setValues({ ...values, avatar: file });
     }
+  };
+  
+  const handleZipCodeChange = (e) => {
+    const zipcode = e.target.value;
+    if (zipcode.length > 4) {
+      const body = { "zipcode": zipcode }
+      setIsLoading(true)
+
+      post(`common/lookup-zipcode`, body)
+        .then((data: any) => {
+          const responce = data.data?.data;
+          if (responce) {
+            const getData = {
+              zipcode: zipcode,
+              city_title: responce?.city,
+              state_title: responce?.state,
+              country_title: responce?.country
+            }
+            setValues({ ...values, ...getData });
+          } else {
+            const getData = {
+              zipcode: zipcode,
+              city_title: '',
+              state_title: '',
+              country_title: ''
+            }
+            setValues({ ...values, ...getData });
+          }
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          setIsLoading(false)
+          errorCheckAPIResponse(error);
+        });
+    } else {
+      const getData = {
+        zipcode: zipcode,
+        city_title: '',
+        state_title: '',
+        country_title: ''
+      }
+      setValues({ ...values, ...getData });
+    }
+
   };
   // const onSetAddress = (value) => {
   //   const option = value?.split(',')
@@ -129,13 +160,16 @@ export default function SignUpSecondForm({
 
 
   return (
-    <div className={styles.signupSection}>
-      <div className={styles.formContainer}>
-        <div className={styles.logo}>
-          <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
-        </div>
-        <h2>Signup Step 2</h2>
-        <div className={styles.avatarupload}>
+    <>
+      {isLoading && <Loader />}
+      <div className={styles.signupSection}>
+
+        <div className={styles.formContainer}>
+          <div className={styles.logo}>
+            <Image src={Logo} alt="Logo" unoptimized height={0} width={0} />
+          </div>
+          <h2>Signup Step 2</h2>
+          <div className={styles.avatarupload}>
             <div className={styles.avataricon} onClick={() => document.getElementById("avatarInput").click()}>
               {avatar ? (
                 <img src={avatar} alt="Avatar" className={styles.aa} />
@@ -151,10 +185,10 @@ export default function SignUpSecondForm({
               />
             </div>
           </div>
-        <div className={styles.form}>
+          <div className={styles.form}>
 
-          
-          {/* <Autocomplete
+
+            {/* <Autocomplete
             apiKey="AIzaSyAf0gOA0AoiliWzS8rG5mxBOtqPrM34cjA"
             name="address1"
             onPlaceSelected={(place) => {
@@ -180,156 +214,157 @@ export default function SignUpSecondForm({
             </p>
           ) : null
           } */}
-          <div className={styles.inlineInputs}>
-            <div>
+            <div className={styles.inlineInputs}>
               <div>
-                <input
-                  type="text"
-                  placeholder="City"
-                  onChange={handleChange}
-                  name="city_title"
-                  value={values.city_title}
-                />
+                <div>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    onChange={handleChange}
+                    name="city_title"
+                    value={values.city_title}
+                  />
+                </div>
+                <div>
+                  {errors.city_title && touched.city_title && (
+                    <p className={styles.error_content}>
+                      {errors.city_title}
+                    </p>
+                  )}
+                </div>
               </div>
               <div>
-                {errors.city_title && touched.city_title && (
-                  <p className={styles.error_content}>
-                    {errors.city_title}
-                  </p>
-                )}
+                <div>
+                  <input
+                    type="number"
+                    placeholder="Zipcode"
+                    onChange={handleZipCodeChange}
+                    name="zipcode"
+                    value={values.zipcode}
+                  />
+                </div>
+                <div>
+                  {errors.zipcode && touched.zipcode && (
+                    <p className={styles.error_content}>
+                      {errors.zipcode}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-            <div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Zipcode"
-                  onChange={handleChange}
-                  name="zipcode"
-                  value={values.zipcode}
-                />
-              </div>
-              <div>
-                {errors.zipcode && touched.zipcode && (
-                  <p className={styles.error_content}>
-                    {errors.zipcode}
-                  </p>
-                )}
-              </div>
-            </div>
+            <input
+              type="text"
+              placeholder="State"
+              onChange={handleChange}
+              name="state_title"
+              value={values.state_title}
+            />
+            {errors.state_title && touched.state_title ? (
+              <p className={styles.error_content}>
+                {errors.state_title}
+              </p>
+            ) : null
+            }
+            <select onChange={handleChange} name="country_title" value={values.country_title}>
+              <option value="">Country</option>
+              <option value="USA">USA</option>
+              <option value="UK">UK</option>
+              <option value="Canada">Canada</option>
+            </select>
+            {errors.country_title && touched.country_title ? (
+              <p className={styles.error_content}>
+                {errors.country_title}
+              </p>
+            ) : null
+            }
+            <input
+              type="text"
+              placeholder="Call Sign/Nickname"
+              onChange={handleChange}
+              name="sign_name"
+              value={values.sign_name}
+            />
+            {errors.sign_name && touched.sign_name ? (
+              <p className={styles.error_content}>
+                {errors.sign_name}
+              </p>
+            ) : null
+            }
+            <textarea
+              placeholder="About me"
+              onChange={handleChange}
+              name="about"
+              value={values.about}
+            ></textarea>
+            {errors.about && touched.about ? (
+              <p className={styles.error_content}>
+                {errors.about}
+              </p>
+            ) : null
+            }
+            <CustomMultiSelect
+              options={groupOption}
+              selectedOptions={values.group}
+              onChange={(option) => {
+                const groupID = option?.map((item) => {
+                  const slectedoption = groupOption.find((op) => op.label === item)
+                  return slectedoption?.id
+                })
+                setValues({ ...values, group: option, group_id: groupID });
+              }}
+            />
+            {errors.group && touched.group ? (
+              <p className={styles.error_content}>
+                Group name is required.
+              </p>
+            ) : null
+            }
+            <input
+              type="date"
+              placeholder="Date of Birth"
+              onChange={handleChange}
+              name="dob"
+              value={values.dob}
+            />
+            {errors.dob && touched.dob ? (
+              <p className={styles.error_content}>
+                {errors.dob}
+              </p>
+            ) : null
+            }
+            <select onChange={handleChange} name="gender" value={values.gender}>
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            {errors.gender && touched.gender ? (
+              <p className={styles.error_content}>
+                {errors.gender}
+              </p>
+            ) : null
+            }
           </div>
-          <input
-            type="text"
-            placeholder="State"
-            onChange={handleChange}
-            name="state_title"
-            value={values.state_title}
-          />
-          {errors.state_title && touched.state_title ? (
-            <p className={styles.error_content}>
-              {errors.state_title}
-            </p>
-          ) : null
-          }
-          <select onChange={handleChange} name="country_title" value={values.country_title}>
-            <option value="">Country</option>
-            <option value="USA">USA</option>
-            <option value="UK">UK</option>
-            <option value="Canada">Canada</option>
-          </select>
-          {errors.country_title && touched.country_title ? (
-            <p className={styles.error_content}>
-              {errors.country_title}
-            </p>
-          ) : null
-          }
-          <input
-            type="text"
-            placeholder="Call Sign/Nickname"
-            onChange={handleChange}
-            name="sign_name"
-            value={values.sign_name}
-          />
-          {errors.sign_name && touched.sign_name ? (
-            <p className={styles.error_content}>
-              {errors.sign_name}
-            </p>
-          ) : null
-          }
-          <textarea
-            placeholder="About me"
-            onChange={handleChange}
-            name="about"
-            value={values.about}
-          ></textarea>
-          {errors.about && touched.about ? (
-            <p className={styles.error_content}>
-              {errors.about}
-            </p>
-          ) : null
-          }
-          <CustomMultiSelect
-            options={groupOption}
-            selectedOptions={values.group}
-            onChange={(option) => {
-              const groupID = option?.map((item) => {
-                const slectedoption = groupOption.find((op) => op.label === item)
-                return slectedoption?.id
-              })
-              setValues({ ...values, group: option, group_id: groupID });
-            }}
-          />
-          {errors.group && touched.group ? (
-            <p className={styles.error_content}>
-              Group name is required.
-            </p>
-          ) : null
-          }
-          <input
-            type="date"
-            placeholder="Date of Birth"
-            onChange={handleChange}
-            name="dob"
-            value={values.dob}
-          />
-          {errors.dob && touched.dob ? (
-            <p className={styles.error_content}>
-              {errors.dob}
-            </p>
-          ) : null
-          }
-          <select onChange={handleChange} name="gender" value={values.gender}>
-            <option value="">Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-          {errors.gender && touched.gender ? (
-            <p className={styles.error_content}>
-              {errors.gender}
-            </p>
-          ) : null
-          }
-        </div>
 
-        {/* <button style={{ marginBottom: '10px' }}
+          {/* <button style={{ marginBottom: '10px' }}
           onClick={() => {
             setFirstOpen(true)
           }}
         >Back</button> */}
-        {/* {
+          {/* {
           isLoading ? (
             <button style={{ backgroundColor: "#9e9e9e" }} type="button">
               Submit
             </button>
           ) : ( */}
-        <button onClick={() => { handleSubmit() }}>Submit</button>
-        {/* )
+          <button onClick={() => { handleSubmit() }}>Submit</button>
+          {/* )
         } */}
+        </div>
+        <div className={styles.imageContainer}>
+          <Image src={BG} alt="Background" unoptimized height={0} width={0} />
+        </div>
       </div>
-      <div className={styles.imageContainer}>
-        <Image src={BG} alt="Background" unoptimized height={0} width={0} />
-      </div>
-    </div>
+    </>
   );
 }
