@@ -172,7 +172,7 @@ export default function AddGroup({ header, groupId, type }) {
     }
   }, [groupId]);
 
- 
+
   const DadboxRoles = [
     {
       label: 'Admin',
@@ -327,41 +327,41 @@ export default function AddGroup({ header, groupId, type }) {
                 {errors.phone_code}
               </p>
             ) : null} */}
-              {type !== 'edit_group' && (
-                <>
-                  <div className={styles.formRow}>
+              {/* {type !== 'edit_group' && ( */}
+              <>
+                <div className={styles.formRow} style={{ opacity: type === 'edit_group' ? '0.5' : '' }}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="phoneWithCode">Phone Number</label>
+                    <div className={styles.grids}>
+                      <select
+                        name="phone_code"
+                        onChange={handleChange}
+                        value={values.phone_code}
+                        className={styles.phoneCodeSelect}
+                        disabled={type === 'edit_group'}
 
-
-
-                    <div className={styles.formGroup}>
-                      <label htmlFor="phoneWithCode">Phone Number</label>
-                      <div className={styles.grids}>
-                        <select
-                          name="phone_code"
-                          onChange={handleChange}
-                          value={values.phone_code}
-                          className={styles.phoneCodeSelect}
-                        >
-                          <option value="">Code</option>
-                          <option value="+1">+1</option>
-                          <option value="+44">+44</option>
-                        </select>
-                        <input
-                          type="text"
-                          name="phone"
-                          onChange={handleChange}
-                          value={values.phone}
-                          className={styles.phoneNumberInput}
-                          placeholder="Phone Number"
-                        />
-                      </div>
-                      {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
-                        <p style={{ color: "red", fontSize: "12px" }}>
-                          {errors.phone_code || errors.phone}
-                        </p>
-                      ) : null}
+                      >
+                        <option value="">Code</option>
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                      </select>
+                      <input
+                        type="text"
+                        name="phone"
+                        onChange={handleChange}
+                        value={values.phone}
+                        className={styles.phoneNumberInput}
+                        placeholder="Phone Number"
+                        disabled={type === 'edit_group'}
+                      />
                     </div>
-                    {/* <div className={styles.formGroup}>
+                    {(errors.phone_code && touched.phone_code) || (errors.phone && touched.phone) ? (
+                      <p style={{ color: "red", fontSize: "12px" }}>
+                        {errors.phone_code || errors.phone}
+                      </p>
+                    ) : null}
+                  </div>
+                  {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <select
                     name="phone_code"
@@ -383,9 +383,9 @@ export default function AddGroup({ header, groupId, type }) {
                     </p>
                   ) : null}
                 </div> */}
-                  </div>
-                  <div className={styles.formRow}>
-                    {/* <div className={styles.formGroup}>
+                </div>
+                <div className={styles.formRow} style={{ opacity: type === 'edit_group' ? '0.5' : '' }}>
+                  {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <input
                     type="number"
@@ -405,29 +405,30 @@ export default function AddGroup({ header, groupId, type }) {
                     </p>
                   ) : null}
                 </div> */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="email">Email Address</label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        onChange={handleChange}
-                        value={values.email}
-                      />
-                      {errors.email && touched.email ? (
-                        <p
-                          style={{
-                            color: "red",
-                            fontSize: "12px",
-                          }}
-                        >
-                          {errors.email}
-                        </p>
-                      ) : null}
-                    </div>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="email">Email Address</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      onChange={handleChange}
+                      value={values.email}
+                      disabled={type === 'edit_group'}
+                    />
+                    {errors.email && touched.email ? (
+                      <p
+                        style={{
+                          color: "red",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {errors.email}
+                      </p>
+                    ) : null}
                   </div>
-                </>
-              )}
+                </div>
+              </>
+              {/* )} */}
               <div className={classNames(styles.formGroup, styles.secRow)}>
                 <label htmlFor="aboutGroup">About Group</label>
                 <textarea
@@ -555,7 +556,7 @@ export default function AddGroup({ header, groupId, type }) {
                             if (roleId.includes(item.value.toString())) {
                               return item
                             }
-                          })                          
+                          })
                           return (
 
                             <tr key={key}>
@@ -676,14 +677,14 @@ export default function AddGroup({ header, groupId, type }) {
                   {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
                 </button>
               ) : ( */}
-                <button
-                  onClick={() => {
-                    handleSubmit();
-                  }}
-                  className={styles.submitGroupButton}
-                >
-                  {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
-                </button>
+              <button
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className={styles.submitGroupButton}
+              >
+                {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
+              </button>
               {/* )} */}
             </div>
           </div>

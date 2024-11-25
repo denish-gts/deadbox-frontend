@@ -11,6 +11,11 @@
     margin: 20px 0 0 0;
     padding: 20px;
   }
+  .roleSelect{
+    input{
+      border: none !important;
+    }
+  }
   .roleDropdown {
     position: relative;
     display: inline-block;

@@ -1,11 +1,13 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./group.module.scss";
 import Image from "next/image";
 import { post } from "@/api/base";
 import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import Pagination from "../pagination/index";
 import Loader from "../common/loader";
+import { MainContent } from "@/utils/context";
+import Select from 'react-select';
 
 interface Group {
   id: number;
@@ -22,6 +24,8 @@ interface Group {
 }
 
 export default function RequestedMember() {
+  const { sassRoles } = useContext(MainContent);
+
   const [groups, setGroups] = useState<Group[]>([]);
   const [showModel, setShowModel] = useState(false);
   const initalpayload = { response_status: 0, role_id: '', id: '' }
@@ -116,7 +120,7 @@ export default function RequestedMember() {
     setGroups((pre) => {
       return pre?.map((item, index) => {
         if (index === i) {
-          return { ...item, role_id: e.target.value }
+          return { ...item, role_id: e }
         } else {
           return item
         }
@@ -124,6 +128,26 @@ export default function RequestedMember() {
     })
 
   }
+  // const handleChangeRole = (e: any, index: number) => {
+  //   const updateData = values?.invitees?.map((item: any, i: number) => {
+  //     if (i === index) {
+  //       return { ...item, role_id: e }
+  //     } else {
+  //       return item
+  //     }
+  //   })
+  //   setValues({ ...values, invitees: updateData });
+  // }
+  const DadboxRoles = [
+    {
+      label: 'Admin',
+      value: 1
+    },
+    {
+      label: 'Member',
+      value: 2,
+      color: 'green'
+    }]
   return (
     <>
       {/* <div className="container"> */}
@@ -162,6 +186,13 @@ export default function RequestedMember() {
           </thead>
           <tbody>
             {groups?.map((group: any, index: number) => {
+              const RolesData = group.group.group_type === 'Sas' ? sassRoles : DadboxRoles
+              const roleId = group?.role_id.toString().split(',')
+              const valuesData = RolesData.filter((item: any) => {
+                if (roleId.includes(item.value.toString())) {
+                  return item
+                }
+              })
               return (
                 <tr key={group?.id}>
                   <td>
@@ -184,7 +215,7 @@ export default function RequestedMember() {
                   </td>
                   <td>{group.group.group_type}</td>
                   <td>
-                    <div className={styles.roleDropdown}>
+                    {/* <div className={styles.roleDropdown}>
                       <select
                         onChange={(e) =>
                           handleChangeRole(e, index)}
@@ -193,13 +224,27 @@ export default function RequestedMember() {
                         <option value={1}>Admin</option>
                         <option value={2}>Member</option>
                       </select>
+                    </div> */}
+                    <div className={styles.roleSelect}>
+                      <Select
+                        closeMenuOnSelect={false}
+                        isMulti={RolesData.length > 2}
+                        value={valuesData}
+                        onChange={(value: any) => {
+                          const data = RolesData.length > 2 ? value : [value]
+                          const role_id = data?.map((item: any) => { return item.value }).toString()
+                          handleChangeRole(role_id, index)
+                        }}
+
+                        options={RolesData}
+                      />
                     </div>
                   </td>
                   <td>
                     <button
                       className={styles.acceptBtn}
                       onClick={() => {
-                        setPayload({ id: group.id, response_status: 1, role_id: group?.role_id } as any)
+                        setPayload({ id: group.id, response_status: 1, role_id: group?.role_id?.toString() } as any)
                         setShowModel(true)
                       }}                  >
                       Accept
@@ -207,7 +252,7 @@ export default function RequestedMember() {
                     <button
                       className={styles.rejectBtn}
                       onClick={() => {
-                        setPayload({ id: group.id, response_status: 2, role_id: group?.role_id } as any)
+                        setPayload({ id: group.id, response_status: 2, role_id: group?.role_id?.toString() } as any)
                         setShowModel(true)
                       }}                      >
                       Reject

@@ -119,7 +119,49 @@ export default function EditProfile() {
   useEffect(() => {
     getUserData()
   }, []);
+  const handleZipCodeChange = (e) => {
+    const zipcode = e.target.value;
+    if (zipcode.length > 4) {
+      const body = { "zipcode": zipcode }
+      setIsLoading(true)
 
+      post(`common/lookup-zipcode`, body)
+        .then((data: any) => {
+          const responce = data.data?.data;
+          if (responce) {
+            const getData = {
+              zipcode: zipcode,
+              city_title: responce?.city,
+              state_title: responce?.state,
+              country_title: responce?.country
+            }
+            setValues({ ...values, ...getData });
+          } else {
+            const getData = {
+              zipcode: zipcode,
+              city_title: '',
+              state_title: '',
+              country_title: ''
+            }
+            setValues({ ...values, ...getData });
+          }
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          setIsLoading(false)
+          errorCheckAPIResponse(error);
+        });
+    } else {
+      const getData = {
+        zipcode: zipcode,
+        city_title: '',
+        state_title: '',
+        country_title: ''
+      }
+      setValues({ ...values, ...getData });
+    }
+
+  };
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
 
@@ -465,7 +507,7 @@ export default function EditProfile() {
                 <input
                   type="text"
                   name="zipcode"
-                  onChange={handleChange}
+                  onChange={handleZipCodeChange}
                   value={values?.zipcode}
                 />
                 {errors.zipcode && touched.zipcode ? (
