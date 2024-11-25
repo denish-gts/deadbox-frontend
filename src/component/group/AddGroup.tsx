@@ -62,6 +62,14 @@ export default function AddGroup({ header, groupId, type }) {
       onSubmit: (values) => {
         setIsLoading(true);
         const apiData = new FormData();
+        const groupMembers: any = []
+        values.invitees.forEach((item: any) => {
+          const roleIdData = item?.role_id?.toString().split(',')
+          roleIdData?.forEach((role_id: any) => {
+            groupMembers.push({ user_id: item.id, role_id })
+
+          })
+        })
         if (values.avatar) {
           apiData.append("f_image", values.avatar);
         }
@@ -75,18 +83,21 @@ export default function AddGroup({ header, groupId, type }) {
           apiData.append("id", parseInt(groupId) as any);
         }
         apiData.append("description", values.about);
-
         apiData.append(
           "group_members_str",
-          JSON.stringify(
-            values.invitees.map((item) => {
-              return {
-                user_id: item.id,
-                role_id: item?.role_id,
-              };
-            })
-          )
+          JSON.stringify(groupMembers)
         );
+        // apiData.append(
+        //   "group_members_str",
+        //   JSON.stringify(
+        //     values.invitees.map((item) => {
+        //       return {
+        //         user_id: item.id,
+        //         role_id: item?.role_id,
+        //       };
+        //     })
+        //   )
+        // );
         const URL = type === 'edit_group' ? 'group/update' : 'group/create'
         const message = type === 'edit_group' ? "Your group is update." : "Your group is created and sent for the approval to the admin"
 
@@ -656,7 +667,7 @@ export default function AddGroup({ header, groupId, type }) {
 
               </div>
 
-              {isLoading ? (
+              {/* {isLoading ? (
                 <button
                   type="button"
                   style={{ backgroundColor: "#9e9e9e" }}
@@ -664,7 +675,7 @@ export default function AddGroup({ header, groupId, type }) {
                 >
                   {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
                 </button>
-              ) : (
+              ) : ( */}
                 <button
                   onClick={() => {
                     handleSubmit();
@@ -673,7 +684,7 @@ export default function AddGroup({ header, groupId, type }) {
                 >
                   {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
                 </button>
-              )}
+              {/* )} */}
             </div>
           </div>
         </div>
