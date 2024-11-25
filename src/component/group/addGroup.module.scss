@@ -11,7 +11,11 @@
     padding: 16px;
   }
 }
-
+.roleSelect{
+  input{
+    border: none !important;
+  }
+}
 .header {
   font-size: 30px;
   line-height: 36px;
