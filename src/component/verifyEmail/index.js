@@ -22,8 +22,6 @@ function VerifyEmailContent() {
                 email_verification_token: decodeURIComponent(token)
             }
             axiosInstance.post(`auth/verify-email`, payload).then((res) => {
-                console.log('resresresresresresres', res?.data, res?.data?.data?.success);
-
                 // localStorage.setItem('userDetails', JSON.stringify(res.data.data))
                 // setToken(res.data.data.token)
                 setUserInfo({ email: decodeURIComponent(email) })

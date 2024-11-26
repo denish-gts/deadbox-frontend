@@ -166,7 +166,7 @@ export default function Group() {
               <select onChange={(e) => handleChangeGroupType(e)} value={filterData?.group_type}>
                 <option value="">Select Group Type</option>
                 <option value="deadbox">Dead Box</option>
-                <option value="saas">SAS</option>
+                <option value="sas">SAS</option>
                 <option value="general_private">General Private</option>
                 <option value="general_public">General Public</option>
               </select>
@@ -210,6 +210,8 @@ export default function Group() {
                 default:
                   break;
               }
+              console.log('groupgroupgroupgroupgroup',group);
+              
               return (
                 <tr key={group?.id}>
                   <td>
@@ -230,7 +232,7 @@ export default function Group() {
                       <span>{group.title}</span>
                     </div>
                   </td>
-                  <td>{group.group_type}</td>
+                  <td>{['Sas','saas'].includes(group.group_type)?'SAS':group.group_type}</td>
                   <td>{group.total_members}</td>
                   <td>{group.roleName}</td>
                   <td>{groupStatus}</td>

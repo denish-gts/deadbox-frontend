@@ -21,7 +21,6 @@ export const LayoutCustom = ({ children }) => {
   const protectedRoute = protectedRoutes.includes(path);
 
   useEffect(() => {
-    console.log('xsdsdsdsddsd', !authenticate(), path, !unProtectedRoute.includes(path),);
     const body = { for_sas: 1 }
     post(`master/group-role/list`, body)
       .then((data: any) => {

@@ -186,7 +186,7 @@ export default function RequestedMember() {
           </thead>
           <tbody>
             {groups?.map((group: any, index: number) => {
-              const RolesData = group.group.group_type === 'Sas' ? sassRoles : DadboxRoles
+              const RolesData = ['Sas', 'saas'].includes(group.group.group_type) ? sassRoles : DadboxRoles
               const roleId = group?.role_id.toString().split(',')
               const valuesData = RolesData.filter((item: any) => {
                 if (roleId.includes(item.value.toString())) {
@@ -213,7 +213,8 @@ export default function RequestedMember() {
                       <span>{group.group?.title}</span>
                     </div>
                   </td>
-                  <td>{group.group.group_type}</td>
+                  <td>{['Sas', 'saas'].includes(group.group.group_type) ? 'SAS' : group.group.group_type}</td>
+
                   <td>
                     {/* <div className={styles.roleDropdown}>
                       <select

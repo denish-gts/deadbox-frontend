@@ -194,8 +194,7 @@ export default function AddGroup({ header, groupId, type }) {
     })
     setValues({ ...values, invitees: updateData });
   }
-  const RolesData = values?.groupType === 'saas' ? sassRoles : DadboxRoles
-
+  const RolesData = ['Sas','saas'].includes(values?.groupType) ? sassRoles : DadboxRoles
   return (
     <>
       <div className="container">
@@ -286,21 +285,25 @@ export default function AddGroup({ header, groupId, type }) {
                 </div>
                 <div className={styles.formGroup}>
                   <label htmlFor="groupType">Group</label>
-                  <select
-                    id="groupType"
-                    name="groupType"
-                    onChange={handleChange}
-                    value={values.groupType}
-                  >
-                    {type === 'edit_group' && (
-                      <>
-                        <option value="deadbox">Deadbox</option>
-                        <option value="saas">Saas</option>
-                      </>
-                    )}
-                    <option value="general_private">General Private</option>
-                    <option value="general_public">General Public</option>
-                  </select>
+
+                  {['deadbox', 'Sas'].includes(values.groupType) && type === 'edit_group' ?
+                    <input
+                      type="text"
+                      disabled
+                      style={{ opacity: '0.5' }}
+                      value={ ['Sas','saas'].includes(values?.groupType) ? 'SAS' : 'Deadbox'}
+                    />
+                    :
+                    <select
+                      id="groupType"
+                      name="groupType"
+                      onChange={handleChange}
+                      value={values.groupType}
+                    >
+                      <option value="general_private">General Private</option>
+                      <option value="general_public">General Public</option>
+                    </select>
+                  }
                   {errors.groupType && touched.groupType ? (
                     <p
                       style={{
@@ -683,7 +686,7 @@ export default function AddGroup({ header, groupId, type }) {
                 }}
                 className={styles.submitGroupButton}
               >
-                {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
+                {type === 'edit_group' ? 'Update My Group' : 'Submit My Group'}
               </button>
               {/* )} */}
             </div>

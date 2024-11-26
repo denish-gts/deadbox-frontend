@@ -38,8 +38,6 @@ export default function SignupContent() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       axiosInstance.post(`auth/sign-up/step-1`, values).then((res) => {
-        console.log('resresresresresres', res);
-
         successAPIResponse(res);
         router.push('/verifyemail')
         setIsLoading(false);

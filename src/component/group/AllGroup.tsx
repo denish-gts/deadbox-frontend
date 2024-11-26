@@ -165,7 +165,7 @@ export default function AllGroup() {
                       <span>{group.title}</span>
                     </div>
                   </td>
-                  <td>{group.group_type}</td>
+                  <td>{['Sas','saas'].includes(group.group_type)?'SAS':group.group_type}</td>
                   <td>{group.total_members}</td>
                   <td>
                     <button
