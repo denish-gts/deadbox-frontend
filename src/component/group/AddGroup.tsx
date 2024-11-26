@@ -31,6 +31,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const validationSchema1 = Yup.object().shape({
+  groupName: Yup.string().required("Group Name is required."),
+  groupType: Yup.string().required("Group Type is required."),
+  about: Yup.string().required("About is required."),
+  invitees: Yup.array()
+    .min(1, "At least one invitee is required")
+    .required("Invitees are required"),
   phone: Yup.string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("Phone number is required"),
@@ -58,7 +64,7 @@ export default function AddGroup({ header, groupId, type }) {
         invitees: [],
         avatar: "",
       },
-      validationSchema: type === 'edit_group' ? validationSchema : { ...validationSchema, ...validationSchema1 },
+      validationSchema: type === 'edit_group' ? validationSchema : validationSchema1,
       onSubmit: (values) => {
         setIsLoading(true);
         const apiData = new FormData();
@@ -154,9 +160,15 @@ export default function AddGroup({ header, groupId, type }) {
       post(`group/details`, body)
         .then((data: any) => {
           const responce = data.data.data;
+          const updateData = responce.member_list?.map((ite) => {
+            const data = ite?.roles?.map((roleItem) => {
+              return roleItem?.role_id
+            })
+            return { ...ite, role_id: data?.toString() }
+          })
           const getData = {
             groupName: responce.group.title,
-            invitees: responce.member_list,
+            invitees: updateData,
             about: responce.group.description,
             avatar: responce.group.logo,
             groupType: responce.group.group_type
@@ -194,7 +206,7 @@ export default function AddGroup({ header, groupId, type }) {
     })
     setValues({ ...values, invitees: updateData });
   }
-  const RolesData = ['Sas','saas'].includes(values?.groupType) ? sassRoles : DadboxRoles
+  const RolesData = ['Sas', 'saas'].includes(values?.groupType) ? sassRoles : DadboxRoles
   return (
     <>
       <div className="container">
@@ -291,7 +303,7 @@ export default function AddGroup({ header, groupId, type }) {
                       type="text"
                       disabled
                       style={{ opacity: '0.5' }}
-                      value={ ['Sas','saas'].includes(values?.groupType) ? 'SAS' : 'Deadbox'}
+                      value={['Sas', 'saas'].includes(values?.groupType) ? 'SAS' : 'Deadbox'}
                     />
                     :
                     <select
@@ -576,6 +588,13 @@ export default function AddGroup({ header, groupId, type }) {
                                 </div>
                               </td>
                               <td>{invitee.email}</td>
+                              <td>
+                              <div className={styles.roleSelect}>
+
+                              <Select/>
+                              </div>
+
+                              </td>
                               <td>
                                 <div className={styles.roleDropdown}>
                                   <div className={styles.role}>
