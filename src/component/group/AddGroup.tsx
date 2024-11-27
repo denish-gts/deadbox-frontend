@@ -589,13 +589,6 @@ export default function AddGroup({ header, groupId, type }) {
                               </td>
                               <td>{invitee.email}</td>
                               <td>
-                              <div className={styles.roleSelect}>
-
-                              <Select/>
-                              </div>
-
-                              </td>
-                              <td>
                                 <div className={styles.roleDropdown}>
                                   <div className={styles.role}>
                                     <span

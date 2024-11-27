@@ -11,11 +11,7 @@
     padding: 16px;
   }
 }
-.roleSelect{
-  input{
-    border: none !important;
-  }
-}
+
 .header {
   font-size: 30px;
   line-height: 36px;
@@ -357,31 +353,35 @@
       .roleDropdown {
         position: relative;
         display: inline-block;
-
-        select {
-          color: #000 !important;
-          padding: 4px 8px;
-          font-size: 14px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          background-color: #fff;
-          cursor: pointer;
-          appearance: none;
-          padding-left: 24px !important; /* Leave space for the dropdown arrow */
-          option {
-            color: #000 !important;
-            padding-left: 25px !important;
+        .roleSelect{
+          input{
+            border: none !important;
           }
         }
+      //   select {
+      //     color: #000 !important;
+      //     padding: 4px 8px;
+      //     font-size: 14px;
+      //     border: 1px solid #ddd;
+      //     border-radius: 4px;
+      //     background-color: #fff;
+      //     cursor: pointer;
+      //     appearance: none;
+      //     padding-left: 24px !important; /* Leave space for the dropdown arrow */
+      //     option {
+      //       color: #000 !important;
+      //       padding-left: 25px !important;
+      //     }
+      //   }
 
-        select:focus {
-          outline: none;
-          border-color: #aaa;
-        }
+      //   select:focus {
+      //     outline: none;
+      //     border-color: #aaa;
+      //   }
 
-        select option {
-          padding: 4px;
-        }
+      //   select option {
+      //     padding: 4px;
+      //   }
 
         .roleIndicator {
           position: absolute;
@@ -393,7 +393,7 @@
           border-radius: 50%;
           margin-right: 8px;
         }
-      }
+       }
 
       .deleteButton {
         background: transparent;
