@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./signupForm.module.scss";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const UserIcon = "/assets/images/user1.png";
 const Logo = "/assets/logo/logo.jpeg";
 const BG = "/assets/images/signin1.jpg";
@@ -8,6 +9,8 @@ const BG = "/assets/images/signin1.jpg";
 export default function SignUpFirstForm({
   formik,
 }) {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   const { handleSubmit, values, touched, errors, handleChange, setValues } = formik;
   // const [avatar, setAvatar] = useState(null);
   // const handleAvatarChange = (e) => {
@@ -127,7 +130,7 @@ export default function SignUpFirstForm({
                 </p>
               ) : null}
               <input
-                type="tel"
+                type="number"
                 placeholder="Phone Number"
                 name="phone"
                 onChange={handleChange}
@@ -139,13 +142,21 @@ export default function SignUpFirstForm({
                 </p>
               ) : null}
             </div>
-            <input
-              type="text"
-              placeholder="Password"
-              name="password"
-              onChange={handleChange}
-              value={values.password}
-            />
+            <div className={styles.passwordField}>
+              <input
+                type={passwordVisible ? "text" : "password"}
+                placeholder="Password"
+                name="password"
+                onChange={handleChange}
+                value={values.password}
+              />
+              <span
+                className={styles.eyeIcon}
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
             {errors.password && touched.password ? (
               <p className={styles.error_content}>
                 {errors.password}

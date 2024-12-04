@@ -18,7 +18,17 @@
     margin-top: -10px !important;
     margin-bottom: 16px !important;
   }
-
+  .passwordField {
+    position: relative;
+  }
+  
+  .eyeIcon {
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
   .radiogroup {
     display: flex;
     align-items: center;

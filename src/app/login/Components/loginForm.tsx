@@ -12,6 +12,7 @@ import { errorCheckAPIResponse, successAPIResponse } from "@/utils/helpers";
 import Loader from "@/component/common/loader";
 import { useRouter } from "next/navigation";
 import { resolve } from "styled-jsx/macro";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const MailIcon = "/assets/icons/mail-icon.svg";
 const SendLinkIcon = "/assets/icons/send-link-icon.svg";
 const GoogleIcon = "/assets/icons/google-icon.svg";
@@ -28,7 +29,7 @@ const validationSchema = Yup.object().shape({
 
 export default function LoginForm() {
   const router = useRouter();
-
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { handleSubmit, values, touched, errors, handleChange, setValues } =
     useFormik({
@@ -87,21 +88,29 @@ export default function LoginForm() {
               {errors.email}
             </p>
           ) : null}
-          <input
-            type="text"
-            placeholder="Password"
-            name="password"
-            onChange={handleChange}
-            value={values.password}
-          />
+          <div className={styles.passwordField}>
+            <input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+              value={values.password}
+            />
+            <span
+              className={styles.eyeIcon}
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
           {errors.password && touched.password ? (
             <p className={styles.error_content}
-            style={{
-              color: "red",
-              fontSize: "12px",
-              marginTop: "-10px",
-              marginBottom: "16px",
-            }}>
+              style={{
+                color: "red",
+                fontSize: "12px",
+                marginTop: "-10px",
+                marginBottom: "16px",
+              }}>
               {errors.password}
             </p>
           ) : null}

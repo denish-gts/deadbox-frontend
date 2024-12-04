@@ -185,7 +185,7 @@ export default function ForgotPasswordForm() {
                 {errors.password}
               </p>
             ) : null}
-              <div className={styles.passwordField}>
+            <div className={styles.passwordField}>
               <input
                 type={confirmPasswordVisible ? "text" : "password"}
                 placeholder="Confirm Password"

@@ -361,7 +361,7 @@ export default function AddGroup({ header, groupId, type }) {
                         <option value="+44">+44</option>
                       </select>
                       <input
-                        type="text"
+                        type="number"
                         name="phone"
                         onChange={handleChange}
                         value={values.phone}
