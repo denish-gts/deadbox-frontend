@@ -14,6 +14,7 @@ import Select from 'react-select';
 import Pencil from "../../../public/assets/images/pencils.png";
 import Delete from "../../../public/assets/images/delete.svg";
 import { MainContent } from "@/utils/context";
+import { getUserInfo } from "@/utils/auth.util";
 interface User {
   id: number;
   name: string;
@@ -138,6 +139,10 @@ export default function AddGroup({ header, groupId, type }) {
       setValues({ ...values, avatar: file });
     }
   };
+  const [email, setEmail] = useState<any>([]);
+  useEffect(() => {
+    setEmail(getUserInfo()?.email);
+  }, []);
 
   const [userList, setuserList] = useState([]);
   const getUserList = async () => {
@@ -183,8 +188,6 @@ export default function AddGroup({ header, groupId, type }) {
         });
     }
   }, [groupId]);
-
-
   const DadboxRoles = [
     {
       label: 'Admin',
@@ -196,6 +199,35 @@ export default function AddGroup({ header, groupId, type }) {
       color: 'green'
     }]
 
+  const RolesData = ['Sas', 'saas', 'sas'].includes(values?.groupType) ? sassRoles : DadboxRoles
+
+  let isDisable = type === 'edit_group' ? true : false
+  const isLoginUser = values.invitees?.find((item) => {
+    return item?.email === email
+  })
+
+  if (isLoginUser && email && type === 'edit_group') {
+    const roleId = isLoginUser?.role_id.toString().split(',') || []
+
+    if (['Sas', 'saas', 'sas'].includes(values?.groupType)) {
+
+      const editableRoles = RolesData?.filter((role) => {
+        return ["President", "Recruiter", "Vice President "].includes(role?.label)
+      })?.map((item) => {
+        return item?.value
+      })
+
+      isDisable = !(roleId.some((item) => {
+        return editableRoles.includes(parseInt(item))
+      }))
+
+    } else {
+      isDisable = !(roleId.some((item) => {
+        return [1].includes(parseInt(item))
+      }))
+    }
+  }
+
   const handleChangeRole = (e: any, index: number) => {
     const updateData = values?.invitees?.map((item: any, i: number) => {
       if (i === index) {
@@ -206,7 +238,6 @@ export default function AddGroup({ header, groupId, type }) {
     })
     setValues({ ...values, invitees: updateData });
   }
-  const RolesData = ['Sas', 'saas'].includes(values?.groupType) ? sassRoles : DadboxRoles
   return (
     <>
       <div className="container">
@@ -215,7 +246,7 @@ export default function AddGroup({ header, groupId, type }) {
           <div className={styles.groupFormContainer}>
             <div
               className={styles.avatarSection}
-              onClick={() => document.getElementById("avatarInput").click()}
+              onClick={() => isDisable?'':document.getElementById("avatarInput").click()}
             >
               <div className={styles.avatar}>
                 <img
@@ -225,6 +256,7 @@ export default function AddGroup({ header, groupId, type }) {
                 />
                 <button
                   className={styles.deleteAvatarButton}
+                  disabled={isDisable}
                   onClick={() => document.getElementById("avatarInput").click()}
                 >
                   {!avatar ? (
@@ -283,6 +315,7 @@ export default function AddGroup({ header, groupId, type }) {
                     name="groupName"
                     onChange={handleChange}
                     value={values.groupName}
+                    disabled={isDisable}
                   />
                   {errors.groupName && touched.groupName ? (
                     <p
@@ -298,12 +331,12 @@ export default function AddGroup({ header, groupId, type }) {
                 <div className={styles.formGroup}>
                   <label htmlFor="groupType">Group</label>
 
-                  {['deadbox', 'Sas'].includes(values.groupType) && type === 'edit_group' ?
+                  {['deadbox', 'Sas', 'sas', 'saas'].includes(values.groupType) && type === 'edit_group' ?
                     <input
                       type="text"
                       disabled
-                      style={{ opacity: '0.5' }}
-                      value={['Sas', 'saas'].includes(values?.groupType) ? 'SAS' : 'Deadbox'}
+                      // style={{ opacity: '0.5' }}
+                      value={['Sas', 'saas', 'sas'].includes(values?.groupType) ? 'SAS' : 'Deadbox'}
                     />
                     :
                     <select
@@ -311,6 +344,7 @@ export default function AddGroup({ header, groupId, type }) {
                       name="groupType"
                       onChange={handleChange}
                       value={values.groupType}
+                      disabled={isDisable}
                     >
                       <option value="general_private">General Private</option>
                       <option value="general_public">General Public</option>
@@ -344,7 +378,9 @@ export default function AddGroup({ header, groupId, type }) {
             ) : null} */}
               {/* {type !== 'edit_group' && ( */}
               <>
-                <div className={styles.formRow} style={{ opacity: type === 'edit_group' ? '0.5' : '' }}>
+                <div className={styles.formRow}
+                //  style={{ opacity: type === 'edit_group' ? '0.5' : '' }}
+                >
                   <div className={styles.formGroup}>
                     <label htmlFor="phoneWithCode">Phone Number</label>
                     <div className={styles.grids}>
@@ -399,7 +435,9 @@ export default function AddGroup({ header, groupId, type }) {
                   ) : null}
                 </div> */}
                 </div>
-                <div className={styles.formRow} style={{ opacity: type === 'edit_group' ? '0.5' : '' }}>
+                <div className={styles.formRow}
+                // style={{ opacity: type === 'edit_group' ? '0.5' : '' }}
+                >
                   {/* <div className={styles.formGroup}>
                   <label htmlFor="phone">Phone</label>
                   <input
@@ -451,6 +489,7 @@ export default function AddGroup({ header, groupId, type }) {
                   name="about"
                   onChange={handleChange}
                   value={values.about}
+                  disabled={isDisable}
                 ></textarea>
                 {errors.about && touched.about ? (
                   <p
@@ -484,8 +523,9 @@ export default function AddGroup({ header, groupId, type }) {
                     }
                   }}
                   value={""}
+                  disabled={isDisable}
                 >
-                  <option value="">Select</option>
+                  <option value="" >Select</option>
                   {userList?.map((user: any) => {
                     return (
                       <option key={user.id} value={user.id}>
@@ -554,7 +594,9 @@ export default function AddGroup({ header, groupId, type }) {
                   ))}
                    </div> */}
                 {values.invitees && values.invitees.length > 0 && (
+
                   <div className={styles.memberTable}>
+
                     <table>
                       <thead>
                         <tr>
@@ -572,6 +614,10 @@ export default function AddGroup({ header, groupId, type }) {
                               return item
                             }
                           })
+                          const valueData = valuesData.length > 0 ? valuesData?.map((item) => {
+                            return item?.label
+                          }) : '-'
+
                           return (
 
                             <tr key={key}>
@@ -589,53 +635,37 @@ export default function AddGroup({ header, groupId, type }) {
                               </td>
                               <td>{invitee.email}</td>
                               <td>
-                                <div className={styles.roleDropdown}>
-                                  <div className={styles.role}>
-                                    <span
-                                      className={styles.roleIndicator}
-                                      style={{
-                                        backgroundColor: invitee.roleColor,
-                                      }}
-                                    ></span>
-                                    {/* <select
-                                    value={invitee.role_id}
-                                    onChange={(e) => {
-                                      handleChangeRole(e, key)
-                                    }}
-
-                                  >
-                                    {RolesData.map((role, i) => (
-                                      <>
-                                      {console.log('dsdsdsdsdsdsd',role)
-                                      }
-                                      <option
-                                        key={i}
-                                        value={role?.value}
-                                      >
-                                        {role?.lable}
-                                      </option>
-                                      </>
-                                    ))}
-                                  </select> */}
-                                    <div className={styles.roleSelect}>
-                                      <Select
-                                        closeMenuOnSelect={false}
-                                        isMulti={RolesData.length > 2}
-                                        value={valuesData}
-                                        onChange={(value: any) => {
-                                          const data = RolesData.length > 2 ? value : [value]
-                                          const role_id = data?.map((item: any) => { return item.value }).toString()
-                                          handleChangeRole(role_id, key)
+                                {isDisable ?
+                                  valueData :
+                                  <div className={styles.roleDropdown}>
+                                    <div className={styles.role}>
+                                      <span
+                                        className={styles.roleIndicator}
+                                        style={{
+                                          backgroundColor: invitee.roleColor,
                                         }}
+                                      ></span>
 
-                                        options={RolesData}
-                                      />
+                                      <div className={styles.roleSelect}>
+                                        <Select
+                                          closeMenuOnSelect={false}
+                                          isMulti={RolesData.length > 2}
+                                          value={valuesData}
+                                          onChange={(value: any) => {
+                                            const data = RolesData.length > 2 ? value : [value]
+                                            const role_id = data?.map((item: any) => { return item.value }).toString()
+                                            handleChangeRole(role_id, key)
+                                          }}
+
+                                          options={RolesData}
+                                        />
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                }
                               </td>
                               <td>
-                                <button className={styles.deleteButton}>
+                                <button className={styles.deleteButton} disabled={isDisable}>
                                   <svg
                                     width="19"
                                     height="19"
@@ -692,14 +722,16 @@ export default function AddGroup({ header, groupId, type }) {
                   {type === 'edit_group' ? 'Edit My Group' : 'Submit My Group'}
                 </button>
               ) : ( */}
-              <button
-                onClick={() => {
-                  handleSubmit();
-                }}
-                className={styles.submitGroupButton}
-              >
-                {type === 'edit_group' ? 'Update My Group' : 'Submit My Group'}
-              </button>
+              {!isDisable && (
+                <button
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                  className={styles.submitGroupButton}
+                >
+                  {type === 'edit_group' ? 'Update My Group' : 'Submit My Group'}
+                </button>
+              )}
               {/* )} */}
             </div>
           </div>
