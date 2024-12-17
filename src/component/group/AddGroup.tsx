@@ -110,7 +110,9 @@ export default function AddGroup({ header, groupId, type }) {
 
         postFormData(URL, apiData)
           .then((res) => {
-            router.push("/group");
+            if (type !== 'edit_group') {
+              router.push("/group");
+            }
             const msg = {
               data: {
                 message:
@@ -128,6 +130,8 @@ export default function AddGroup({ header, groupId, type }) {
     });
 
   const [avatar, setAvatar] = useState(null);
+  const [isLoginUser,setLoginUser]=useState({role_id:''})
+
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -154,7 +158,6 @@ export default function AddGroup({ header, groupId, type }) {
         errorCheckAPIResponse(error);
       });
   };
-
   useEffect(() => {
     getUserList();
     if (groupId) {
@@ -171,6 +174,10 @@ export default function AddGroup({ header, groupId, type }) {
             })
             return { ...ite, role_id: data?.toString() }
           })
+          const isLoginUserData = updateData?.find((item) => {
+            return item?.email === getUserInfo()?.email
+          })
+          setLoginUser(isLoginUserData)
           const getData = {
             groupName: responce.group.title,
             invitees: updateData,
@@ -202,9 +209,9 @@ export default function AddGroup({ header, groupId, type }) {
   const RolesData = ['Sas', 'saas', 'sas'].includes(values?.groupType) ? sassRoles : DadboxRoles
 
   let isDisable = type === 'edit_group' ? true : false
-  const isLoginUser = values.invitees?.find((item) => {
-    return item?.email === email
-  })
+  // const isLoginUser = values.invitees?.find((item) => {
+  //   return item?.email === email
+  // })
 
   if (isLoginUser && email && type === 'edit_group') {
     const roleId = isLoginUser?.role_id.toString().split(',') || []
@@ -246,7 +253,7 @@ export default function AddGroup({ header, groupId, type }) {
           <div className={styles.groupFormContainer}>
             <div
               className={styles.avatarSection}
-              onClick={() => isDisable?'':document.getElementById("avatarInput").click()}
+              onClick={() => isDisable ? '' : document.getElementById("avatarInput").click()}
             >
               <div className={styles.avatar}>
                 <img
