@@ -196,21 +196,24 @@ export default function Group() {
           <tbody>
             {groups?.map((group: any) => {
               let groupStatus = ''
+              let actionButtonText=''
 
               switch (group.status) {
                 case 0:
                   groupStatus = 'Requested'
+                  actionButtonText='Resend Request'
                   break;
                 case 1:
                   groupStatus = 'Joined'
+                  actionButtonText='Remove Group'
                   break;
                 case 2:
                   groupStatus = 'Rejected'
+                  actionButtonText='Resend Request'
                   break;
                 default:
                   break;
               }
-              console.log('groupgroupgroupgroupgroup',group);
               
               return (
                 <tr key={group?.id}>
@@ -244,7 +247,7 @@ export default function Group() {
                         setShowModel(true)
                       }}
                     >
-                      Remove Group
+                      {actionButtonText}
                     </button>
                   </td>
                 </tr>
