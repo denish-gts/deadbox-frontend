@@ -20,7 +20,7 @@ const Myprofile = () => {
 
     post(`user/get-profile`)
       .then((res) => {
-        setuserData(res?.data?.data);
+        setuserData(res?.data?.data?.userDetails);
         setIsLoading(false)
       })
       .catch((error) => {

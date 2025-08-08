@@ -15,7 +15,8 @@ export default function Header() {
   useEffect(() => {
     post(`user/get-profile`)
       .then((res) => {
-        setuserData(res?.data?.data);
+        setuserData(res?.data?.data?.userDetails);
+        // console.log("User Data:", res?.data?.data);
       })
       .catch((error) => {
         errorCheckAPIResponse(error);
@@ -23,7 +24,7 @@ export default function Header() {
   }, []);
   const noImag = userData?.image?.split('/');
   const Nodata = noImag && noImag[noImag.length - 1] === 'no-image.jpg'
-
+  console.log("Data:", userData?.userDetails);
   return (
     <header className={styles.mainHeader}>
       <div className="container">

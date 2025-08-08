@@ -91,7 +91,7 @@ export default function EditProfile() {
   const getUserData = () => {
     post(`user/get-profile`)
       .then((res) => {
-        const resData = res?.data?.data
+        const resData = res?.data?.data?.userDetails;
         setAvatar(resData.image)
         setValues({
           email: resData?.email || "",
